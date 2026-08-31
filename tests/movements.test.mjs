@@ -1,10 +1,14 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
 const moduleUnderTest = await import("../src/movements.js").catch(() => ({
   filterMovements: () => [],
 }));
 const { filterMovements, movements = [] } = moduleUnderTest;
+const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 const fixtures = [
   {
@@ -96,5 +100,24 @@ test("新增的大幅度动作都有不同的起始与到位图", () => {
     assert.ok(movement.frames?.start, `缺少起始图：${id}`);
     assert.ok(movement.frames?.end, `缺少到位图：${id}`);
     assert.notEqual(movement.frames.start, movement.frames.end, `两张图不应相同：${id}`);
+  }
+});
+
+test("动作列表使用独立的小尺寸无损缩略图", async () => {
+  const selectMovementThumbnail = moduleUnderTest.selectMovementThumbnail ?? (() => null);
+
+  assert.equal(
+    selectMovementThumbnail({ image: "/assets/movements/example.png" }),
+    "/assets/thumbnails/example.png",
+  );
+
+  for (const movement of movements) {
+    const thumbnail = selectMovementThumbnail(movement);
+    assert.match(thumbnail, /^\/assets\/thumbnails\/.+\.png$/);
+
+    const bytes = await readFile(path.join(projectRoot, "public", thumbnail));
+    assert.equal(bytes.toString("ascii", 1, 4), "PNG", `缩略图格式错误：${movement.id}`);
+    assert.ok(bytes.readUInt32BE(16) <= 240, `缩略图过宽：${movement.id}`);
+    assert.ok(bytes.readUInt32BE(20) <= 240, `缩略图过高：${movement.id}`);
   }
 });

@@ -12,7 +12,12 @@ import {
   WarningCircle,
   X,
 } from "@phosphor-icons/react";
-import { filterMovements, movements, selectMovementFrame } from "./movements.js";
+import {
+  filterMovements,
+  movements,
+  selectMovementFrame,
+  selectMovementThumbnail,
+} from "./movements.js";
 
 const categories = ["全部", "颈部", "斜方肌", "胸椎", "胸肩", "肩胛", "腰背", "臀髋", "膝盖", "侧链"];
 
@@ -25,7 +30,12 @@ function MovementCard({ movement, active, onSelect }) {
       aria-pressed={active}
     >
       <span className="movement-card__image">
-        <img src={movement.image} alt="" />
+        <img
+          src={selectMovementThumbnail(movement)}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
       </span>
       <span className="movement-card__body">
         <span className="movement-card__category">{movement.category}</span>
@@ -112,8 +122,10 @@ function MovementDetail({ movement, phase, onPhaseChange }) {
 
           <div className="movement-stage">
             <img
+              key={`${movement.id}-${phase}`}
               src={frame}
               alt={`${movement.title}${hasFrames ? (phase === "start" ? "起始状态" : "到位状态") : "动作示意"}`}
+              decoding="async"
             />
           </div>
           <p className="visual-legend">

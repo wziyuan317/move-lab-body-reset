@@ -9,6 +9,7 @@
 - Full-view comparison：`qa/expanded-style-comparison.png`
 - Focused comparison：`qa/focused-style-comparison.png`
 - Correction evidence：`qa/corrected-seated-fold.png`、`qa/corrected-supported-hinge.png`
+- Thumbnail optimization evidence：`qa/thumbnail-optimized-desktop.png`、`qa/thumbnail-before-after.png`
 - State：全部动作，共 15 个；桌面显示动作库首页，修正图分别显示“到位状态”。
 
 ## 视口与像素归一化
@@ -53,6 +54,9 @@
 4. 新增“椅背胸椎伸展”首张到位图误用了带滚轮椅。
    - Fix：重新生成固定四脚椅版本，并替换为安全、稳定的支撑示意。
    - Post-fix evidence：动作起始与到位图均为固定四脚椅，无滚轮。
+5. 长时间切换动作时存在旧图停留风险，初始页面用 15 张高清原图承担 `66 × 66 px` 列表缩略图。
+   - Fix：保留全部高清详情图，新增 15 张最大边 `240 px` 的无损 PNG 缩略图；列表延迟加载、异步解码，详情图按动作与阶段重新挂载。
+   - Post-fix evidence：初始解码像素从 `25,160,103` 降到 `2,427,876`，下降约 `90.3%`；详情图仍为 `1254 × 1254 px`，前后对照未见内容或视觉层级变化。
 
 ## 交互与运行验收
 
@@ -70,6 +74,7 @@
 - [x] 大幅度动作提供起始 / 到位双状态。
 - [x] 肩胛与膝盖办公室动作可按分类和关键词检索。
 - [x] 用户指出的抱腿手位与椅子朝向已在图像和文字中同步修正。
+- [x] 列表使用独立无损缩略图，详情页继续展示原始高清图，没有删减内容。
 - [x] 桌面、中等宽度与移动端无页面级水平溢出。
 - [x] 所有动作图已加载，没有占位图或代码绘制的替代资产。
 - [x] 字体、间距、色彩 token、图片质量、图标一致性与应用文案均已通过对照。

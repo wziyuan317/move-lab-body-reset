@@ -27,6 +27,11 @@ export function selectMovementFrame(movement, phase) {
   return movement.frames?.[phase] ?? movement.image;
 }
 
+export function selectMovementThumbnail(movement) {
+  const filename = movement.image.split("/").at(-1);
+  return `/assets/thumbnails/${filename}`;
+}
+
 export const movements = [
   {
     id: "neck-sidebend",
