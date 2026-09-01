@@ -111,11 +111,11 @@
 
 ## 3D 资产与交互方案
 
-- 着装人体：使用官方 MakeHuman 导出的 CC0 人体和运动服资产，并在导出后进行网页体积优化。
-- 肌肉地图：从 Z-Anatomy CC-BY-SA 4.0 模型中仅导出与 7 个区域相关的肌肉结构，删除器官、生殖结构、骨骼与无关网格，使用中性教育配色。
-- 运行时使用 `<model-viewer>` 的相机控制与 hotspot 机制，避免引入完整游戏引擎。
-- 两个 GLB 在制作阶段统一站姿、中心点、比例和朝向；分别压缩纹理与网格，并提供海报图。
-- 页面保留模型来源与许可证说明，满足署名及 ShareAlike 要求。
+- 着装人体：使用 Quaternius 的 CC0 Rigged Simple Human，保留运动服外观，并通过原模型骨骼在运行时调整为自然 A 字站姿。
+- 肌肉地图：使用 Z-Anatomy CC-BY-SA 4.0 的浏览器优化 GLB；运行时只显示与当前区域关联且 `extras.type = muscle` 的肌肉网格，骨骼、滑囊与其他结构保持隐藏。
+- 运行时使用 Three.js 与 React Three Fiber：GLTF 场景负责真实网格，Raycaster 负责具体肌肉点击，稳定结构 ID 负责多选色标和教程映射。该方案不以近似 hotspot 代替肌肉网格。
+- 两个 GLB 在组件内分别设置站姿、中心点、比例和相机预设；着装模型用于大区域定位，肌肉模型用于具体结构选择。
+- 页面保留模型来源、作者与许可证说明，满足 CC0 归属说明及 CC-BY-SA 署名、同方式共享要求。
 
 ## 技术结构
 
@@ -166,3 +166,5 @@
 - MakeHuman Community, “License”，访问日期：2026-09-01。https://static.makehumancommunity.org/about/license.html
 - Surgical Planning Laboratory, “Z-Anatomy”，访问日期：2026-09-01。https://www.spi-inc.org/projects/z-anatomy/
 - Google, “`<model-viewer>` Annotations”，访问日期：2026-09-01。https://modelviewer.dev/examples/annotations/index.html
+- Quaternius, “Rigged Simple Human”，CC0，访问日期：2026-09-01。https://quaternius.com/packs/riggedsimplehuman.html
+- hpfrei, “body-anatomy-3d-viewer”，基于 Z-Anatomy 的浏览器优化 GLB，访问日期：2026-09-01。https://github.com/hpfrei/body-anatomy-3d-viewer
