@@ -4,7 +4,7 @@ import { Html, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { clone as cloneSkeleton } from "three/examples/jsm/utils/SkeletonUtils.js";
-import { fitDistanceForSphere, getCameraPose } from "../cameraFraming.js";
+import { fitDistanceForBox, getBoxHalfExtents, getCameraPose } from "../cameraFraming.js";
 import { bodyRegions } from "../bodyMap.js";
 
 const baseUrl = import.meta.env.BASE_URL;
@@ -80,7 +80,20 @@ function ClothedModel({ regionId, onSelectRegion, onBounds }) {
           <button
             type="button"
             className={`model-hotspot${regionId === region.id ? " is-active" : ""}`}
+            data-region-id={region.id}
+            style={{
+              "--hotspot-x": `${region.hotspot.screenOffset?.[0] ?? 0}px`,
+              "--hotspot-y": `${region.hotspot.screenOffset?.[1] ?? 0}px`,
+              "--hotspot-mobile-x": `${region.hotspot.mobileOffset?.[0] ?? 0}px`,
+              "--hotspot-mobile-y": `${region.hotspot.mobileOffset?.[1] ?? 0}px`,
+            }}
             onClick={(event) => {
+              event.stopPropagation();
+              onSelectRegion(region.id);
+            }}
+            onKeyDown={(event) => {
+              if (event.repeat || (event.key !== "Enter" && event.key !== " ")) return;
+              event.preventDefault();
               event.stopPropagation();
               onSelectRegion(region.id);
             }}
@@ -99,20 +112,26 @@ function getFocusTarget(bounds, regionId) {
   const region = bodyRegions.find((item) => item.id === regionId);
   if (!region) return center;
   return center.add(new THREE.Vector3(
-    region.hotspot.position[0] * 0.28,
-    region.hotspot.position[1] * 0.28,
-    region.hotspot.position[2] * 0.28,
+    region.hotspot.position[0] * 0.06,
+    region.hotspot.position[1] * 0.06,
+    region.hotspot.position[2] * 0.06,
   ));
 }
 
 function fitCameraToTarget({ bounds, camera, controls, regionId, size, viewSide }) {
   const target = getFocusTarget(bounds, regionId);
-  const targetOffset = target.distanceTo(bounds.sphere.center);
-  const verticalFovRadians = THREE.MathUtils.degToRad(camera.fov);
   const aspect = Math.max(size.width, 1) / Math.max(size.height, 1);
-  const horizontalFovRadians = 2 * Math.atan(Math.tan(verticalFovRadians / 2) * aspect);
-  const limitingFov = THREE.MathUtils.radToDeg(Math.min(verticalFovRadians, horizontalFovRadians));
-  const distance = fitDistanceForSphere(bounds.sphere.radius + targetOffset, limitingFov, 1.08);
+  const extents = getBoxHalfExtents({
+    min: bounds.box.min.toArray(),
+    max: bounds.box.max.toArray(),
+    target: target.toArray(),
+  });
+  const distance = fitDistanceForBox({
+    ...extents,
+    verticalFovDegrees: camera.fov,
+    aspect,
+    margin: regionId ? 1.03 : 1.14,
+  });
   const pose = getCameraPose({ target: target.toArray(), distance, viewSide });
 
   camera.position.set(...pose.position);

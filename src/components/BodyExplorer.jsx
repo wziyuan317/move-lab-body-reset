@@ -6,7 +6,7 @@ import {
   PersonSimpleRun,
   WarningCircle,
 } from "@phosphor-icons/react";
-import { bodyRegions, getRegionTargets } from "../bodyMap.js";
+import { bodyRegions, getModelRegionSelectionChange, getRegionTargets } from "../bodyMap.js";
 import { BodyRegionMap } from "./BodyRegionMap.jsx";
 import { BodyScene } from "./BodyScene.jsx";
 import { JointRegionMap } from "./JointRegionMap.jsx";
@@ -71,9 +71,7 @@ export function BodyExplorer({ regionId, selectedIds, selectedSides, viewSide, o
   const professionalTriggerRef = useRef(null);
 
   const selectRegion = (id) => {
-    onSelectRegion(id);
-    const region = bodyRegions.find((item) => item.id === id);
-    if (region) onChangeViewSide(region.hotspot.side);
+    onSelectRegion(getModelRegionSelectionChange(id));
   };
   const closeProfessional = () => {
     setProfessionalOpen(false);
@@ -91,7 +89,7 @@ export function BodyExplorer({ regionId, selectedIds, selectedSides, viewSide, o
             {viewSide === "front" ? <Eye size={19} weight="bold" /> : <EyeClosed size={19} weight="bold" />}
             {viewSide === "front" ? "看背面" : "看正面"}
           </button>
-          <button type="button" onClick={() => { onSelectRegion(undefined); onChangeViewSide("front"); }}>
+          <button type="button" onClick={() => onSelectRegion({ regionId: undefined, viewSide: "front" })}>
             <ArrowsClockwise size={19} weight="bold" />重置
           </button>
         </div>

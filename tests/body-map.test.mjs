@@ -8,6 +8,7 @@ const {
   canOpenTutorials = () => true,
   applyExplorerStateChange = (_currentState, nextState) => nextState,
   getExplorerStep = () => undefined,
+  getModelRegionSelectionChange = () => ({}),
   getRecommendationNavigationIds = () => [],
   getRecommendations = () => ({ status: "missing", movementIds: [] }),
   getRegionTargets = () => [],
@@ -27,6 +28,16 @@ test("身体地图提供 8 个稳定区域且每区至少关联 2 个教程", ()
     assert.ok(region.movementIds.length >= 2, `${region.id} 缺少教程映射`);
     assert.equal(region.hotspot.position.length, 3, `${region.id} 缺少模型空间坐标`);
   }
+});
+
+test("移动端相邻大腿与膝盖热点具有足够的横向错位", () => {
+  const thigh = bodyRegions.find((region) => region.id === "thigh");
+  const knee = bodyRegions.find((region) => region.id === "knee");
+  const desktopSeparation = Math.abs(thigh.hotspot.screenOffset[0] - knee.hotspot.screenOffset[0]);
+  const horizontalSeparation = Math.abs(thigh.hotspot.mobileOffset[0] - knee.hotspot.mobileOffset[0]);
+
+  assert.ok(desktopSeparation >= 36, "桌面 44px 热点需结合模型坐标消除交叠");
+  assert.ok(horizontalSeparation >= 44, "44px 热点不得在移动端互相覆盖");
 });
 
 test("大腿区域提供前后侧的可推荐定位目标", () => {
@@ -85,6 +96,26 @@ test("首页区域切换通过状态归并清空旧具体定位", () => {
   assert.deepEqual(next.targetSides, {});
   assert.equal(next.viewSide, "back");
   assert.equal(next.step, 2);
+});
+
+test("3D 热点一次状态变更同时保留区域与所需正背面", () => {
+  const currentState = {
+    regionId: "knee",
+    targetIds: ["knee-front"],
+    targetSides: {},
+    symptomIds: [],
+    redFlagIds: [],
+    viewSide: "front",
+    step: 2,
+  };
+  const change = getModelRegionSelectionChange("shoulder");
+  const next = applyExplorerStateChange(currentState, { ...currentState, ...change });
+
+  assert.deepEqual(change, { regionId: "shoulder", viewSide: "back" });
+  assert.equal(next.regionId, "shoulder");
+  assert.equal(next.viewSide, "back");
+  assert.deepEqual(next.targetIds, []);
+  assert.deepEqual(next.targetSides, {});
 });
 
 test("没有感受时不提前推荐教程", () => {

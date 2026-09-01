@@ -64,7 +64,7 @@ export const bodyRegions = [
     label: "大腿",
     shortLabel: "腿",
     prompt: "大腿前侧、后侧或发力时不舒服",
-    hotspot: { position: [0.18, -0.41, 0.08], side: "front" },
+    hotspot: { position: [0.18, -0.41, 0.08], side: "front", screenOffset: [-18, -3], mobileOffset: [-30, -8] },
     movementIds: ["seated-knee-extension", "supported-half-squat", "supported-hinge"],
   },
   {
@@ -72,7 +72,7 @@ export const bodyRegions = [
     label: "膝盖",
     shortLabel: "膝",
     prompt: "膝前、内外侧或膝后不舒服",
-    hotspot: { position: [0.13, -0.56, 0.08], side: "front" },
+    hotspot: { position: [0.13, -0.56, 0.08], side: "front", screenOffset: [18, 3], mobileOffset: [30, 8] },
     movementIds: ["seated-knee-extension", "supported-half-squat", "supported-calf-raise"],
   },
   {
@@ -171,6 +171,14 @@ export function getExplorerStep({ regionId, symptomIds = [] }) {
 export function selectRegionState(state, regionId) {
   if (state.regionId === regionId) return state;
   return { ...state, regionId, targetIds: [], targetSides: {} };
+}
+
+export function getModelRegionSelectionChange(regionId) {
+  const region = bodyRegions.find((item) => item.id === regionId);
+  return {
+    regionId,
+    viewSide: region?.hotspot.side ?? "front",
+  };
 }
 
 export function applyExplorerStateChange(currentState, nextState) {

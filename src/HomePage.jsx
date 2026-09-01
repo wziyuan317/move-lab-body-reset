@@ -28,9 +28,9 @@ export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary }) {
   const [locationExpanded, setLocationExpanded] = useState(false);
 
   const update = (patch) => onChange({ ...value, ...patch });
-  const selectRegion = (regionId) => {
+  const selectRegion = (change) => {
     setLocationExpanded(false);
-    update({ regionId });
+    update(change);
   };
   const requestStep = (requestedStep) => {
     if (requestedStep === 2 && !region) return;
@@ -140,7 +140,7 @@ export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary }) {
         </div>
 
         <div id="region-rail">
-          <RegionRail regionId={value.regionId} onSelectRegion={selectRegion} />
+          <RegionRail regionId={value.regionId} onSelectRegion={(regionId) => selectRegion({ regionId })} />
         </div>
       </main>
 

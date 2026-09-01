@@ -29,6 +29,56 @@ test("BodyRegionMap 不再给人体 SVG path 传点击 handler", async () => {
   assert.equal(propNames.includes("onBodyPartPress"), false);
 });
 
+test("BodyExplorer 的 3D 热点只派发一次原子区域变更", async () => {
+  const source = await readFile(new URL("../src/components/BodyExplorer.jsx", import.meta.url), "utf8");
+  const ast = parse(source, { sourceType: "module", plugins: ["jsx"] });
+  let selectRegionBody;
+  visit(ast, (node) => {
+    if (node.type !== "VariableDeclarator" || node.id?.name !== "selectRegion") return;
+    selectRegionBody = node.init?.body;
+  });
+
+  assert.ok(selectRegionBody, "应保留 BodyExplorer 的热点选择入口");
+  const calls = [];
+  visit(selectRegionBody, (node) => {
+    if (node.type === "CallExpression" && node.callee?.type === "Identifier") calls.push(node.callee.name);
+  });
+  assert.equal(calls.filter((name) => name === "onSelectRegion").length, 1);
+  assert.equal(calls.includes("onChangeViewSide"), false, "不得用第二次旧状态更新覆盖 regionId");
+  assert.match(source, /onSelectRegion\(getModelRegionSelectionChange\(id\)\)/);
+});
+
+test("3D 热点显式支持 Enter 与 Space 且阻止原生 click 双触发", async () => {
+  const source = await readFile(new URL("../src/components/BodyScene.jsx", import.meta.url), "utf8");
+  const ast = parse(source, { sourceType: "module", plugins: ["jsx"] });
+  const hotspotButtons = [];
+  visit(ast, (node) => {
+    if (node.type !== "JSXOpeningElement" || node.name?.name !== "button") return;
+    const className = node.attributes.find(
+      (attribute) => attribute.type === "JSXAttribute" && attribute.name.name === "className",
+    );
+    if (className?.value?.type === "JSXExpressionContainer") hotspotButtons.push(node);
+  });
+
+  assert.equal(hotspotButtons.length, 1);
+  const propNames = hotspotButtons[0].attributes
+    .filter((attribute) => attribute.type === "JSXAttribute")
+    .map((attribute) => attribute.name.name);
+  assert.ok(propNames.includes("onClick"));
+  assert.ok(propNames.includes("onKeyDown"));
+  assert.match(source, /event\.key !== "Enter" && event\.key !== " "/);
+  assert.match(source, /event\.preventDefault\(\)/);
+  assert.match(source, /event\.repeat/);
+});
+
+test("安全选项在所有断点保留 44px 点击目标", async () => {
+  const source = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
+  const baseRule = source.match(/\.safety-check label \{([^}]*)\}/)?.[1] ?? "";
+
+  assert.match(baseRule, /min-height:\s*44px/);
+  assert.match(baseRule, /align-items:\s*center/);
+});
+
 test("专业模式使用完整正背人体图且不再引用 legacy GLB", async () => {
   const source = await readFile(new URL("../src/components/ProfessionalAnatomyPanel.jsx", import.meta.url), "utf8");
   const ast = parse(source, { sourceType: "module", plugins: ["jsx"] });
