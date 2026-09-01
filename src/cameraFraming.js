@@ -36,3 +36,22 @@ export function getCameraPose({ target, distance, viewSide }) {
     position: [target[0], target[1], target[2] + (viewSide === "front" ? -distance : distance)],
   };
 }
+
+export function getCameraFrame({
+  bounds,
+  focusPosition,
+  viewport,
+  viewSide,
+  verticalFovDegrees = 30,
+}) {
+  const center = bounds.min.map((value, index) => (value + bounds.max[index]) / 2);
+  const target = center.map((value, index) => value + (focusPosition?.[index] ?? 0) * 0.06);
+  const extents = getBoxHalfExtents({ ...bounds, target });
+  const distance = fitDistanceForBox({
+    ...extents,
+    verticalFovDegrees,
+    aspect: Math.max(viewport.width, 1) / Math.max(viewport.height, 1),
+    margin: focusPosition ? 1.03 : 1.14,
+  });
+  return { ...getCameraPose({ target, distance, viewSide }), distance };
+}

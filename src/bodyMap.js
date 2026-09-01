@@ -170,7 +170,14 @@ export function getExplorerStep({ regionId, symptomIds = [] }) {
 
 export function selectRegionState(state, regionId) {
   if (state.regionId === regionId) return state;
-  return { ...state, regionId, targetIds: [], targetSides: {} };
+  return {
+    ...state,
+    regionId,
+    targetIds: [],
+    targetSides: {},
+    symptomIds: [],
+    redFlagIds: [],
+  };
 }
 
 export function getModelRegionSelectionChange(regionId) {
@@ -181,11 +188,28 @@ export function getModelRegionSelectionChange(regionId) {
   };
 }
 
+export function getExplorerResetChange() {
+  return {
+    regionId: undefined,
+    targetIds: [],
+    targetSides: {},
+    symptomIds: [],
+    redFlagIds: [],
+    viewSide: "front",
+  };
+}
+
 export function applyExplorerStateChange(currentState, nextState) {
   const regionState = selectRegionState(currentState, nextState.regionId);
   const next = currentState.regionId === nextState.regionId
     ? nextState
-    : { ...nextState, targetIds: regionState.targetIds, targetSides: regionState.targetSides };
+    : {
+        ...nextState,
+        targetIds: regionState.targetIds,
+        targetSides: regionState.targetSides,
+        symptomIds: regionState.symptomIds,
+        redFlagIds: regionState.redFlagIds,
+      };
   return { ...next, step: getExplorerStep(next) };
 }
 

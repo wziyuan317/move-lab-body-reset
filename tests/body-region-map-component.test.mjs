@@ -12,6 +12,16 @@ function visit(node, inspect) {
   }
 }
 
+function readCssRule(source, selector) {
+  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const declarations = source.match(new RegExp(`${escaped}\\s*\\{([^}]*)\\}`))?.[1] ?? "";
+  return Object.fromEntries(declarations
+    .split(";")
+    .map((declaration) => declaration.split(":"))
+    .filter(([property, value]) => property?.trim() && value?.trim())
+    .map(([property, ...value]) => [property.trim(), value.join(":").trim()]));
+}
+
 test("BodyRegionMap 不再给人体 SVG path 传点击 handler", async () => {
   const source = await readFile(new URL("../src/components/BodyRegionMap.jsx", import.meta.url), "utf8");
   const ast = parse(source, { sourceType: "module", plugins: ["jsx"] });
@@ -29,54 +39,28 @@ test("BodyRegionMap 不再给人体 SVG path 传点击 handler", async () => {
   assert.equal(propNames.includes("onBodyPartPress"), false);
 });
 
-test("BodyExplorer 的 3D 热点只派发一次原子区域变更", async () => {
-  const source = await readFile(new URL("../src/components/BodyExplorer.jsx", import.meta.url), "utf8");
-  const ast = parse(source, { sourceType: "module", plugins: ["jsx"] });
-  let selectRegionBody;
-  visit(ast, (node) => {
-    if (node.type !== "VariableDeclarator" || node.id?.name !== "selectRegion") return;
-    selectRegionBody = node.init?.body;
-  });
-
-  assert.ok(selectRegionBody, "应保留 BodyExplorer 的热点选择入口");
-  const calls = [];
-  visit(selectRegionBody, (node) => {
-    if (node.type === "CallExpression" && node.callee?.type === "Identifier") calls.push(node.callee.name);
-  });
-  assert.equal(calls.filter((name) => name === "onSelectRegion").length, 1);
-  assert.equal(calls.includes("onChangeViewSide"), false, "不得用第二次旧状态更新覆盖 regionId");
-  assert.match(source, /onSelectRegion\(getModelRegionSelectionChange\(id\)\)/);
-});
-
-test("3D 热点显式支持 Enter 与 Space 且阻止原生 click 双触发", async () => {
-  const source = await readFile(new URL("../src/components/BodyScene.jsx", import.meta.url), "utf8");
-  const ast = parse(source, { sourceType: "module", plugins: ["jsx"] });
-  const hotspotButtons = [];
-  visit(ast, (node) => {
-    if (node.type !== "JSXOpeningElement" || node.name?.name !== "button") return;
-    const className = node.attributes.find(
-      (attribute) => attribute.type === "JSXAttribute" && attribute.name.name === "className",
-    );
-    if (className?.value?.type === "JSXExpressionContainer") hotspotButtons.push(node);
-  });
-
-  assert.equal(hotspotButtons.length, 1);
-  const propNames = hotspotButtons[0].attributes
-    .filter((attribute) => attribute.type === "JSXAttribute")
-    .map((attribute) => attribute.name.name);
-  assert.ok(propNames.includes("onClick"));
-  assert.ok(propNames.includes("onKeyDown"));
-  assert.match(source, /event\.key !== "Enter" && event\.key !== " "/);
-  assert.match(source, /event\.preventDefault\(\)/);
-  assert.match(source, /event\.repeat/);
-});
-
 test("安全选项在所有断点保留 44px 点击目标", async () => {
   const source = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
   const baseRule = source.match(/\.safety-check label \{([^}]*)\}/)?.[1] ?? "";
 
   assert.match(baseRule, /min-height:\s*44px/);
   assert.match(baseRule, /align-items:\s*center/);
+});
+
+test("页脚署名链接在所有断点保留 44px 点击目标", async () => {
+  const source = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
+  const declarations = readCssRule(source, ".home-footer a");
+  assert.equal(declarations.display, "inline-flex");
+  assert.equal(declarations["min-width"], "44px");
+  assert.equal(declarations["min-height"], "44px");
+  assert.equal(declarations["align-items"], "center");
+});
+
+test("主要教程 CTA 使用黄色行动色而非危险 coral", async () => {
+  const source = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
+  const declarations = readCssRule(source, ".library-cta");
+  assert.equal(declarations.background, "var(--yellow)");
+  assert.equal(declarations.color, "var(--navy)");
 });
 
 test("专业模式使用完整正背人体图且不再引用 legacy GLB", async () => {

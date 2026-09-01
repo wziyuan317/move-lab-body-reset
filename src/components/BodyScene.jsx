@@ -4,8 +4,9 @@ import { Html, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { clone as cloneSkeleton } from "three/examples/jsm/utils/SkeletonUtils.js";
-import { fitDistanceForBox, getBoxHalfExtents, getCameraPose } from "../cameraFraming.js";
+import { getCameraFrame } from "../cameraFraming.js";
 import { bodyRegions } from "../bodyMap.js";
+import { createHotspotHandlers } from "../hotspotInteraction.js";
 
 const baseUrl = import.meta.env.BASE_URL;
 const clothedUrl = `${baseUrl}assets/models/move-lab-clothed.glb`;
@@ -67,83 +68,60 @@ function ClothedModel({ regionId, onSelectRegion, onBounds }) {
   return (
     <group>
       <primitive object={scene} />
-      {bodyRegions.map((region) => (
-        <Html
-          key={region.id}
-          position={[
-            bounds.sphere.center.x + region.hotspot.position[0],
-            bounds.sphere.center.y + region.hotspot.position[1],
-            bounds.sphere.center.z + region.hotspot.position[2],
-          ]}
-          center
-        >
-          <button
-            type="button"
-            className={`model-hotspot${regionId === region.id ? " is-active" : ""}`}
-            data-region-id={region.id}
-            style={{
-              "--hotspot-x": `${region.hotspot.screenOffset?.[0] ?? 0}px`,
-              "--hotspot-y": `${region.hotspot.screenOffset?.[1] ?? 0}px`,
-              "--hotspot-mobile-x": `${region.hotspot.mobileOffset?.[0] ?? 0}px`,
-              "--hotspot-mobile-y": `${region.hotspot.mobileOffset?.[1] ?? 0}px`,
-            }}
-            onClick={(event) => {
-              event.stopPropagation();
-              onSelectRegion(region.id);
-            }}
-            onKeyDown={(event) => {
-              if (event.repeat || (event.key !== "Enter" && event.key !== " ")) return;
-              event.preventDefault();
-              event.stopPropagation();
-              onSelectRegion(region.id);
-            }}
-            aria-label={`定位${region.label}`}
+      {bodyRegions.map((region) => {
+        const handlers = createHotspotHandlers(onSelectRegion, region.id);
+        return (
+          <Html
+            key={region.id}
+            position={[
+              bounds.sphere.center.x + region.hotspot.position[0],
+              bounds.sphere.center.y + region.hotspot.position[1],
+              bounds.sphere.center.z + region.hotspot.position[2],
+            ]}
+            center
           >
-            <span>{region.shortLabel}</span>
-          </button>
-        </Html>
-      ))}
+            <button
+              type="button"
+              className={`model-hotspot${regionId === region.id ? " is-active" : ""}`}
+              data-region-id={region.id}
+              style={{
+                "--hotspot-x": `${region.hotspot.screenOffset?.[0] ?? 0}px`,
+                "--hotspot-y": `${region.hotspot.screenOffset?.[1] ?? 0}px`,
+                "--hotspot-mobile-x": `${region.hotspot.mobileOffset?.[0] ?? 0}px`,
+                "--hotspot-mobile-y": `${region.hotspot.mobileOffset?.[1] ?? 0}px`,
+              }}
+              {...handlers}
+              aria-label={`定位${region.label}`}
+            >
+              <span>{region.shortLabel}</span>
+            </button>
+          </Html>
+        );
+      })}
     </group>
   );
 }
 
-function getFocusTarget(bounds, regionId) {
-  const center = bounds.sphere.center.clone();
-  const region = bodyRegions.find((item) => item.id === regionId);
-  if (!region) return center;
-  return center.add(new THREE.Vector3(
-    region.hotspot.position[0] * 0.06,
-    region.hotspot.position[1] * 0.06,
-    region.hotspot.position[2] * 0.06,
-  ));
-}
-
 function fitCameraToTarget({ bounds, camera, controls, regionId, size, viewSide }) {
-  const target = getFocusTarget(bounds, regionId);
-  const aspect = Math.max(size.width, 1) / Math.max(size.height, 1);
-  const extents = getBoxHalfExtents({
-    min: bounds.box.min.toArray(),
-    max: bounds.box.max.toArray(),
-    target: target.toArray(),
-  });
-  const distance = fitDistanceForBox({
-    ...extents,
+  const region = bodyRegions.find((item) => item.id === regionId);
+  const frame = getCameraFrame({
+    bounds: { min: bounds.box.min.toArray(), max: bounds.box.max.toArray() },
+    focusPosition: region?.hotspot.position,
+    viewport: size,
+    viewSide,
     verticalFovDegrees: camera.fov,
-    aspect,
-    margin: regionId ? 1.03 : 1.14,
   });
-  const pose = getCameraPose({ target: target.toArray(), distance, viewSide });
 
-  camera.position.set(...pose.position);
-  camera.near = Math.max(0.01, distance - bounds.sphere.radius * 2.5);
-  camera.far = distance + bounds.sphere.radius * 3.5;
+  camera.position.set(...frame.position);
+  camera.near = Math.max(0.01, frame.distance - bounds.sphere.radius * 2.5);
+  camera.far = frame.distance + bounds.sphere.radius * 3.5;
   if (controls) {
-    controls.target.set(...pose.target);
-    controls.minDistance = distance * 0.72;
-    controls.maxDistance = distance * 1.55;
+    controls.target.set(...frame.target);
+    controls.minDistance = frame.distance * 0.72;
+    controls.maxDistance = frame.distance * 1.55;
     controls.update();
   } else {
-    camera.lookAt(...pose.target);
+    camera.lookAt(...frame.target);
   }
   camera.updateProjectionMatrix();
 }

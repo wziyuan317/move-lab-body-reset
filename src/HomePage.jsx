@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -15,6 +15,7 @@ import { AssessmentPanel } from "./components/AssessmentPanel.jsx";
 import { BodyExplorer, BodyLocationSelector } from "./components/BodyExplorer.jsx";
 import { RecommendationPanel } from "./components/RecommendationPanel.jsx";
 import { RegionRail } from "./components/RegionRail.jsx";
+import { getMissionDisplayStep, getStepFocusSelector } from "./homeFlow.js";
 
 function normalizeSides(value) {
   return (Array.isArray(value) ? value : [value]).filter((side) => side === "left" || side === "right");
@@ -26,25 +27,33 @@ export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary }) {
   const explorerStep = getExplorerStep(value);
   const [mobileStep, setMobileStep] = useState(explorerStep);
   const [locationExpanded, setLocationExpanded] = useState(false);
+  const pendingFocusSelector = useRef();
+  const missionDisplayStep = getMissionDisplayStep({ explorerStep, requestedStep: mobileStep });
+
+  useEffect(() => {
+    const selector = pendingFocusSelector.current;
+    if (!selector) return undefined;
+    pendingFocusSelector.current = undefined;
+    const frame = requestAnimationFrame(() => {
+      const target = document.querySelector(selector);
+      target?.scrollIntoView({ behavior: "smooth", block: "center" });
+      target?.focus();
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [mobileStep]);
 
   const update = (patch) => onChange({ ...value, ...patch });
   const selectRegion = (change) => {
     setLocationExpanded(false);
+    if (!change.regionId) setMobileStep(1);
     update(change);
   };
   const requestStep = (requestedStep) => {
     if (requestedStep === 2 && !region) return;
     if (requestedStep === 3 && explorerStep !== 3) return;
     if (requestedStep === 3) setLocationExpanded(false);
+    pendingFocusSelector.current = getStepFocusSelector(requestedStep);
     setMobileStep(requestedStep);
-    const selector = requestedStep === 1
-      ? ".region-rail button"
-      : requestedStep === 2
-        ? ".choice-grid button:not(:disabled)"
-        : "#recommendation-panel";
-    const target = document.querySelector(selector);
-    target?.scrollIntoView({ behavior: "smooth", block: "center" });
-    target?.focus();
   };
 
   const toggleTarget = (targetId, side) => {
@@ -89,7 +98,7 @@ export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary }) {
 
       <main id="body-map" className="home-main">
         <div className="location-workspace" data-mobile-step={mobileStep}>
-          <aside className={`mission-column mission-column--step-${explorerStep}`}>
+          <aside className={`mission-column mission-column--step-${missionDisplayStep}`}>
             <div className="mission-banner">
               <small>今日任务</small>
               <strong>定位不适</strong>
@@ -98,6 +107,7 @@ export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary }) {
             <AssessmentPanel
               region={region}
               step={explorerStep}
+              activeStep={missionDisplayStep}
               symptomIds={value.symptomIds}
               redFlagIds={value.redFlagIds}
               onChangeSymptoms={(symptomIds) => update({ symptomIds })}

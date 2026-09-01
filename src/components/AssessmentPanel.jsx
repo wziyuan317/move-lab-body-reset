@@ -5,16 +5,16 @@ function toggle(ids, id) {
   return ids.includes(id) ? ids.filter((item) => item !== id) : [...ids, id];
 }
 
-export function AssessmentPanel({ region, step, symptomIds, redFlagIds, onChangeSymptoms, onChangeRedFlags, onRequestStep }) {
+export function AssessmentPanel({ region, step, activeStep = step, symptomIds, redFlagIds, onChangeSymptoms, onChangeRedFlags, onRequestStep }) {
   const selectedSymptoms = symptoms
     .filter((symptom) => symptomIds.includes(symptom.id))
     .map((symptom) => symptom.label)
     .join("、");
   const locationLockedCopy = "先完成上一步，选择位置后解锁";
   const steps = [
-    { id: 1, done: Boolean(region), current: step === 1, label: "选择位置", detail: region ? region.label : "在人体或文字区点选", disabled: false },
-    { id: 2, done: symptomIds.length > 0, current: step === 2, label: "描述感受", detail: region ? selectedSymptoms || "可以同时选择多个" : locationLockedCopy, disabled: !region },
-    { id: 3, done: step === 3, current: step === 3, label: "获得建议", detail: step === 3 ? "查看匹配依据与动作" : region ? "选择感受后解锁" : locationLockedCopy, disabled: step !== 3 },
+    { id: 1, done: Boolean(region), current: activeStep === 1, label: "选择位置", detail: region ? region.label : "在人体或文字区点选", disabled: false },
+    { id: 2, done: symptomIds.length > 0, current: activeStep === 2, label: "描述感受", detail: region ? selectedSymptoms || "可以同时选择多个" : locationLockedCopy, disabled: !region },
+    { id: 3, done: step === 3, current: activeStep === 3, label: "获得建议", detail: step === 3 ? "查看匹配依据与动作" : region ? "选择感受后解锁" : locationLockedCopy, disabled: step !== 3 },
   ];
 
   return (

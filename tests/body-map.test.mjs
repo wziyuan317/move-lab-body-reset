@@ -8,6 +8,7 @@ const {
   canOpenTutorials = () => true,
   applyExplorerStateChange = (_currentState, nextState) => nextState,
   getExplorerStep = () => undefined,
+  getExplorerResetChange = () => ({}),
   getModelRegionSelectionChange = () => ({}),
   getRecommendationNavigationIds = () => [],
   getRecommendations = () => ({ status: "missing", movementIds: [] }),
@@ -116,6 +117,50 @@ test("3D 热点一次状态变更同时保留区域与所需正背面", () => {
   assert.equal(next.viewSide, "back");
   assert.deepEqual(next.targetIds, []);
   assert.deepEqual(next.targetSides, {});
+});
+
+test("重置会清空完整定位与安全状态并回到正面第一步", () => {
+  const currentState = {
+    regionId: "knee",
+    targetIds: ["knee-front"],
+    targetSides: { "knee-front": "left" },
+    symptomIds: ["tightness"],
+    redFlagIds: ["major-trauma"],
+    viewSide: "back",
+    step: 3,
+  };
+  const next = applyExplorerStateChange(currentState, { ...currentState, ...getExplorerResetChange() });
+
+  assert.deepEqual(next, {
+    regionId: undefined,
+    targetIds: [],
+    targetSides: {},
+    symptomIds: [],
+    redFlagIds: [],
+    viewSide: "front",
+    step: 1,
+  });
+});
+
+test("从阻断状态选择新区域不会继承感受或红旗", () => {
+  const currentState = {
+    regionId: "knee",
+    targetIds: ["knee-front"],
+    targetSides: {},
+    symptomIds: ["tightness"],
+    redFlagIds: ["major-trauma"],
+    viewSide: "front",
+    step: 3,
+  };
+  const change = getModelRegionSelectionChange("shoulder");
+  const next = applyExplorerStateChange(currentState, { ...currentState, ...change });
+
+  assert.equal(next.regionId, "shoulder");
+  assert.deepEqual(next.targetIds, []);
+  assert.deepEqual(next.targetSides, {});
+  assert.deepEqual(next.symptomIds, []);
+  assert.deepEqual(next.redFlagIds, []);
+  assert.equal(next.step, 2);
 });
 
 test("没有感受时不提前推荐教程", () => {
