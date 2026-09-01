@@ -1,11 +1,12 @@
-import { Suspense, useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useLoader, useThree } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { clone as cloneSkeleton } from "three/examples/jsm/utils/SkeletonUtils.js";
-import { anatomyTargets, bodyRegions, getRegionTargets, regionCameraPresets } from "../bodyMap.js";
+import { fitDistanceForSphere, getCameraPose } from "../cameraFraming.js";
+import { anatomyTargets, bodyRegions, getRegionTargets } from "../bodyMap.js";
 
 const baseUrl = import.meta.env.BASE_URL;
 const clothedUrl = `${baseUrl}assets/models/move-lab-clothed.glb`;
@@ -39,28 +40,47 @@ function normalizeObject(object, height = 2, visibleOnly = false) {
   return object;
 }
 
-function ClothedModel({ regionId, onSelectRegion }) {
+function prepareClothedObject(object, height = 2) {
+  object.updateMatrixWorld(true);
+  const sourceBox = new THREE.Box3().setFromObject(object);
+  const sourceSize = sourceBox.getSize(new THREE.Vector3());
+  object.scale.setScalar(height / sourceSize.y);
+  object.updateMatrixWorld(true);
+
+  const scaledBox = new THREE.Box3().setFromObject(object);
+  const scaledCenter = scaledBox.getCenter(new THREE.Vector3());
+  object.position.set(-scaledCenter.x, -scaledBox.min.y, -scaledCenter.z);
+  object.updateMatrixWorld(true);
+
+  const box = new THREE.Box3().setFromObject(object);
+  const sphere = box.getBoundingSphere(new THREE.Sphere());
+  return { object, bounds: { box, sphere } };
+}
+
+function ClothedModel({ regionId, onSelectRegion, onBounds }) {
   const gltf = useBodyModel(clothedUrl);
-  const scene = useMemo(() => {
+  const prepared = useMemo(() => {
     const next = cloneSkeleton(gltf.scene);
-    next.traverse((object) => {
-      if (object.isSkinnedMesh) object.skeleton.pose();
-    });
-    const leftArm = next.getObjectByName("LeftArm");
-    const rightArm = next.getObjectByName("RightArm");
-    if (leftArm) leftArm.rotateX(THREE.MathUtils.degToRad(60));
-    if (rightArm) rightArm.rotateX(THREE.MathUtils.degToRad(60));
+    next.rotation.y = Math.PI;
     next.traverse((object) => {
       if (!object.isMesh) return;
       object.material = object.material.clone();
-      object.material.color.set("#e8f3ff");
+      if (object.material.name === "LightBrown" || object.material.name === "White") {
+        object.material.color.set("#f5f8ff");
+      }
+      if (object.material.name === "Red_Dark") object.material.color.set("#163a63");
       object.material.roughness = 0.72;
       object.material.metalness = 0;
       object.castShadow = true;
       object.receiveShadow = true;
     });
-    return normalizeObject(next);
+    return prepareClothedObject(next);
   }, [gltf.scene]);
+  const { bounds, object: scene } = prepared;
+
+  useLayoutEffect(() => {
+    onBounds(bounds);
+  }, [bounds, onBounds]);
 
   return (
     <group>
@@ -68,7 +88,11 @@ function ClothedModel({ regionId, onSelectRegion }) {
       {bodyRegions.map((region) => (
         <Html
           key={region.id}
-          position={[region.hotspot.position[2], region.hotspot.position[1], -region.hotspot.position[0]]}
+          position={[
+            bounds.sphere.center.x + region.hotspot.position[0],
+            bounds.sphere.center.y + region.hotspot.position[1],
+            bounds.sphere.center.z + region.hotspot.position[2],
+          ]}
           center
           distanceFactor={3.2}
         >
@@ -153,47 +177,85 @@ function MuscleModel({ regionId, selectedIds, hoveredId, onToggleTarget, onHover
   );
 }
 
-function CameraRig({ mode, regionId, viewSide, controlsRef }) {
-  const { camera } = useThree();
+function getFocusTarget(bounds, regionId) {
+  const center = bounds.sphere.center.clone();
+  const region = bodyRegions.find((item) => item.id === regionId);
+  if (!region) return center;
+  return center.add(new THREE.Vector3(
+    region.hotspot.position[0] * 0.28,
+    region.hotspot.position[1] * 0.28,
+    region.hotspot.position[2] * 0.28,
+  ));
+}
+
+function fitCameraToTarget({ bounds, camera, controls, regionId, size, viewSide }) {
+  const target = getFocusTarget(bounds, regionId);
+  const targetOffset = target.distanceTo(bounds.sphere.center);
+  const verticalFovRadians = THREE.MathUtils.degToRad(camera.fov);
+  const aspect = Math.max(size.width, 1) / Math.max(size.height, 1);
+  const horizontalFovRadians = 2 * Math.atan(Math.tan(verticalFovRadians / 2) * aspect);
+  const limitingFov = THREE.MathUtils.radToDeg(Math.min(verticalFovRadians, horizontalFovRadians));
+  const distance = fitDistanceForSphere(bounds.sphere.radius + targetOffset, limitingFov, 1.18);
+  const pose = getCameraPose({ target: target.toArray(), distance, viewSide });
+
+  camera.position.set(...pose.position);
+  camera.near = Math.max(0.01, distance - bounds.sphere.radius * 2.5);
+  camera.far = distance + bounds.sphere.radius * 3.5;
+  if (controls) {
+    controls.target.set(...pose.target);
+    controls.minDistance = distance * 0.72;
+    controls.maxDistance = distance * 1.55;
+    controls.update();
+  } else {
+    camera.lookAt(...pose.target);
+  }
+  camera.updateProjectionMatrix();
+}
+
+function CameraRig({ bounds, regionId, viewSide, controlsRef }) {
+  const { camera, size } = useThree();
   useLayoutEffect(() => {
-    const preset = regionId ? regionCameraPresets[regionId] : null;
-    const position = preset?.position ?? [0, 0, 4.6];
-    const target = mode === "muscles" && regionId ? [0, 0, 0] : (preset?.target ?? [0, 0, 0]);
-    if (mode === "clothed" || !regionId) {
-      camera.position.set(Math.abs(position[2]) * (viewSide === "front" ? 1 : -1), position[1], 0);
-    } else {
-      camera.position.set(0, 0, 3.8 * (viewSide === "front" ? -1 : 1));
-    }
-    if (controlsRef.current) {
-      controlsRef.current.target.set(...target);
-      controlsRef.current.update();
-    } else {
-      camera.lookAt(...target);
-    }
-    camera.updateProjectionMatrix();
-  }, [camera, controlsRef, mode, regionId, viewSide]);
+    if (!bounds) return;
+    fitCameraToTarget({ bounds, camera, controls: controlsRef.current, regionId, size, viewSide });
+  }, [bounds, camera, controlsRef, regionId, size.height, size.width, viewSide]);
   return null;
 }
 
-function SceneContent(props) {
+function usePrefersReducedMotion() {
+  const [reducedMotion, setReducedMotion] = useState(() => (
+    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ));
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setReducedMotion(media.matches);
+    media.addEventListener("change", updatePreference);
+    return () => media.removeEventListener("change", updatePreference);
+  }, []);
+  return reducedMotion;
+}
+
+function SceneContent({ regionId, viewSide, onSelectRegion }) {
   const controlsRef = useRef();
+  const [bounds, setBounds] = useState();
+  const reducedMotion = usePrefersReducedMotion();
+  const frontAzimuth = viewSide === "front";
   return (
     <>
-      {props.mode === "muscles" && <color attach="background" args={["#eaf3ff"]} />}
       <ambientLight intensity={2.2} />
       <directionalLight position={[3, 4, 5]} intensity={3.2} castShadow />
       <directionalLight position={[-3, 1, -4]} intensity={1.4} color="#6ee7d7" />
-      <CameraRig mode={props.mode} regionId={props.regionId} viewSide={props.viewSide} controlsRef={controlsRef} />
-      {props.mode === "clothed" || !props.regionId ? (
-        <ClothedModel regionId={props.regionId} onSelectRegion={props.onSelectRegion} />
-      ) : (
-        <MuscleModel {...props} />
-      )}
+      <CameraRig bounds={bounds} regionId={regionId} viewSide={viewSide} controlsRef={controlsRef} />
+      <ClothedModel regionId={regionId} onSelectRegion={onSelectRegion} onBounds={setBounds} />
       <OrbitControls
         ref={controlsRef}
         enablePan={false}
-        minDistance={1.25}
-        maxDistance={5.2}
+        enableDamping={!reducedMotion}
+        dampingFactor={0.08}
+        minDistance={1}
+        maxDistance={8}
+        minAzimuthAngle={frontAzimuth ? Math.PI * 0.58 : -Math.PI * 0.42}
+        maxAzimuthAngle={frontAzimuth ? Math.PI * 1.42 : Math.PI * 0.42}
         minPolarAngle={Math.PI * 0.23}
         maxPolarAngle={Math.PI * 0.77}
       />
@@ -211,7 +273,7 @@ function LoadingModel() {
 
 export function BodyScene(props) {
   return (
-    <Canvas shadows dpr={[1, 1.7]} camera={{ position: [0, 0, -4.6], fov: 30 }} gl={{ antialias: true }}>
+    <Canvas shadows dpr={[1, 1.7]} camera={{ position: [0, 1, -4.6], fov: 30 }} gl={{ antialias: true }}>
       <Suspense fallback={<LoadingModel />}>
         <SceneContent {...props} />
       </Suspense>

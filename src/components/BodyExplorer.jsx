@@ -1,8 +1,6 @@
 import { useState } from "react";
 import {
   ArrowsClockwise,
-  CoatHanger,
-  Cube,
   Eye,
   EyeClosed,
   WarningCircle,
@@ -29,55 +27,39 @@ function ExplorerFallback({ regionId, onSelectRegion }) {
 }
 
 export function BodyExplorer({ regionId, selectedIds, onSelectRegion, onToggleTarget }) {
-  const [mode, setMode] = useState(regionId ? "muscles" : "clothed");
   const [viewSide, setViewSide] = useState("front");
-  const [hoveredId, setHoveredId] = useState();
   const targets = getRegionTargets(regionId);
 
   const selectRegion = (id) => {
     onSelectRegion(id);
     const region = bodyRegions.find((item) => item.id === id);
     if (region) setViewSide(region.hotspot.side);
-    setMode("muscles");
   };
 
   return (
     <section className="body-explorer" aria-label="3D 身体定位">
       <div className="body-explorer__toolbar">
-        <div className="model-mode-switch" role="group" aria-label="人体显示模式">
-          <button type="button" className={mode === "clothed" ? "is-active" : ""} onClick={() => setMode("clothed")}>
-            <CoatHanger size={18} weight="bold" aria-hidden="true" />运动服
-          </button>
-          <button type="button" disabled={!regionId} className={mode === "muscles" ? "is-active" : ""} onClick={() => setMode("muscles")}>
-            <Cube size={18} weight="bold" aria-hidden="true" />肌肉地图
-          </button>
-        </div>
         <div className="model-view-controls">
           <button type="button" onClick={() => setViewSide((side) => side === "front" ? "back" : "front")}>
             {viewSide === "front" ? <Eye size={19} weight="bold" /> : <EyeClosed size={19} weight="bold" />}
             {viewSide === "front" ? "看背面" : "看正面"}
           </button>
-          <button type="button" onClick={() => { onSelectRegion(undefined); setMode("clothed"); setViewSide("front"); }}>
+          <button type="button" onClick={() => { onSelectRegion(undefined); setViewSide("front"); }}>
             <ArrowsClockwise size={19} weight="bold" />重置
           </button>
         </div>
       </div>
 
       <div
-        className={`body-canvas-wrap${mode === "muscles" ? " is-muscle-mode" : ""}`}
+        className="body-canvas-wrap"
         style={{ "--arena-image": `url("${import.meta.env.BASE_URL}assets/models/body-adventure-arena.png")` }}
       >
         <div className="body-canvas-badge">可拖动旋转 · 滚轮缩放</div>
         <ModelErrorBoundary fallback={<ExplorerFallback regionId={regionId} onSelectRegion={selectRegion} />}>
           <BodyScene
-            mode={mode}
             regionId={regionId}
-            selectedIds={selectedIds}
-            hoveredId={hoveredId}
             viewSide={viewSide}
             onSelectRegion={selectRegion}
-            onToggleTarget={onToggleTarget}
-            onHoverTarget={setHoveredId}
           />
         </ModelErrorBoundary>
       </div>
@@ -105,10 +87,6 @@ export function BodyExplorer({ regionId, selectedIds, onSelectRegion, onToggleTa
                   type="button"
                   className={`${selected ? "is-active" : ""}${target.kind === "joint" ? " is-joint" : ""}`}
                   aria-pressed={selected}
-                  onMouseEnter={() => setHoveredId(target.id)}
-                  onMouseLeave={() => setHoveredId(undefined)}
-                  onFocus={() => setHoveredId(target.id)}
-                  onBlur={() => setHoveredId(undefined)}
                   onClick={() => onToggleTarget(target.id)}
                 >
                   <span className="muscle-swatch" style={{ "--target-color": target.color }} />

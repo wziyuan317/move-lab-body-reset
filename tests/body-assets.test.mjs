@@ -22,8 +22,8 @@ async function readGlbJson(relativePath) {
 test("着装模型含可调整 A 字站姿的左右上臂骨骼", async () => {
   const gltf = await readGlbJson("public/assets/models/move-lab-clothed.glb");
   const names = new Set(gltf.nodes.map((node) => node.name));
-  assert.ok(names.has("LeftArm"));
-  assert.ok(names.has("RightArm"));
+  assert.ok(names.has("UpperArm.L"));
+  assert.ok(names.has("UpperArm.R"));
 });
 
 test("所有肌肉目标都命中 Z-Anatomy 的真实 muscle 节点", async () => {
