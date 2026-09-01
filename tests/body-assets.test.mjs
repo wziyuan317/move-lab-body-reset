@@ -8,9 +8,9 @@ import { fileURLToPath } from "node:url";
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const { anatomyTargets = [] } = await import("../src/bodyMap.js").catch(() => ({}));
 const clothedModelPath = "public/assets/models/move-lab-clothed.glb";
-const clothedModelSha256 = "42f8fb8c20ccddc63a1ce42976f8ec484e8eedcc8ac7cf93fa57776a8c153f69";
-const quaterniusLicensePath = "public/assets/models/QUATERNIUS-ULTIMATE-MODULAR-MEN-LICENSE.txt";
-const quaterniusLicenseSha256 = "e8dbf915a2b82229913e301a0787696611241bdefec4832bc084f54161db1efe";
+const clothedModelSha256 = "bb0e9f1ed0147b988d93b7dc6564b480efb05085c3bb78d2d74e7b01cff0d78b";
+const manPlayerEvidencePath = "public/assets/models/MAN-PLAYER-ATTRIBUTION.txt";
+const manPlayerEvidenceSha256 = "b6380dc11dda740c96e5ab639a36be9ce5b9f572970cb5426c967df58cf789e4";
 const muscleModelPath = "public/assets/models/move-lab-muscles.glb";
 const muscleModelSha256 = "0886b6a068e655b284903664e2178d7964f80b1c0ce798461909ac806bcef2e3";
 const hpfreiLicensePath = "public/assets/models/HPFREI-BODY-ANATOMY-3D-VIEWER-LICENSE.txt";
@@ -35,30 +35,61 @@ async function readGlb(relativePath) {
   return { bytes, json };
 }
 
-test("着装模型保留真实 Humanoid 骨架与可渲染内容", async () => {
-  const { json: gltf } = await readGlb(clothedModelPath);
+test("用户提供的着装模型保留可审计来源、真实骨架与完整渲染结构", async () => {
+  const { bytes, json: gltf } = await readGlb(clothedModelPath);
   const names = new Set(gltf.nodes.map((node) => node.name));
-  assert.ok(names.has("CharacterArmature"));
-  assert.ok(names.has("UpperArm.L"));
-  assert.ok(names.has("UpperArm.R"));
-  assert.ok(gltf.skins.length > 0);
-  assert.ok(gltf.meshes.length > 0);
-  assert.ok(gltf.meshes.some((mesh) => mesh.primitives.length > 0));
-  assert.ok(gltf.animations.length > 0);
+  const primitiveCount = gltf.meshes.reduce((count, mesh) => count + mesh.primitives.length, 0);
+
+  assert.equal(sha256(bytes), clothedModelSha256);
+  assert.deepEqual(gltf.asset.extras, {
+    author: "RiverofCreative (https://sketchfab.com/RiverofCreative)",
+    license: "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+    source: "https://sketchfab.com/3d-models/man-player-4c7133dbb06e4136891d59231372d818",
+    title: "Man Player",
+  });
+  assert.ok(names.has("CC_Base_BoneRoot_01"));
+  assert.ok(names.has("CC_Base_L_Upperarm_050"));
+  assert.ok(names.has("CC_Base_R_Upperarm_074"));
+  assert.equal(gltf.skins.length, 1);
+  assert.equal(gltf.meshes.length, 17);
+  assert.equal(primitiveCount, 17);
+  assert.equal(gltf.animations.length, 20);
+  assert.equal(gltf.materials.length, 17);
+  assert.equal(gltf.textures.length, 47);
+  assert.equal(gltf.images.length, 47);
+  for (let index = 1; index <= 9; index += 1) {
+    assert.ok(gltf.animations.some(({ name }) => name === `Standing_0${index}`));
+  }
 });
 
-test("着装模型与包内许可证据的字节哈希和 README 记录一致", async () => {
-  const [{ bytes: clothedModel }, license, readme] = await Promise.all([
+test("当前着装模型的署名、许可与接收记录可独立审计", async () => {
+  const [{ bytes: clothedModel }, evidence, readme] = await Promise.all([
     readGlb(clothedModelPath),
-    readFile(path.join(projectRoot, quaterniusLicensePath)),
+    readFile(path.join(projectRoot, manPlayerEvidencePath), "utf8"),
     readFile(path.join(projectRoot, "public/assets/models/README.md"), "utf8"),
   ]);
 
   assert.equal(sha256(clothedModel), clothedModelSha256);
-  assert.equal(sha256(license), quaterniusLicenseSha256);
-  assert.ok(readme.includes(clothedModelSha256));
-  assert.ok(readme.includes(quaterniusLicensePath.split("/").at(-1)));
-  assert.ok(readme.includes(quaterniusLicenseSha256));
+  assert.equal(sha256(evidence), manPlayerEvidenceSha256);
+  for (const value of [
+    "Man Player",
+    "RiverofCreative",
+    "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+    "https://sketchfab.com/3d-models/man-player-4c7133dbb06e4136891d59231372d818",
+    "2026-09-01",
+    "man_player.glb",
+    "12123012",
+    clothedModelSha256,
+  ]) assert.ok(evidence.includes(value), `署名证据缺少 ${value}`);
+  for (const value of [
+    "Man Player",
+    "RiverofCreative",
+    "CC BY 4.0",
+    "2026-09-01",
+    manPlayerEvidencePath.split("/").at(-1),
+    manPlayerEvidenceSha256,
+    clothedModelSha256,
+  ]) assert.ok(readme.includes(value), `README 缺少 ${value}`);
 });
 
 test("所有肌肉目标都命中 Z-Anatomy 的真实 muscle 节点", async () => {

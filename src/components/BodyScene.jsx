@@ -9,6 +9,7 @@ import { bodyRegions } from "../bodyMap.js";
 
 const baseUrl = import.meta.env.BASE_URL;
 const clothedUrl = `${baseUrl}assets/models/move-lab-clothed.glb`;
+const defaultPoseName = "Standing_05";
 
 function useBodyModel(url) {
   return useLoader(GLTFLoader, url);
@@ -31,6 +32,16 @@ function prepareClothedObject(object, height = 2) {
   return { object, bounds: { box, sphere } };
 }
 
+function applyStaticPose(object, animations, poseName) {
+  const clip = animations.find(({ name }) => name === poseName);
+  if (!clip) throw new Error(`角色模型缺少静态姿态：${poseName}`);
+  const mixer = new THREE.AnimationMixer(object);
+  mixer.clipAction(clip).play();
+  mixer.update(0);
+  object.updateMatrixWorld(true);
+  return mixer;
+}
+
 function ClothedModel({ regionId, onSelectRegion, onBounds }) {
   const gltf = useBodyModel(clothedUrl);
   const prepared = useMemo(() => {
@@ -38,18 +49,15 @@ function ClothedModel({ regionId, onSelectRegion, onBounds }) {
     next.rotation.y = Math.PI;
     next.traverse((object) => {
       if (!object.isMesh) return;
-      object.material = object.material.clone();
-      if (object.material.name === "LightBrown" || object.material.name === "White") {
-        object.material.color.set("#f5f8ff");
-      }
-      if (object.material.name === "Red_Dark") object.material.color.set("#163a63");
-      object.material.roughness = 0.72;
-      object.material.metalness = 0;
+      object.material = Array.isArray(object.material)
+        ? object.material.map((material) => material.clone())
+        : object.material.clone();
       object.castShadow = true;
       object.receiveShadow = true;
     });
-    return prepareClothedObject(next);
-  }, [gltf.scene]);
+    const poseMixer = applyStaticPose(next, gltf.animations, defaultPoseName);
+    return { ...prepareClothedObject(next), poseMixer };
+  }, [gltf.animations, gltf.scene]);
   const { bounds, object: scene } = prepared;
 
   useLayoutEffect(() => {
@@ -104,7 +112,7 @@ function fitCameraToTarget({ bounds, camera, controls, regionId, size, viewSide 
   const aspect = Math.max(size.width, 1) / Math.max(size.height, 1);
   const horizontalFovRadians = 2 * Math.atan(Math.tan(verticalFovRadians / 2) * aspect);
   const limitingFov = THREE.MathUtils.radToDeg(Math.min(verticalFovRadians, horizontalFovRadians));
-  const distance = fitDistanceForSphere(bounds.sphere.radius + targetOffset, limitingFov, 1.18);
+  const distance = fitDistanceForSphere(bounds.sphere.radius + targetOffset, limitingFov, 1.08);
   const pose = getCameraPose({ target: target.toArray(), distance, viewSide });
 
   camera.position.set(...pose.position);

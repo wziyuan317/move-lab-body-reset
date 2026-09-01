@@ -2,16 +2,18 @@
 
 ## `move-lab-clothed.glb`
 
-- 原始资产：Quaternius, “Ultimate Modular Men Pack”；包内 `License.txt` 的标题为 “Ultimate Modular Males by @Quaternius”。
-- 官方来源：https://quaternius.com/packs/ultimatemodularcharacters.html
-- 官方下载目录：https://drive.google.com/drive/folders/1USAAquX2JJWuA2m6zol0KUkFe3UkZ8zX
-- 下载与核验日期：2026-09-01。
-- 包版本：February 2022；原始文件：`Individual Characters/glTF/Beach.gltf`（3,166,143 bytes，SHA-256 `76e001ea131fd76a1bd938a7862606cb8037f7049b632783580b9bf4da2371a8`）。
-- 包内许可证据：来源包根目录 `License.txt`（372 bytes）已逐字节保存为 `QUATERNIUS-ULTIMATE-MODULAR-MEN-LICENSE.txt`，SHA-256 `e8dbf915a2b82229913e301a0787696611241bdefec4832bc084f54161db1efe`；原文明确写有 `CC0 1.0 Universal (CC0 1.0)` 与 `Public Domain Dedication`，并指向 https://creativecommons.org/publicdomain/zero/1.0/。
-- 许可状态：`VERIFIED_PACKAGE_CC0`；依据是本次下载包自带的 `License.txt`，不是官网总许可或二手页面。
-- 模型选择：`Beach.gltf` 保留 `CharacterArmature` Humanoid 骨架，左右上臂骨骼为 `UpperArm.L` / `UpperArm.R`；`LightBrown` / `White` 服装材质运行时设为白色，`Red_Dark` 下装材质设为深蓝色。
-- 转制：仅将原始嵌入式 glTF JSON/BIN 重打包为单一 GLB，不改动网格、骨骼或动画；仓库文件 SHA-256 为 `42f8fb8c20ccddc63a1ce42976f8ec484e8eedcc8ac7cf93fa57776a8c153f69`。
+- 当前生产角色：用户提供的 “Man Player”，原始文件名 `man_player.glb`，接收与核验日期为 2026-09-01。
+- 作者：RiverofCreative（https://sketchfab.com/RiverofCreative）。
+- 原始来源：https://sketchfab.com/3d-models/man-player-4c7133dbb06e4136891d59231372d818 。
+- 许可：模型 GLB 的 `asset.extras.license` 明确记录 `CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)`，即 CC BY 4.0；本仓库保留作者、来源、许可链接及未修改声明。
+- 署名与许可证据：`MAN-PLAYER-ATTRIBUTION.txt`，SHA-256 `b6380dc11dda740c96e5ab639a36be9ce5b9f572970cb5426c967df58cf789e4`。
+- 原始文件与仓库文件均为 12,123,012 bytes，逐字节相同；SHA-256 为 `bb0e9f1ed0147b988d93b7dc6564b480efb05085c3bb78d2d74e7b01cff0d78b`。除重命名为应用固定资产路径 `move-lab-clothed.glb` 外，没有改动模型字节。
+- 模型结构：骨架根节点 `CC_Base_BoneRoot_01`，左右上臂节点 `CC_Base_L_Upperarm_050` / `CC_Base_R_Upperarm_074`；包含 17 个 mesh / primitive、1 个 skin、20 个 animation、17 个 material 与 47 张 texture。
 - 用途：着装人体的大区域定位与空间参照。
+
+### 历史角色审计记录
+
+此前生产角色来自 Quaternius “Ultimate Modular Men Pack”（February 2022）的 `Individual Characters/glTF/Beach.gltf`，已于 2026-09-01 被用户提供的 Man Player 替换，不再对应 `move-lab-clothed.glb` 当前字节。为保留历史审计链，来源包根目录 `License.txt` 仍逐字节保存为 `QUATERNIUS-ULTIMATE-MODULAR-MEN-LICENSE.txt`（372 bytes，SHA-256 `e8dbf915a2b82229913e301a0787696611241bdefec4832bc084f54161db1efe`）；其 `VERIFIED_PACKAGE_CC0` 状态仅适用于已替换的 Quaternius 历史角色，不适用于当前 Man Player。
 
 ## `move-lab-muscles.glb`
 
