@@ -23,7 +23,7 @@ export const bodyRegions = [
     label: "颈部",
     shortLabel: "颈",
     prompt: "后颈、颈侧或颈肩交界不舒服",
-    hotspot: { position: [0, 1.43, 0.06], side: "back" },
+    hotspot: { position: [0, 0.72, 0.1], side: "back" },
     movementIds: ["neck-sidebend", "levator-stretch", "scapular-squeeze"],
   },
   {
@@ -31,7 +31,7 @@ export const bodyRegions = [
     label: "肩胛 / 肩",
     shortLabel: "肩",
     prompt: "肩峰、肩胛骨周围或上背不舒服",
-    hotspot: { position: [0.3, 1.26, 0.02], side: "back" },
+    hotspot: { position: [0.27, 0.55, 0.08], side: "back" },
     movementIds: ["scapular-squeeze", "wall-pushup", "chest-opener"],
   },
   {
@@ -39,7 +39,7 @@ export const bodyRegions = [
     label: "胸背",
     shortLabel: "胸背",
     prompt: "胸前紧、上背僵或胸椎转动受限",
-    hotspot: { position: [-0.24, 1.02, 0.04], side: "front" },
+    hotspot: { position: [-0.2, 0.32, 0.12], side: "front" },
     movementIds: ["thoracic-wave", "chair-thoracic-extension", "seated-twist"],
   },
   {
@@ -47,7 +47,7 @@ export const bodyRegions = [
     label: "腰部",
     shortLabel: "腰",
     prompt: "腰背、腰侧或久坐后发紧",
-    hotspot: { position: [0.2, 0.76, -0.03], side: "back" },
+    hotspot: { position: [0.18, 0.06, -0.1], side: "back" },
     movementIds: ["supported-hinge", "side-bend", "seated-fold"],
   },
   {
@@ -55,7 +55,7 @@ export const bodyRegions = [
     label: "髋臀",
     shortLabel: "髋",
     prompt: "臀部、髋外侧或髋前侧不舒服",
-    hotspot: { position: [-0.2, 0.52, -0.03], side: "back" },
+    hotspot: { position: [-0.19, -0.2, -0.08], side: "back" },
     movementIds: ["figure-four", "supported-half-squat", "supported-hinge"],
   },
   {
@@ -63,7 +63,7 @@ export const bodyRegions = [
     label: "膝盖",
     shortLabel: "膝",
     prompt: "膝前、内外侧或膝后不舒服",
-    hotspot: { position: [0.17, 0.03, 0.06], side: "front" },
+    hotspot: { position: [0.13, -0.56, 0.08], side: "front" },
     movementIds: ["seated-knee-extension", "supported-half-squat", "supported-calf-raise"],
   },
   {
@@ -71,7 +71,7 @@ export const bodyRegions = [
     label: "踝小腿",
     shortLabel: "踝",
     prompt: "小腿、跟腱或踝周围不舒服",
-    hotspot: { position: [-0.15, -0.36, 0.03], side: "front" },
+    hotspot: { position: [-0.12, -0.83, 0.06], side: "front" },
     movementIds: ["supported-calf-raise", "supported-hinge", "side-bend"],
   },
 ];
@@ -105,6 +105,10 @@ export const anatomyTargets = [
   { id: "vastus-medialis", regionId: "knee", label: "股内侧肌", kind: "muscle", color: "#20c997", meshNames: ["Vastus Medialis Muscle"], movementIds: ["seated-knee-extension", "supported-half-squat"] },
   { id: "vastus-lateralis", regionId: "knee", label: "股外侧肌", kind: "muscle", color: "#15aabf", meshNames: ["Vastus Lateralis Muscle"], movementIds: ["seated-knee-extension", "supported-half-squat"] },
   { id: "knee-hamstrings", regionId: "knee", label: "膝后肌群", kind: "muscle", color: "#228be6", meshNames: ["Semitendinosus Muscle", "Semimembranosus Muscle", "Long Head Of Biceps Femoris"], movementIds: ["supported-hinge", "supported-half-squat"] },
+  { id: "knee-front", regionId: "knee", label: "膝前区 / 髌骨周围", kind: "joint", color: "#74c0fc", meshNames: [], movementIds: ["seated-knee-extension", "supported-half-squat"] },
+  { id: "knee-medial", regionId: "knee", label: "膝内侧区", kind: "joint", color: "#63e6be", meshNames: [], movementIds: ["seated-knee-extension", "supported-half-squat"] },
+  { id: "knee-lateral", regionId: "knee", label: "膝外侧区", kind: "joint", color: "#a9e34b", meshNames: [], movementIds: ["supported-half-squat", "supported-calf-raise"] },
+  { id: "knee-posterior", regionId: "knee", label: "膝后区", kind: "joint", color: "#ffe066", meshNames: [], movementIds: ["supported-hinge", "supported-half-squat"] },
   { id: "knee-joint-unsure", regionId: "knee", label: "关节附近 / 无法确定具体肌肉", kind: "joint", color: "#adb5bd", meshNames: [], movementIds: ["seated-knee-extension", "supported-half-squat", "supported-calf-raise"] },
 
   { id: "gastrocnemius", regionId: "ankle", label: "腓肠肌", kind: "muscle", color: "#3b5bdb", meshNames: ["Lateral Head Of Gastrocnemius", "Medial Head Of Gastrocnemius"], movementIds: ["supported-calf-raise", "supported-hinge"] },
@@ -162,6 +166,7 @@ export function getRecommendations({ regionId, targetIds = [], redFlagIds = [] }
 const validRegionIds = new Set(bodyRegions.map((region) => region.id));
 const validTargetIds = new Set(anatomyTargets.map((target) => target.id));
 const validSymptomIds = new Set(symptoms.map((symptom) => symptom.id));
+const validRedFlagIds = new Set(redFlags.map((flag) => flag.id));
 
 export function serializeExplorerState(state) {
   const params = new URLSearchParams();
@@ -172,6 +177,8 @@ export function serializeExplorerState(state) {
   if (targets.length) params.set("targets", targets.join(","));
   const symptomIds = (state.symptomIds ?? []).filter((id) => validSymptomIds.has(id));
   if (symptomIds.length) params.set("symptoms", symptomIds.join(","));
+  const redFlagIds = (state.redFlagIds ?? []).filter((id) => validRedFlagIds.has(id));
+  if (redFlagIds.length) params.set("risks", redFlagIds.join(","));
   return `?${params.toString()}`;
 }
 
@@ -188,5 +195,7 @@ export function parseExplorerState(search = "") {
   if (targetIds.length) result.targetIds = targetIds;
   const symptomIds = (params.get("symptoms") ?? "").split(",").filter((id) => validSymptomIds.has(id));
   if (symptomIds.length) result.symptomIds = symptomIds;
+  const redFlagIds = (params.get("risks") ?? "").split(",").filter((id) => validRedFlagIds.has(id));
+  if (redFlagIds.length) result.redFlagIds = redFlagIds;
   return result;
 }

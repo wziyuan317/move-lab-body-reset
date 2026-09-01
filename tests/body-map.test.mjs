@@ -41,7 +41,10 @@ test("肌群多选再次点击只取消当前项", () => {
 });
 
 test("膝和踝均提供关节附近或无法确定的安全选项", () => {
-  assert.ok(getRegionTargets("knee").some((target) => target.kind === "joint"));
+  assert.deepEqual(
+    getRegionTargets("knee").filter((target) => target.kind === "joint").map((target) => target.id),
+    ["knee-front", "knee-medial", "knee-lateral", "knee-posterior", "knee-joint-unsure"],
+  );
   assert.ok(getRegionTargets("ankle").some((target) => target.kind === "joint"));
 });
 
@@ -85,6 +88,7 @@ test("首页与教程深链状态可以往返并忽略未知值", () => {
     regionId: "shoulder",
     targetIds: ["rhomboids", "unknown"],
     symptomIds: ["tightness"],
+    redFlagIds: ["major-trauma"],
   });
   const restored = parseExplorerState(search);
 
@@ -94,5 +98,6 @@ test("首页与教程深链状态可以往返并忽略未知值", () => {
     regionId: "shoulder",
     targetIds: ["rhomboids"],
     symptomIds: ["tightness"],
+    redFlagIds: ["major-trauma"],
   });
 });

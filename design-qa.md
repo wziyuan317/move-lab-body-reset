@@ -1,82 +1,89 @@
-# Design QA
+# Design QA：3D 身体定位首页
 
 ## 比较对象
 
-- Source visual truth：`/Users/bevol-1/.codex/generated_images/01a056d7-c4ca-72c1-91b7-e924a2a8ccfe/exec-f5441def-e212-4977-b456-8a08cca7bac6.png`
-- Implementation URL：`http://127.0.0.1:4173/`
-- Desktop screenshot：`qa/desktop-expanded-1440.png`
-- Mobile screenshot：`qa/mobile-expanded-390.png`
-- Full-view comparison：`qa/expanded-style-comparison.png`
-- Focused comparison：`qa/focused-style-comparison.png`
-- Correction evidence：`qa/corrected-seated-fold.png`、`qa/corrected-supported-hinge.png`
-- Thumbnail optimization evidence：`qa/thumbnail-optimized-desktop.png`、`qa/thumbnail-before-after.png`
-- State：全部动作，共 15 个；桌面显示动作库首页，修正图分别显示“到位状态”。
+- Source visual truth：`/Users/bevol-1/.codex/generated_images/01a056d7-c4ca-72c1-91b7-e924a2a8ccfe/exec-b3d72858-25fb-4049-b9a6-909cf5e8055e.png`
+- Implementation URL：`http://127.0.0.1:5173/`
+- Desktop full page：`qa/body-home-desktop.png`
+- Desktop viewport：`qa/body-home-desktop-viewport.png`
+- Muscle multi-select：`qa/body-muscle-selected.png`
+- Mobile full page：`qa/body-home-mobile.png`
+- Combined comparison：`qa/body-home-comparison.png`
+- State：默认身体定位首页；focused state 为“肩胛 / 肩”并多选“中下斜方肌、菱形肌”。
 
-## 视口与像素归一化
+## 视口与归一化
 
-- Source：`1254 × 1254 px`，方形动作插画，在比较板中等比缩放。
-- Desktop CSS viewport：`1440 × 1000`，页面 `scrollWidth = 1440`，无文档级水平溢出。
-- Mobile CSS viewport：`390 × 844`，页面 `scrollWidth = 390`，无文档级水平溢出。
-- Focused comparison：左侧源风格图等比缩放到 `620 px` 高，右侧从桌面实现截取动作视觉面板，同高并排。
+- Source：`1486 × 1059 px`。
+- Desktop viewport override：`1440 × 1100 CSS px`；应用内浏览器可见区截图为 `1265 × 712 px`，完整页面另存为 `1265 × 1337 px`。
+- Muscle focused screenshot：`1425 × 1089 px`。
+- Mobile viewport override：`390 × 844 CSS px`；完整页面截图为 `375 × 2477 px`；`scrollWidth = clientWidth = 390`，无文档级横向溢出。
+- Comparison board：源图与实现首屏各自等比归一到 `900 px` 高后并排；未把不同 density 当成设计缺陷。
 
 ## Full-view comparison evidence
 
-- 整体层级：固定部位侧栏、动作列表、动作详情形成明确的三级阅读路径。
-- 色彩：深蓝、高亮黄、珊瑚红和运动蓝组成高对比多巴胺运动色板，没有使用品牌 IP 资产。
-- 图片：动作人物的深蓝描边、红色肌群强调、蓝色方向箭头与黄色稳定提示与源视觉一致。
-- 文字：标题、原理、步骤、好处与停止条件层级清晰，应用文案可独立理解。
+- 信息架构：确认稿的任务步骤、中央人体、右侧建议和底部部位入口均已实现；实现额外保留了安全分流和 15 个教程入口。
+- 字体与层级：继续使用项目既有中文系统字体；超大标题、英文 kicker、任务卡、步骤编号和按钮层级与确认稿一致，长中文没有截断。
+- 间距与节奏：桌面保持左 / 中 / 右三栏；人体舞台为最强视觉中心；移动端按人体、步骤、结果顺序堆叠。
+- 颜色与 tokens：深海军蓝、亮黄、珊瑚红、运动蓝、薄荷绿、白色卡片与粗描边 / 硬阴影映射确认稿的多巴胺游戏感。
+- 图片质量：舞台使用独立生成的无人物 / 无文字夜间运动场资产；着装模型、真实肌肉 GLB 和所有原教程动作图均为真实文件，没有 CSS / div / inline SVG 替代图。
+- Copy：首页明确“位置记录，不是诊断”；红旗文案、停止条件、来源和 15 个教程内容完整保留。
 
 ## Focused region comparison evidence
 
-- 动作图不包含教学段落文字，只保留人物、肌群区域、动作方向与稳定提示，符合源风格。
-- 起始 / 到位切换紧贴动作图上方，数字顺序和高亮状态清晰；大幅度动作可先学会摆位，再对照到位标准。
-- 图片在纯白舞台中使用 `object-fit: contain`，人物没有被裁切、拉伸或被交互控件遮挡。
-- “坐姿抱腿”到位图双臂绕到大腿下方，没有向下抓小腿或脚踝。
-- “椅背髋折叠”到位图中人物与椅面分处椅背两侧，躯干接近水平，椅子朝向与动作文字一致。
-- 椅背胸椎伸展使用固定四脚椅，不含滚轮或旋转底座。
+- 选择“肩胛 / 肩”后自动切换肌肉地图；仅显示三角肌、冈下肌、中下斜方肌、菱形肌和前锯肌真实网格，并按可区分色标展示。
+- 直接点击 Canvas 中三角肌网格后，文字列表出现“已选”，证明不是近似圆点替代肌肉点击。
+- 文字列表可同时选中“中下斜方肌、菱形肌”，再次点击只取消当前项；推荐合并为“肩胛收紧、墙面推撑、站姿开胸”。
+- 膝盖放大后提供股直肌远端、股内侧肌、股外侧肌、膝后肌群，以及膝前 / 内侧 / 外侧 / 后区和“无法确定”共 9 个目标。
+- 红旗状态显示“先暂停自我训练”，推荐区域中训练 CTA 数量为 0。
+- 从膝前区进入“坐姿主动伸膝”教程，再用浏览器返回，`region=knee`、`targets=knee-front` 和感受选择完整恢复。
 
 ## Findings
 
 - 当前没有可执行的 P0 / P1 / P2 问题。
-- [P3] 源风格图带透明背景棋盘预览，网页中统一放在纯白舞台内。这是为了减少棋盘格对动作轮廓的干扰，属于可接受的产品化处理。
+- [P3] 确认稿使用写实人物，实现采用 CC0 低多边形着装人体。它仍是可旋转的真实 3D 网格，性能和中性隐私表达更适合首版；后续可替换同骨骼写实模型而不改变交互数据。
+- [P3] 默认结果卡比确认稿更保守，在未选位置时不预填“膝部不适”。这是医疗安全边界和真实状态要求导致的可接受差异。
 
 ## Comparison history
 
-1. 首次桌面验收发现 P2：`1280 px` 宽度时，动作详情双列的最小宽度造成页面水平溢出。
-   - Fix：将详情双列转单列的响应式断点由 `1260 px` 调整为 `1400 px`。
-   - Post-fix evidence：`1440 × 1000` 桌面截图无隐藏控件；中等宽度下详情自动变为单列。
-2. 首次移动验收发现 P2：`390 px` 视口时，横向动作列表的最小内容宽度将文档撑到 `464 px`。
-   - Fix：为 workspace 和 movement list 加入 `min-width: 0`，并限制横向列表为容器 `100%`，溢出只在列表内滚动。
-   - Post-fix evidence：`390 px` 视口下文档宽度 `375 px`，没有页面级水平溢出，分类和动作卡片可横向滚动。
-3. 本轮扩展侧栏至 10 个分类后发现低高度视口可能压缩安全提示区。
-   - Fix：侧栏增加纵向滚动，缩短分类间距与按钮高度，保留触控尺寸和底部停止提示。
-   - Post-fix evidence：`1440 × 1000` 桌面视口中 10 个分类和安全提示完整可见。
-4. 新增“椅背胸椎伸展”首张到位图误用了带滚轮椅。
-   - Fix：重新生成固定四脚椅版本，并替换为安全、稳定的支撑示意。
-   - Post-fix evidence：动作起始与到位图均为固定四脚椅，无滚轮。
-5. 长时间切换动作时存在旧图停留风险，初始页面用 15 张高清原图承担 `66 × 66 px` 列表缩略图。
-   - Fix：保留全部高清详情图，新增 15 张最大边 `240 px` 的无损 PNG 缩略图；列表延迟加载、异步解码，详情图按动作与阶段重新挂载。
-   - Post-fix evidence：初始解码像素从 `25,160,103` 降到 `2,427,876`，下降约 `90.3%`；详情图仍为 `1254 × 1254 px`，前后对照未见内容或视觉层级变化。
+1. 首次对照发现 P1：实现为浅色通用仪表板，缺少确认稿的夜间运动冒险场氛围。
+   - Fix：通过 ImageGen 生成无人物、无文字的夜间城市运动场资产，3D 舞台使用真实图片，页面底色改为深海军蓝。
+   - Post-fix evidence：`qa/body-home-comparison.png` 中舞台、深色外壳、黄 / 红 / 蓝 / 绿节奏与确认稿同向。
+2. 首次模型检查发现 P1：原 GLB 保存了步行动画姿势，人物侧身且双臂位置不符合已确认 A-pose。
+   - Fix：运行时调用 skeleton bind pose，按配套 CC0 姿态脚本的世界 X 轴逻辑调整双上臂为约 30° 外展，并使用浅色全身运动服材质。
+   - Post-fix evidence：`qa/body-home-desktop.png` 为正面站立、双臂自然打开，肩和腋下可点击。
+3. 首次区域选择发现 P1：肩胛肌群在放大后位于画布上缘且尺寸偏小。
+   - Fix：肌肉场景只用当前可见网格计算 bounding box，重新居中并按目标网格范围缩放。
+   - Post-fix evidence：`qa/body-muscle-selected.png` 中肩胛肌群占据舞台主区，网格边界和色标可辨。
+4. 首次桌面检查发现 P2：中等宽度过早将结果卡移到整行，产生大块无效留白。
+   - Fix：`1201 px` 以上恢复三栏，只有窄桌面 / 平板才转为两栏与单栏。
+   - Post-fix evidence：最终桌面图中步骤、人体、结果同屏，无水平溢出。
+5. 首次 hotspot 检查发现 P2：圆点过大，遮挡人体轮廓。
+   - Fix：缩小模型空间标签并降低外圈尺寸；具体肌肉定位继续使用真实网格，不使用圆点。
+   - Post-fix evidence：最终默认图中 7 个大区域可读但不遮挡主要身体轮廓。
 
 ## 交互与运行验收
 
-- 搜索“膝盖”返回 3 个动作：坐姿伸膝、扶桌浅蹲、扶桌提踵。
-- 部位筛选“肩胛”返回 2 个动作：肩胛收紧、墙面推撑。
-- 无匹配搜索正确显示空状态，可一键清除。
-- 墙面俯卧撑从 `wall-pushup-start.png` 切换到 `wall-pushup.png`，图片路径发生预期变化。
-- 页面当前加载的所有图片 `naturalWidth > 0`。
-- 浏览器 Console：0 个 error，0 个 warning。
-- 焦点指示、语义化按钮、搜索标签、`aria-pressed` 和 `prefers-reduced-motion` 已检查。
+- 7 个大区域均有模型 hotspot 和文字入口。
+- 肌肉地图真实 raycast 点击可用；文字入口提供完整键盘等价操作。
+- 多肌群选择 / 取消、颜色同步和教程并集排序可用。
+- 膝盖 4 个关节方向区、4 组相关肌群及不确定选项可用。
+- 红旗分流抑制训练 CTA；正常状态返回 2–3 个既有教程。
+- 教程进入与浏览器返回状态恢复可用；原教程搜索、侧边栏、15 个动作和双状态图片通过回归测试。
+- Desktop / mobile Console：0 个 error。
+- Mobile `390 px`：无横向溢出；按钮、checkbox、肌群 chips 可操作。
+- `npm test`：18 / 18 通过。
+- `npm run test:sites`：4 / 4 通过。
+- `npm run build`、`npm run build:github`：通过。
 
 ## Implementation Checklist
 
-- [x] 搜索、部位筛选、动作选择、空状态可用。
-- [x] 大幅度动作提供起始 / 到位双状态。
-- [x] 肩胛与膝盖办公室动作可按分类和关键词检索。
-- [x] 用户指出的抱腿手位与椅子朝向已在图像和文字中同步修正。
-- [x] 列表使用独立无损缩略图，详情页继续展示原始高清图，没有删减内容。
-- [x] 桌面、中等宽度与移动端无页面级水平溢出。
-- [x] 所有动作图已加载，没有占位图或代码绘制的替代资产。
-- [x] 字体、间距、色彩 token、图片质量、图标一致性与应用文案均已通过对照。
+- [x] 真实着装 3D 人体可旋转、缩放、切换正背面和重置。
+- [x] 7 个区域可放大并自动切换肌肉地图。
+- [x] 肌肉真实网格支持 hover、点击、多选、取消和稳定色标。
+- [x] 膝 / 踝保留关节位置与无法确定选项。
+- [x] 安全分流、依据、停止条件和非诊断边界完整。
+- [x] 15 个原教程、搜索、分类、过程 / 到位图和内容无删减。
+- [x] 桌面、移动、URL 状态、返回流程与 Sites 构建通过。
+- [x] 字体、间距、颜色、图片质量、图标和 Copy 已完成视觉对照。
 
 final result: passed
