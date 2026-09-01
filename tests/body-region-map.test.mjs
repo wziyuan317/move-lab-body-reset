@@ -7,7 +7,9 @@ const {
   bodySlugTargets,
   getBodyPartFill = () => undefined,
   getBodyRegionVisualData = () => [],
+  getJointZoneControlData = () => [],
   getTargetForBodySlug,
+  jointDiagramMetadata = {},
   jointDiagramZones = {},
 } = bodyRegionMap;
 
@@ -81,4 +83,44 @@ test("关节图热点 ID 唯一并且都能进入位置与推荐数据", () => {
 
   assert.equal(new Set(ids).size, ids.length);
   for (const id of ids) assert.ok(targetIds.has(id), `${id} 没有对应 anatomyTarget`);
+});
+
+test("双视图关节图记录人工标定来源并锁定关键位置", () => {
+  assert.equal(jointDiagramMetadata.shoulder.coordinateSystem, "image-percent");
+  assert.equal(jointDiagramMetadata.ankle.coordinateSystem, "image-percent");
+  assert.match(jointDiagramMetadata.shoulder.calibrationNote, /前侧.*背侧/);
+  assert.match(jointDiagramMetadata.ankle.calibrationNote, /内侧.*外侧/);
+
+  const shoulderFront = jointDiagramZones.shoulder.find((zone) => zone.id === "shoulder-front");
+  const ankleMedial = jointDiagramZones.ankle.find((zone) => zone.id === "ankle-medial");
+  const ankleLateral = jointDiagramZones.ankle.find((zone) => zone.id === "ankle-lateral");
+  assert.deepEqual(
+    { x: shoulderFront.x, y: shoulderFront.y, view: shoulderFront.view },
+    { x: 40, y: 42, view: "front" },
+  );
+  assert.deepEqual(
+    { x: ankleMedial.x, y: ankleMedial.y, view: ankleMedial.view },
+    { x: 37, y: 70, view: "medial" },
+  );
+  assert.deepEqual(
+    { x: ankleLateral.x, y: ankleLateral.y, view: ankleLateral.view },
+    { x: 62, y: 70, view: "lateral" },
+  );
+});
+
+test("热点用固定短标记显示，而完整位置名称仍可访问", () => {
+  const controls = getJointZoneControlData("shoulder", ["shoulder-front"]);
+  const front = controls.find((zone) => zone.id === "shoulder-front");
+
+  assert.deepEqual(front, {
+    id: "shoulder-front",
+    marker: "1",
+    label: "肩膀前侧",
+    ariaLabel: "肩膀前侧，前侧，已选",
+    selected: true,
+    x: 40,
+    y: 42,
+  });
+  assert.ok(controls.every((zone) => zone.marker.length <= 2));
+  assert.ok(controls.every((zone) => zone.marker !== zone.label));
 });

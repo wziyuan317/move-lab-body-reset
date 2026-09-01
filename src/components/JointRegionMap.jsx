@@ -1,4 +1,4 @@
-import { jointDiagramZones } from "../bodyRegionMap.js";
+import { getJointZoneControlData } from "../bodyRegionMap.js";
 
 const diagramAssets = {
   knee: "assets/body-map/knee-location-map.png",
@@ -7,7 +7,7 @@ const diagramAssets = {
 };
 
 export function JointRegionMap({ regionId, selectedIds = [], onToggleTarget }) {
-  const zones = jointDiagramZones[regionId];
+  const zones = getJointZoneControlData(regionId, selectedIds);
   const assetPath = diagramAssets[regionId];
 
   if (!zones || !assetPath) return null;
@@ -21,30 +21,42 @@ export function JointRegionMap({ regionId, selectedIds = [], onToggleTarget }) {
           alt="局部身体轮廓图；可使用图上的位置按钮标记不适处。"
           style={{ display: "block", width: "100%", height: "100%", objectFit: "contain" }}
         />
-        {zones.map((zone) => {
-          const selected = selectedIds.includes(zone.id);
-          return (
-            <button
-              key={zone.id}
-              type="button"
-              className={`joint-region-map__zone${selected ? " is-selected" : ""}`}
-              aria-label={`${zone.label}${zone.sideLabel ? `，${zone.sideLabel}侧` : ""}${selected ? "，已选" : "，未选"}`}
-              aria-pressed={selected}
-              onClick={() => onToggleTarget(zone.id)}
-              style={{
-                position: "absolute",
-                left: `${zone.x}%`,
-                top: `${zone.y}%`,
-                transform: "translate(-50%, -50%)",
-                minWidth: "44px",
-                minHeight: "44px",
-              }}
-            >
-              <span>{zone.label}</span>
-              {zone.sideLabel && <small>{zone.sideLabel}</small>}
-            </button>
-          );
-        })}
+        {zones.map((zone) => (
+          <button
+            key={zone.id}
+            type="button"
+            className={`joint-region-map__marker${zone.selected ? " is-selected" : ""}`}
+            aria-label={zone.ariaLabel}
+            aria-pressed={zone.selected}
+            onClick={() => onToggleTarget(zone.id)}
+            style={{
+              position: "absolute",
+              left: `${zone.x}%`,
+              top: `${zone.y}%`,
+              transform: "translate(-50%, -50%)",
+              width: "44px",
+              height: "44px",
+              borderRadius: "50%",
+              padding: 0,
+            }}
+          >
+            <span aria-hidden="true">{zone.marker}</span>
+          </button>
+        ))}
+      </div>
+      <div className="joint-region-map__list" role="group" aria-label="位置列表">
+        {zones.map((zone) => (
+          <button
+            key={zone.id}
+            type="button"
+            className={`joint-region-map__list-item${zone.selected ? " is-selected" : ""}`}
+            aria-label={zone.ariaLabel}
+            aria-pressed={zone.selected}
+            onClick={() => onToggleTarget(zone.id)}
+          >
+            <span aria-hidden="true">{zone.marker}</span>{zone.label}
+          </button>
+        ))}
       </div>
     </section>
   );
