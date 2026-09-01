@@ -23,6 +23,7 @@
 3. **Colors / tokens**：深海军蓝外壳、白色信息卡、高饱和黄 / 橙 / 蓝 / 绿状态色、粗描边与硬阴影延续参考图的运动游戏感；主要教程 CTA 使用参考图同向的黄色行动色 + 深蓝文字，与 coral 危险色明确分离。
 4. **Image quality / assets**：主舞台使用用户提供的 Man Player `Standing_05` 真实 GLB，专业模式使用 `react-muscle-highlighter` 的 2D 完整正背人体图，动作卡使用既有真实动作图；legacy 3D muscle GLB 不加载、不发布。全页无 CSS art、手写 SVG、emoji 或 placeholder。红色运动角色是用户确认的受控差异；页脚已按 CC BY 4.0 正确署名，不因人物非写实单独降级。
 5. **Copy / content**：三步定位、感受、安全复核、停止条件、依据与训练入口完整；文案明确位置记录不等于诊断。相对参考图，结果区采用更保守的行为建议而非更强的伤病判断，属于安全边界内的有意差异。
+   专业模式明确说明 2D library 会合并落在同一轮廓区域的肌肉，彩色标签保留多选详情，没有伪造 library granularity 之外的解剖路径。
 
 ## Focused region comparison
 
@@ -68,6 +69,15 @@
 - Post-fix evidence：desktop READY 点击“描述感受”后 class 切换为 `mission-column--step-2`，感受区可见，原“酸紧 / 发僵”仍选中且焦点落在可见按钮；点击“获得建议”返回 step 3。旧 knee + tightness + deformity 重置后 URL 为 `?viewSide=front&step=1` 且定位 / 感受 / 红旗全空；再选 shoulder 为 step 2、未 blocked。desktop / mobile 页脚链接分别为 `44 × 44`、`54 × 44 px`，CTA 为 `rgb(255, 212, 59)` + `rgb(16, 38, 83)`、高 `44 px`。
 - Post-fix comparison：按相同 READY 状态重截 desktop / mobile、机械重建 `2705 × 900` side-by-side，并实际打开 full view 及 nav / 左任务栏 / 右结果卡 / 底部区域卡四个 focused crop；黄色 CTA 与参考一致，未见新的裁切、溢出或 P0 / P1 / P2。
 
+### Iteration 6 — blocked → passed
+
+- [P1] 专业模式只用每个 `slug + region` 的固定 primary target 生成 body data；选择冈下肌、前锯肌、肩胛提肌、股内侧肌、比目鱼肌等非 primary 肌肉时，按钮与标签已选但 2D 身体图不变。
+- [P1] 膝 / 肩 / 踝局部图在 `230 px` 画布上放置多个 `44 × 44 px` marker；多组矩形互相覆盖，后渲染按钮可能截获另一个 marker 中心点击。
+- Fix：每个 2D slug 按 region 保留全部 target IDs；视觉数据从实际选中 target 取得 color / side，同 slug 多选按稳定映射顺序显示。补全有限 library 中的合并映射并加入真实 granularity 说明。局部图画布扩大至 `320 px`，按解剖参考重排 marker；marker size 与 selected scale 由生产常量驱动。
+- Test evidence：逐个遍历真实 `anatomyTargets` 的所有 muscle target，验证每项能解析到 slug、单选使用自身 color / side；以 `300 / 320 px` 画布遍历 knee / shoulder / ankle 的 default 和每个 selected 状态，验证 pairwise overlap 为空、每个中心只命中自身。全量因此从 69 增至 72 项。
+- Live evidence：肩部冈下肌 / 前锯肌、颈部肩胛提肌、膝部股内侧肌、踝部比目鱼肌单选后，`aria-pressed=true`、URL 写入 target，2D SVG 分别从默认蓝变为该 target 的实际颜色。desktop canvas `318 × 318 px`、mobile canvas `319 × 319 px`；三图 default / selected marker 均 `overlap=[]`、`centerMisses=[]`，逐个点击成功。
+- Post-fix comparison：在 latest fix 后重截 exact READY desktop / mobile，机械重建 `2705 × 900` comparison 并实际打开三图。人物、三栏、结果卡与 8 个区域卡无新裁切或布局退化；本轮最终无 actionable P0 / P1 / P2。
+
 ## Browser interaction / accessibility evidence
 
 - 仅使用 Codex in-app Browser 验证；fresh desktop / mobile tab 的 Console error 均为 `0`，仅有 Three.js deprecation warning。
@@ -77,6 +87,8 @@
 - desktop READY 可进入可编辑感受区并把焦点移到可见按钮，既有选择不丢；完整重置与再选新区不会继承旧感受 / 红旗。
 - 主要教程 CTA 在 desktop / mobile 均为 yellow + navy、高 `44 px`；`原作品` / `CC BY 4.0` 链接两端均达到最小 `44 × 44 px`。
 - 专业模式可打开；Escape 与关闭按钮都关闭 dialog，焦点返回 `.professional-mode-button`。
+- 专业模式非 primary 肌肉单独选择会把对应 2D slug 从默认蓝改为真实 target 色；前锯肌为 `rgb(76, 201, 240)`、肩胛提肌为 `rgb(255, 159, 28)`、股内侧肌为 `rgb(32, 201, 151)`、比目鱼肌为 `rgb(112, 72, 232)`。
+- knee / shoulder / ankle 局部图在 desktop `318 px` 和 mobile `319 px` 实际画布上，default 与 `47.52 px` selected marker 的 pairwise overlap 均为 `[]`，中心命中错误均为 `[]`；逐个 marker 点击成功。
 - 红旗状态为 `blockedCount=1`、CTA `0`；解除红旗后为 `blockedCount=0`、CTA `1`。
 - CTA 进入 `movement=seated-knee-extension`；Browser Back 精确恢复 knee-front + tightness READY URL。
 - mobile `scrollWidth - clientWidth = 0`；desktop / mobile 均无页面横向溢出。
@@ -90,7 +102,7 @@
 
 ## Final verification
 
-- `npm test`：69 / 69 通过。
+- `npm test`：72 / 72 通过。
 - `npm run test:sites`：4 / 4 通过。
 - `npm run build`：通过；Sites build 已生成，release asset check passed。
 - `npm run build:github`：通过；GitHub Pages base 与 release asset check passed。

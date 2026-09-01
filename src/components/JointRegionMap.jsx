@@ -1,4 +1,8 @@
-import { getJointZoneControlData } from "../bodyRegionMap.js";
+import {
+  getJointZoneControlData,
+  JOINT_MARKER_SELECTED_SCALE,
+  JOINT_MARKER_SIZE,
+} from "../bodyRegionMap.js";
 
 const diagramAssets = {
   knee: "assets/body-map/knee-location-map.png",
@@ -33,9 +37,9 @@ export function JointRegionMap({ regionId, selectedIds = [], onToggleTarget }) {
               position: "absolute",
               left: `${zone.x}%`,
               top: `${zone.y}%`,
-              transform: "translate(-50%, -50%)",
-              width: "44px",
-              height: "44px",
+              transform: `translate(-50%, -50%) scale(${zone.selected ? JOINT_MARKER_SELECTED_SCALE : 1})`,
+              width: `${JOINT_MARKER_SIZE}px`,
+              height: `${JOINT_MARKER_SIZE}px`,
               borderRadius: "50%",
               padding: 0,
             }}

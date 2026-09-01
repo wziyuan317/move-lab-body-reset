@@ -5,7 +5,6 @@ import { getRegionTargets } from "../bodyMap.js";
 import {
   getBodyPartFill,
   getBodyRegionVisualData,
-  getTargetForBodySlug,
 } from "../bodyRegionMap.js";
 
 export default function ProfessionalAnatomyPanel({ regionId, selectedIds, selectedSides = {}, onToggleTarget, onClose }) {
@@ -14,13 +13,10 @@ export default function ProfessionalAnatomyPanel({ regionId, selectedIds, select
   const targets = useMemo(() => getRegionTargets(regionId), [regionId]);
   const muscleTargets = useMemo(() => targets.filter((target) => target.kind === "muscle"), [targets]);
   const selectedTargets = targets.filter((target) => selectedIds.includes(target.id));
-  const bodyData = getBodyRegionVisualData({ regionId, selectedIds, selectedSides }).map(({ slug, selected, side }) => {
-    const target = targets.find((item) => item.id === getTargetForBodySlug(slug, regionId));
-    return {
-      slug,
-      ...(target ? { color: selected ? target.color : "#79a8ed", side } : {}),
-    };
-  });
+  const bodyData = getBodyRegionVisualData({ regionId, selectedIds, selectedSides }).map(({ slug, targetIds, selected, color, side }) => ({
+    slug,
+    ...(targetIds.length > 0 ? { color: selected ? color : "#79a8ed", side } : {}),
+  }));
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -82,6 +78,7 @@ export default function ProfessionalAnatomyPanel({ regionId, selectedIds, select
               ? selectedTargets.map((target) => <span key={target.id} style={{ "--target-color": target.color }}>{target.label}</span>)
               : <span className="is-empty">尚未选择具体位置</span>}
           </div>
+          <p className="professional-anatomy__granularity-note">2D 分区会合并落在同一轮廓区域的肌肉；彩色标签保留多选详情。</p>
         </div>
         {muscleTargets.length > 0 && (
           <div className="professional-anatomy__target-controls" aria-label="当前区域肌群选择">

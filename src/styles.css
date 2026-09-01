@@ -429,9 +429,9 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 4px solid 
 .body-region-map__side-controls button strong { flex: 0 0 auto; color: var(--blue); font-size: 11px; }
 .body-region-map__side-controls button.is-active { color: var(--navy); background: var(--yellow); border-color: var(--navy); box-shadow: 2px 2px 0 var(--blue); }
 .joint-region-map { margin-top: 12px; }
-.joint-region-map__canvas { max-width: 230px; margin: 0 auto; }
+.joint-region-map__canvas { width: 100%; max-width: 320px; margin: 0 auto; }
 .joint-region-map__marker { display: grid; place-items: center; color: #fff; font-weight: 950; background: var(--coral); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--navy); cursor: pointer; }
-.joint-region-map__marker.is-selected { color: var(--navy); background: var(--yellow); transform: translate(-50%, -50%) scale(1.08) !important; }
+.joint-region-map__marker.is-selected { color: var(--navy); background: var(--yellow); }
 .joint-region-map__list, .location-selector__list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
 .joint-region-map__list-item, .location-selector__list button { display: flex; min-height: 44px; align-items: center; gap: 6px; padding: 6px 8px; text-align: left; background: #fff; border: 2px solid #c3cddd; border-radius: 9px; cursor: pointer; }
 .joint-region-map__list-item.is-selected, .location-selector__list button.is-active { background: #fff1b8; border-color: var(--navy); box-shadow: 2px 2px 0 var(--yellow); }
@@ -485,6 +485,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 4px solid 
 .professional-anatomy__selected-tags { display: flex; flex-wrap: wrap; gap: 5px; }
 .professional-anatomy__selected-tags span { padding: 4px 7px; font-size: 11px; font-weight: 850; background: color-mix(in srgb, var(--target-color) 28%, #fff); border: 2px solid var(--target-color); border-radius: 999px; }
 .professional-anatomy__selected-tags .is-empty { color: #61708a; background: #fff; border-color: #bdc9db; }
+.professional-anatomy__granularity-note { margin: 7px 0 0; color: #52637e; font-size: 10px; line-height: 1.45; }
 .professional-anatomy__target-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
 .professional-anatomy__target-controls button { display: flex; min-width: 0; min-height: 44px; align-items: center; gap: 7px; padding: 5px 8px; color: var(--navy); font-size: 11px; font-weight: 850; text-align: left; background: #fff; border: 2px solid #bdc9db; border-radius: 9px; cursor: pointer; }
 .professional-anatomy__target-controls button.is-active { background: color-mix(in srgb, var(--target-color) 28%, #fff); border-color: var(--target-color); box-shadow: 2px 2px 0 var(--target-color); }

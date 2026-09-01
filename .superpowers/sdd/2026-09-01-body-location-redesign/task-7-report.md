@@ -14,7 +14,10 @@
 - 完整重置现在清空 region / targets / symptoms / red flags，回到 front / step 1；切换新区也不会继承旧感受或 blocked 状态。
 - 页脚两个署名链接在 desktop / mobile 均达到 `44 × 44 px`；主要教程 CTA 改为 yellow + navy，与 coral 危险色分离。
 - 热点 pointer / Enter / Space 改用可执行 handler unit test；相机与热点投影测试直接载入当前 Man Player GLB、应用 `Standing_05`，从真实 bounds 验证 desktop / mobile、front / back、default / knee 的留白与 overlap。
-- 专业模式的真实实现是 `react-muscle-highlighter` 2D 完整正背人体；legacy 3D muscle GLB 不加载、不发布。最终 `npm test` 共 69 个测试。
+- 专业模式的真实实现是 `react-muscle-highlighter` 2D 完整正背人体；legacy 3D muscle GLB 不加载、不发布。
+- 专业模式为每个 `slug + region` 保留全部 target IDs，2D body data 使用实际选中肌肉的 color / side；同 slug 多选按稳定映射顺序显示，并诚实说明有限 2D 轮廓会合并肌肉、彩色标签保留详情。
+- 膝 / 肩 / 踝局部图画布扩展到约 `320 px`，按真实解剖参考重排全部 `44 × 44 px` marker；生产常量与像素回归共同覆盖 selected scale、矩形 overlap 和中心命中。
+- 最终 `npm test` 共 72 个测试。
 
 ## QA 迭代
 
@@ -23,6 +26,7 @@
 3. Iteration 3：发现移动 READY 感受区 / CTA 问题及多个小于 `44 px` 的目标；完成响应式和触控尺寸修复后重测。
 4. Iteration 4：按相同状态重截、重建 comparison，并对 nav、左任务栏、右结果卡和底部区域卡逐区检查；无 actionable P0 / P1 / P2，`final result: passed`。
 5. Iteration 5：独立复审发现 desktop 编辑感受、完整重置、页脚 44×44 和 CTA 语义色问题；完成 TDD 修复、同 viewport live 复测与重截后通过，无 actionable P0 / P1 / P2。
+6. Iteration 6：最终整分支复审发现非 primary 肌肉无法改变 2D body visual、三张局部图 marker 严重重叠；完成全量映射、确定性实际色、约 320px 画布和像素 overlap / center-hit 回归后，desktop / mobile live 逐项复测与重截通过。
 
 完整的像素、差异分级和每轮 post-fix evidence 见 `design-qa.md`。
 
@@ -36,6 +40,8 @@
 - desktop safety label 为 `214 × 44 px`；mobile 各步骤、choice、safety、CTA、证据链接和 footer 控件均达到 `44 px`。
 - desktop READY 点击“描述感受”后编辑区可见、焦点可见且原 symptom 保留；完整重置后 URL 为 front / step 1 且所有旧定位、安全状态清空，再选新区不会 blocked。
 - desktop / mobile 的 `原作品` / `CC BY 4.0` 均至少 `44 × 44 px`；主要 CTA 为 `rgb(255, 212, 59)` + `rgb(16, 38, 83)`。
+- 专业模式中肩部冈下肌 / 前锯肌、颈部肩胛提肌、膝部股内侧肌、踝部比目鱼肌单选后，按钮状态、URL target 与 2D SVG 实际 target 色同步；合并 granularity 说明可见。
+- desktop `318 × 318 px`、mobile `319 × 319 px` 的 knee / shoulder / ankle 局部图，default 与全部 selected marker 的 overlap / center miss 均为空；逐个点击成功，文字列表完整且无裁切。
 
 ## 视觉结论
 
@@ -45,7 +51,7 @@
 
 ## 最终命令
 
-- `npm test`：69 / 69 通过。
+- `npm test`：72 / 72 通过。
 - `npm run test:sites`：4 / 4 通过。
 - `npm run build`：通过；Sites build 已生成，`dist/client` release asset check passed。
 - `npm run build:github`：通过；`dist/github` release asset check passed。
