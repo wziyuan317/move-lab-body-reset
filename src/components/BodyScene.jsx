@@ -3,41 +3,15 @@ import { Canvas, useLoader, useThree } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { clone as cloneSkeleton } from "three/examples/jsm/utils/SkeletonUtils.js";
 import { fitDistanceForSphere, getCameraPose } from "../cameraFraming.js";
-import { anatomyTargets, bodyRegions, getRegionTargets } from "../bodyMap.js";
+import { bodyRegions } from "../bodyMap.js";
 
 const baseUrl = import.meta.env.BASE_URL;
 const clothedUrl = `${baseUrl}assets/models/move-lab-clothed.glb`;
-const musclesUrl = `${baseUrl}assets/models/move-lab-muscles.glb`;
 
-function useBodyModel(url, usesDraco = false) {
-  return useLoader(GLTFLoader, url, (loader) => {
-    if (!usesDraco) return;
-    const draco = new DRACOLoader();
-    draco.setDecoderPath(`${baseUrl}draco/`);
-    loader.setDRACOLoader(draco);
-  });
-}
-
-function normalizeObject(object, height = 2, visibleOnly = false) {
-  object.updateMatrixWorld(true);
-  const box = new THREE.Box3();
-  if (visibleOnly) {
-    object.traverse((child) => {
-      if (child.isMesh && child.visible) box.expandByObject(child);
-    });
-  } else {
-    box.setFromObject(object);
-  }
-  const size = box.getSize(new THREE.Vector3());
-  const center = box.getCenter(new THREE.Vector3());
-  const scale = height / size.y;
-  object.scale.setScalar(scale);
-  object.position.set(-center.x * scale, -center.y * scale, -center.z * scale);
-  object.updateMatrixWorld(true);
-  return object;
+function useBodyModel(url) {
+  return useLoader(GLTFLoader, url);
 }
 
 function prepareClothedObject(object, height = 2) {
@@ -110,70 +84,6 @@ function ClothedModel({ regionId, onSelectRegion, onBounds }) {
         </Html>
       ))}
     </group>
-  );
-}
-
-function findTargetForObject(object, targets) {
-  const labels = [object.name, object.userData?.name, object.userData?.nameDetail].filter(Boolean);
-  return targets.find((target) => target.meshNames.some((meshName) => labels.includes(meshName)));
-}
-
-function MuscleModel({ regionId, selectedIds, hoveredId, onToggleTarget, onHoverTarget }) {
-  const gltf = useBodyModel(musclesUrl, true);
-  const targets = useMemo(() => getRegionTargets(regionId).filter((item) => item.kind === "muscle"), [regionId]);
-  const scene = useMemo(() => {
-    const next = gltf.scene.clone(true);
-    next.traverse((object) => {
-      if (!object.isMesh) return;
-      const target = object.userData?.type === "muscle" ? findTargetForObject(object, targets) : undefined;
-      object.visible = Boolean(target);
-      if (!target) return;
-      object.userData.moveTargetId = target.id;
-      object.material = object.material.clone();
-      object.castShadow = true;
-      object.receiveShadow = true;
-    });
-    return normalizeObject(next, 1.72, true);
-  }, [gltf.scene, targets]);
-
-  useEffect(() => {
-    scene.traverse((object) => {
-      const targetId = object.userData?.moveTargetId;
-      if (!object.isMesh || !targetId) return;
-      const target = anatomyTargets.find((item) => item.id === targetId);
-      const active = selectedIds.includes(targetId);
-      const hovered = hoveredId === targetId;
-      object.material.color.set(target.color).multiplyScalar(active || hovered ? 1 : 0.48);
-      if (object.material.emissive) {
-        object.material.emissive.set(target.color);
-        object.material.emissiveIntensity = active ? 0.42 : hovered ? 0.24 : 0.03;
-      }
-      object.material.roughness = active || hovered ? 0.36 : 0.7;
-      object.material.needsUpdate = true;
-    });
-  }, [scene, selectedIds, hoveredId]);
-
-  return (
-    <primitive
-      object={scene}
-      onClick={(event) => {
-        const targetId = event.object.userData?.moveTargetId;
-        if (!targetId) return;
-        event.stopPropagation();
-        onToggleTarget(targetId);
-      }}
-      onPointerMove={(event) => {
-        const targetId = event.object.userData?.moveTargetId;
-        if (!targetId) return;
-        event.stopPropagation();
-        onHoverTarget(targetId);
-        document.body.style.cursor = "pointer";
-      }}
-      onPointerOut={() => {
-        onHoverTarget(undefined);
-        document.body.style.cursor = "";
-      }}
-    />
   );
 }
 
