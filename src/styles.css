@@ -430,7 +430,11 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 4px solid 
 .body-region-map__side-controls button.is-active { color: var(--navy); background: var(--yellow); border-color: var(--navy); box-shadow: 2px 2px 0 var(--blue); }
 .joint-region-map { margin-top: 12px; }
 .joint-region-map__canvas { width: 100%; max-width: 320px; margin: 0 auto; }
-.joint-region-map__marker { display: grid; place-items: center; color: #fff; font-weight: 950; background: var(--coral); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--navy); cursor: pointer; }
+.joint-region-map__leader { position: absolute; z-index: 1; height: 0; border-top: 2px solid rgba(11,39,86,.82); transform-origin: left center; pointer-events: none; }
+.joint-region-map__leader.is-selected { border-color: #b98900; }
+.joint-region-map__anchor { position: absolute; z-index: 2; width: 12px; height: 12px; background: var(--navy); border: 3px solid #fff; border-radius: 50%; box-shadow: 0 0 0 2px rgba(11,39,86,.75); transform: translate(-50%, -50%); pointer-events: none; }
+.joint-region-map__anchor.is-selected { background: var(--yellow); }
+.joint-region-map__marker { z-index: 3; display: grid; place-items: center; color: #fff; font-weight: 950; background: var(--coral); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--navy); cursor: pointer; }
 .joint-region-map__marker.is-selected { color: var(--navy); background: var(--yellow); }
 .joint-region-map__list, .location-selector__list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
 .joint-region-map__list-item, .location-selector__list button { display: flex; min-height: 44px; align-items: center; gap: 6px; padding: 6px 8px; text-align: left; background: #fff; border: 2px solid #c3cddd; border-radius: 9px; cursor: pointer; }

@@ -17,7 +17,8 @@
 - 专业模式的真实实现是 `react-muscle-highlighter` 2D 完整正背人体；legacy 3D muscle GLB 不加载、不发布。
 - 专业模式为每个 `slug + region` 保留全部 target IDs，2D body data 使用实际选中肌肉的 color / side；同 slug 多选按稳定映射顺序显示，并诚实说明有限 2D 轮廓会合并肌肉、彩色标签保留详情。
 - 膝 / 肩 / 踝局部图画布扩展到约 `320 px`，按真实解剖参考重排全部 `44 × 44 px` marker；生产常量与像素回归共同覆盖 selected scale、矩形 overlap 和中心命中。
-- 最终 `npm test` 共 72 个测试。
+- 复审后进一步把人工标定解剖 anchor 与非重叠 marker 拆分，以不拦截指针的 leader line 连接；marker 可读可点，anchor 仍精确落在真实图像位置。
+- 最终 `npm test` 共 73 个测试。
 
 ## QA 迭代
 
@@ -27,12 +28,13 @@
 4. Iteration 4：按相同状态重截、重建 comparison，并对 nav、左任务栏、右结果卡和底部区域卡逐区检查；无 actionable P0 / P1 / P2，`final result: passed`。
 5. Iteration 5：独立复审发现 desktop 编辑感受、完整重置、页脚 44×44 和 CTA 语义色问题；完成 TDD 修复、同 viewport live 复测与重截后通过，无 actionable P0 / P1 / P2。
 6. Iteration 6：最终整分支复审发现非 primary 肌肉无法改变 2D body visual、三张局部图 marker 严重重叠；完成全量映射、确定性实际色、约 320px 画布和像素 overlap / center-hit 回归后，desktop / mobile live 逐项复测与重截通过。
+7. Iteration 7：final reviewer 指出 Iteration 6 的 marker 虽不重叠却偏离解剖位置；恢复全部原始人工标定 anchor，以独立 marker + leader line 保持精确空间语义和 44px 点击目标，desktop / mobile 逐图复测后通过。
 
 完整的像素、差异分级和每轮 post-fix evidence 见 `design-qa.md`。
 
 ## 最终 Browser 证据
 
-- Source：`1487 × 1058 px`；desktop CSS viewport `1440 × 900`、DPR 1，PNG `1425 × 891`；mobile CSS viewport `390 × 844`、DPR 1，PNG `375 × 812`；comparison `2705 × 900`。
+- Source：`1487 × 1058 px`；desktop CSS viewport `1440 × 900`、DPR 1，PNG `1425 × 891`；mobile CSS viewport `390 × 844`、DPR 1，PNG `375 × 812`；三栏 comparison `3120 × 900`。
 - desktop / mobile 的 default、front、back、knee front / back 均显示完整头、脚和平台；knee 状态略放大；所有 hotspot pairwise overlap 为 `[]`。
 - pointer、Enter、Space 都准确选择膝盖；mobile 无横向溢出；desktop / mobile fresh Console error 为 `0`。
 - 专业模式 Escape / 关闭按钮均可关闭并恢复触发按钮焦点；focus-visible 为 `4px solid rgb(255, 159, 28)`。
@@ -42,6 +44,7 @@
 - desktop / mobile 的 `原作品` / `CC BY 4.0` 均至少 `44 × 44 px`；主要 CTA 为 `rgb(255, 212, 59)` + `rgb(16, 38, 83)`。
 - 专业模式中肩部冈下肌 / 前锯肌、颈部肩胛提肌、膝部股内侧肌、踝部比目鱼肌单选后，按钮状态、URL target 与 2D SVG 实际 target 色同步；合并 granularity 说明可见。
 - desktop `318 × 318 px`、mobile `319 × 319 px` 的 knee / shoulder / ankle 局部图，default 与全部 selected marker 的 overlap / center miss 均为空；逐个点击成功，文字列表完整且无裁切。
+- 20 个解剖 anchor 全部恢复人工标定位置，leader 数与 marker 数一致且 `pointer-events: none`；两端 `anchorInBounds=true`，实际截图中锚点、连线和编号 callout 均清楚、没有落到错误身体区域。
 
 ## 视觉结论
 
@@ -51,7 +54,7 @@
 
 ## 最终命令
 
-- `npm test`：72 / 72 通过。
+- `npm test`：73 / 73 通过。
 - `npm run test:sites`：4 / 4 通过。
 - `npm run build`：通过；Sites build 已生成，`dist/client` release asset check passed。
 - `npm run build:github`：通过；`dist/github` release asset check passed。

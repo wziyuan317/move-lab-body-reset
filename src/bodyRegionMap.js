@@ -88,7 +88,7 @@ const anatomyTargetById = new Map(anatomyTargets.map((target) => [target.id, tar
 export const JOINT_MARKER_SIZE = 44;
 export const JOINT_MARKER_SELECTED_SCALE = 1.08;
 
-// 坐标由最终 PNG 的 0–100% 画布手动标定；替换图片时须先目检并同步更新此处和锁定测试。
+// anchor 坐标由最终 PNG 的 0–100% 画布手动标定；marker 是独立 callout 布局。替换图片时须先目检并同步更新锁定测试。
 export const jointDiagramMetadata = Object.freeze({
   knee: Object.freeze({ coordinateSystem: "image-percent", calibrationNote: "单视图膝周轮廓上的人工标定。" }),
   shoulder: Object.freeze({ coordinateSystem: "image-percent", calibrationNote: "前侧与背侧双视图上的人工标定；前侧点只落在前侧视图，肩胛点只落在背侧视图。" }),
@@ -97,35 +97,35 @@ export const jointDiagramMetadata = Object.freeze({
 
 export const jointDiagramZones = Object.freeze({
   knee: Object.freeze([
-    { id: "knee-front", marker: "1", label: "膝盖正前方", x: 72, y: 39, sideLabel: "前", view: "single" },
-    { id: "knee-medial", marker: "2", label: "膝盖内侧", x: 50, y: 39, sideLabel: "内", view: "single" },
-    { id: "knee-lateral", marker: "3", label: "膝盖外侧", x: 34, y: 61, sideLabel: "外", view: "single" },
-    { id: "knee-posterior", marker: "4", label: "膝盖后方", x: 28, y: 39, sideLabel: "后", view: "single" },
-    { id: "quadriceps-area", marker: "5", label: "大腿前侧", x: 64, y: 18, sideLabel: "上", view: "single" },
-    { id: "hamstring-area", marker: "6", label: "大腿后侧", x: 38, y: 18, sideLabel: "上", view: "single" },
-    { id: "upper-calf-area", marker: "7", label: "小腿上端", x: 42, y: 82, sideLabel: "下", view: "single" },
-    { id: "knee-joint-unsure", marker: "8", label: "不确定具体位置", x: 60, y: 61, view: "single" },
+    { id: "knee-front", marker: "1", label: "膝盖正前方", anchorX: 63, anchorY: 46, markerX: 72, markerY: 39, sideLabel: "前", view: "single" },
+    { id: "knee-medial", marker: "2", label: "膝盖内侧", anchorX: 51, anchorY: 49, markerX: 50, markerY: 39, sideLabel: "内", view: "single" },
+    { id: "knee-lateral", marker: "3", label: "膝盖外侧", anchorX: 39, anchorY: 48, markerX: 34, markerY: 61, sideLabel: "外", view: "single" },
+    { id: "knee-posterior", marker: "4", label: "膝盖后方", anchorX: 43, anchorY: 44, markerX: 28, markerY: 39, sideLabel: "后", view: "single" },
+    { id: "quadriceps-area", marker: "5", label: "大腿前侧", anchorX: 64, anchorY: 27, markerX: 64, markerY: 18, sideLabel: "上", view: "single" },
+    { id: "hamstring-area", marker: "6", label: "大腿后侧", anchorX: 39, anchorY: 28, markerX: 38, markerY: 18, sideLabel: "上", view: "single" },
+    { id: "upper-calf-area", marker: "7", label: "小腿上端", anchorX: 42, anchorY: 72, markerX: 42, markerY: 82, sideLabel: "下", view: "single" },
+    { id: "knee-joint-unsure", marker: "8", label: "不确定具体位置", anchorX: 54, anchorY: 57, markerX: 60, markerY: 61, view: "single" },
   ]),
   shoulder: Object.freeze([
-    { id: "shoulder-front", marker: "1", label: "肩膀前侧", x: 34, y: 35, sideLabel: "前", view: "front" },
-    { id: "shoulder-lateral", marker: "2", label: "肩膀外侧", x: 48, y: 53, sideLabel: "外", view: "front" },
-    { id: "shoulder-posterior", marker: "3", label: "肩膀后侧", x: 86, y: 35, sideLabel: "后", view: "back" },
-    { id: "scapula-medial", marker: "4", label: "肩胛骨内侧", x: 72, y: 53, sideLabel: "内", view: "back" },
-    { id: "scapula-inferior", marker: "5", label: "肩胛骨下方", x: 78, y: 71, sideLabel: "下", view: "back" },
-    { id: "shoulder-joint-unsure", marker: "6", label: "不确定具体位置", x: 58, y: 71, view: "back" },
+    { id: "shoulder-front", marker: "1", label: "肩膀前侧", anchorX: 40, anchorY: 42, markerX: 34, markerY: 35, sideLabel: "前", view: "front" },
+    { id: "shoulder-lateral", marker: "2", label: "肩膀外侧", anchorX: 44, anchorY: 50, markerX: 48, markerY: 53, sideLabel: "外", view: "front" },
+    { id: "shoulder-posterior", marker: "3", label: "肩膀后侧", anchorX: 87, anchorY: 42, markerX: 86, markerY: 35, sideLabel: "后", view: "back" },
+    { id: "scapula-medial", marker: "4", label: "肩胛骨内侧", anchorX: 75, anchorY: 43, markerX: 72, markerY: 53, sideLabel: "内", view: "back" },
+    { id: "scapula-inferior", marker: "5", label: "肩胛骨下方", anchorX: 78, anchorY: 57, markerX: 78, markerY: 71, sideLabel: "下", view: "back" },
+    { id: "shoulder-joint-unsure", marker: "6", label: "不确定具体位置", anchorX: 65, anchorY: 63, markerX: 58, markerY: 71, view: "back" },
   ]),
   ankle: Object.freeze([
-    { id: "ankle-front", marker: "1", label: "踝关节前方", x: 25, y: 70, sideLabel: "前", view: "medial" },
-    { id: "ankle-medial", marker: "2", label: "内踝", x: 40, y: 86, sideLabel: "内", view: "medial" },
-    { id: "ankle-lateral", marker: "3", label: "外踝", x: 65, y: 70, sideLabel: "外", view: "lateral" },
-    { id: "achilles-area", marker: "4", label: "跟腱附近", x: 67, y: 53, sideLabel: "后", view: "lateral" },
-    { id: "calf-posterior", marker: "5", label: "小腿后侧", x: 64, y: 35, sideLabel: "后", view: "lateral" },
-    { id: "ankle-joint-unsure", marker: "6", label: "不确定具体位置", x: 82, y: 86, view: "lateral" },
+    { id: "ankle-front", marker: "1", label: "踝关节前方", anchorX: 29, anchorY: 73, markerX: 25, markerY: 70, sideLabel: "前", view: "medial" },
+    { id: "ankle-medial", marker: "2", label: "内踝", anchorX: 37, anchorY: 70, markerX: 40, markerY: 86, sideLabel: "内", view: "medial" },
+    { id: "ankle-lateral", marker: "3", label: "外踝", anchorX: 62, anchorY: 70, markerX: 65, markerY: 70, sideLabel: "外", view: "lateral" },
+    { id: "achilles-area", marker: "4", label: "跟腱附近", anchorX: 59, anchorY: 63, markerX: 67, markerY: 53, sideLabel: "后", view: "lateral" },
+    { id: "calf-posterior", marker: "5", label: "小腿后侧", anchorX: 60, anchorY: 45, markerX: 64, markerY: 35, sideLabel: "后", view: "lateral" },
+    { id: "ankle-joint-unsure", marker: "6", label: "不确定具体位置", anchorX: 70, anchorY: 76, markerX: 82, markerY: 86, view: "lateral" },
   ]),
 });
 
 export function getJointZoneControlData(regionId, selectedIds = []) {
-  return (jointDiagramZones[regionId] ?? []).map(({ id, marker, label, x, y, sideLabel }) => {
+  return (jointDiagramZones[regionId] ?? []).map(({ id, marker, label, anchorX, anchorY, markerX, markerY, sideLabel }) => {
     const selected = selectedIds.includes(id);
     return {
       id,
@@ -133,8 +133,27 @@ export function getJointZoneControlData(regionId, selectedIds = []) {
       label,
       ariaLabel: [label, sideLabel && `${sideLabel}侧`, selected ? "已选" : "未选"].filter(Boolean).join("，"),
       selected,
-      x,
-      y,
+      anchorX,
+      anchorY,
+      markerX,
+      markerY,
+    };
+  });
+}
+
+export function getJointLeaderLineData(regionId, selectedIds = []) {
+  return getJointZoneControlData(regionId, selectedIds).map((zone) => {
+    const deltaX = zone.markerX - zone.anchorX;
+    const deltaY = zone.markerY - zone.anchorY;
+    return {
+      id: zone.id,
+      selected: zone.selected,
+      anchorX: zone.anchorX,
+      anchorY: zone.anchorY,
+      markerX: zone.markerX,
+      markerY: zone.markerY,
+      lengthPercent: Math.hypot(deltaX, deltaY),
+      angleDeg: Math.atan2(deltaY, deltaX) * 180 / Math.PI,
     };
   });
 }
@@ -175,8 +194,8 @@ export function getJointMarkerRects(regionId, { canvasSize = 320, selectedIds = 
   return getJointZoneControlData(regionId, selectedIds).map((zone) => {
     const scale = zone.selected ? JOINT_MARKER_SELECTED_SCALE : 1;
     const size = JOINT_MARKER_SIZE * scale;
-    const centerX = canvasSize * zone.x / 100;
-    const centerY = canvasSize * zone.y / 100;
+    const centerX = canvasSize * zone.markerX / 100;
+    const centerY = canvasSize * zone.markerY / 100;
     return {
       id: zone.id,
       left: centerX - size / 2,

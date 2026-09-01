@@ -10,6 +10,7 @@ const {
   getBodyRegionVisualData = () => [],
   getJointZoneControlData = () => [],
   getJointMarkerRects,
+  getJointLeaderLineData,
   getTargetIdsForBodySlug,
   getTargetForBodySlug,
   jointDiagramMetadata = {},
@@ -186,11 +187,11 @@ test("双视图关节图记录人工标定来源并保持前后、内外视图�
   const ankleMedial = jointDiagramZones.ankle.find((zone) => zone.id === "ankle-medial");
   const ankleLateral = jointDiagramZones.ankle.find((zone) => zone.id === "ankle-lateral");
   assert.equal(shoulderFront.view, "front");
-  assert.ok(shoulderFront.x < 50);
+  assert.ok(shoulderFront.anchorX < 50);
   assert.equal(ankleMedial.view, "medial");
-  assert.ok(ankleMedial.x < 50);
+  assert.ok(ankleMedial.anchorX < 50);
   assert.equal(ankleLateral.view, "lateral");
-  assert.ok(ankleLateral.x > 50);
+  assert.ok(ankleLateral.anchorX > 50);
 });
 
 test("热点用固定短标记显示，而完整位置名称仍可访问", () => {
@@ -213,7 +214,7 @@ test("热点用固定短标记显示，而完整位置名称仍可访问", () =>
       selected: true,
     },
   );
-  assert.ok(Number.isFinite(front.x) && Number.isFinite(front.y));
+  assert.ok([front.anchorX, front.anchorY, front.markerX, front.markerY].every(Number.isFinite));
   assert.ok(controls.every((zone) => zone.marker.length <= 2));
   assert.ok(controls.every((zone) => zone.marker !== zone.label));
 });
@@ -250,7 +251,7 @@ test("同一 2D slug 多选时按映射顺序稳定选择显示色", () => {
 test("三张关节图在桌面和移动画布、任一选中缩放下都无重叠且中心命中自身", () => {
   assert.equal(typeof getJointMarkerRects, "function");
 
-  for (const canvasSize of [300, 320]) {
+  for (const canvasSize of [300, 318, 319, 320]) {
     for (const regionId of ["knee", "shoulder", "ankle"]) {
       const targetIds = jointDiagramZones[regionId].map((zone) => zone.id);
       for (const selectedId of [undefined, ...targetIds]) {
@@ -261,6 +262,7 @@ test("三张关节图在桌面和移动画布、任一选中缩放下都无重�
 
         for (let index = 0; index < rects.length; index += 1) {
           const rect = rects[index];
+          assert.ok(rect.left >= 0 && rect.top >= 0 && rect.right <= canvasSize && rect.bottom <= canvasSize, `${regionId}/${canvasSize}/${selectedId ?? "default"} 的 ${rect.id} 超出画布`);
           const center = { x: (rect.left + rect.right) / 2, y: (rect.top + rect.bottom) / 2 };
           const centerHits = rects.filter((candidate) => rectContainsPoint(candidate, center));
           assert.deepEqual(centerHits.map((candidate) => candidate.id), [rect.id], `${regionId}/${canvasSize}/${selectedId ?? "default"} 的 ${rect.id} 中心命中异常`);
@@ -274,6 +276,57 @@ test("三张关节图在桌面和移动画布、任一选中缩放下都无重�
           }
         }
       }
+    }
+  }
+});
+
+test("三张关节图保留人工标定解剖锚点，并用 leader line 连接独立 marker", () => {
+  assert.equal(typeof getJointLeaderLineData, "function");
+  const expectedAnchors = {
+    knee: {
+      "knee-front": [63, 46],
+      "knee-medial": [51, 49],
+      "knee-lateral": [39, 48],
+      "knee-posterior": [43, 44],
+      "quadriceps-area": [64, 27],
+      "hamstring-area": [39, 28],
+      "upper-calf-area": [42, 72],
+      "knee-joint-unsure": [54, 57],
+    },
+    shoulder: {
+      "shoulder-front": [40, 42],
+      "shoulder-lateral": [44, 50],
+      "shoulder-posterior": [87, 42],
+      "scapula-medial": [75, 43],
+      "scapula-inferior": [78, 57],
+      "shoulder-joint-unsure": [65, 63],
+    },
+    ankle: {
+      "ankle-front": [29, 73],
+      "ankle-medial": [37, 70],
+      "ankle-lateral": [62, 70],
+      "achilles-area": [59, 63],
+      "calf-posterior": [60, 45],
+      "ankle-joint-unsure": [70, 76],
+    },
+  };
+
+  for (const [regionId, expectedById] of Object.entries(expectedAnchors)) {
+    const lines = getJointLeaderLineData(regionId);
+    assert.equal(lines.length, Object.keys(expectedById).length);
+
+    for (const line of lines) {
+      assert.deepEqual([line.anchorX, line.anchorY], expectedById[line.id], `${line.id} 的解剖锚点漂移`);
+      assert.ok(line.anchorX >= 0 && line.anchorX <= 100 && line.anchorY >= 0 && line.anchorY <= 100);
+      assert.ok(line.markerX >= 0 && line.markerX <= 100 && line.markerY >= 0 && line.markerY <= 100);
+      assert.ok(line.lengthPercent > 0);
+      assert.ok(Number.isFinite(line.angleDeg));
+
+      const angle = line.angleDeg * Math.PI / 180;
+      const endX = line.anchorX + Math.cos(angle) * line.lengthPercent;
+      const endY = line.anchorY + Math.sin(angle) * line.lengthPercent;
+      assert.ok(Math.abs(endX - line.markerX) < 1e-9, `${line.id} leader line 未抵达 marker x`);
+      assert.ok(Math.abs(endY - line.markerY) < 1e-9, `${line.id} leader line 未抵达 marker y`);
     }
   }
 });

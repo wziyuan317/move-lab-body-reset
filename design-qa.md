@@ -6,14 +6,14 @@
 - Live implementation：`http://127.0.0.1:5188/`。
 - Desktop：`qa/redesign-after-desktop.png`，`1440 × 900 CSS px`、DPR 1；PNG 为 `1425 × 891 px`。
 - Mobile：`qa/redesign-after-mobile.png`，`390 × 844 CSS px`、DPR 1；PNG 为 `375 × 812 px`。
-- Side-by-side：`qa/redesign-comparison.png`，`2705 × 900 px`。
+- Side-by-side：`qa/redesign-comparison.png`，`3120 × 900 px`。
 - READY 状态：膝盖 + 膝前 + 酸紧 / 发僵 + 无红旗，URL 状态为 `?region=knee&targets=knee-front&symptoms=tightness&viewSide=front&step=3`。桌面完整展示三步、安全结论、CTA、人物和 8 个区域卡；移动端完成同一核心流程并停在 step 3 结果。
 
 ## 像素与归一化
 
 - Source 为 `1487 × 1058 px`；实现截图来自上述 CSS viewport，截图密度均为 DPR 1。
 - Source 与 desktop implementation 的原始比例不同，不把浏览器可见区裁边或比例差当作缺陷。
-- Comparison 按高度归一到 `900 px`：Source 等比缩放为约 `1265 × 900 px`，desktop implementation 归一为 `1440 × 900 px`，再机械水平拼接为 `2705 × 900 px`；没有用 ImageGen 重绘或补画截图。
+- Comparison 按高度归一到 `900 px`：Source 等比缩放为约 `1265 × 900 px`，desktop implementation 归一为 `1440 × 900 px`，mobile implementation 等比归一为约 `415 × 900 px`，再机械水平拼接为 `3120 × 900 px`；Source 与 desktop 保持相邻 side-by-side，并追加 mobile 结果态，没有用 ImageGen 重绘或补画截图。
 - 三张成品均验证 PNG signature `89 50 4e 47 0d 0a 1a 0a`，尺寸与上文一致。
 
 ## Full-view comparison：5 个 fidelity surfaces
@@ -69,14 +69,22 @@
 - Post-fix evidence：desktop READY 点击“描述感受”后 class 切换为 `mission-column--step-2`，感受区可见，原“酸紧 / 发僵”仍选中且焦点落在可见按钮；点击“获得建议”返回 step 3。旧 knee + tightness + deformity 重置后 URL 为 `?viewSide=front&step=1` 且定位 / 感受 / 红旗全空；再选 shoulder 为 step 2、未 blocked。desktop / mobile 页脚链接分别为 `44 × 44`、`54 × 44 px`，CTA 为 `rgb(255, 212, 59)` + `rgb(16, 38, 83)`、高 `44 px`。
 - Post-fix comparison：按相同 READY 状态重截 desktop / mobile、机械重建 `2705 × 900` side-by-side，并实际打开 full view 及 nav / 左任务栏 / 右结果卡 / 底部区域卡四个 focused crop；黄色 CTA 与参考一致，未见新的裁切、溢出或 P0 / P1 / P2。
 
-### Iteration 6 — blocked → passed
+### Iteration 6 — blocked → reviewer rejected
 
 - [P1] 专业模式只用每个 `slug + region` 的固定 primary target 生成 body data；选择冈下肌、前锯肌、肩胛提肌、股内侧肌、比目鱼肌等非 primary 肌肉时，按钮与标签已选但 2D 身体图不变。
 - [P1] 膝 / 肩 / 踝局部图在 `230 px` 画布上放置多个 `44 × 44 px` marker；多组矩形互相覆盖，后渲染按钮可能截获另一个 marker 中心点击。
 - Fix：每个 2D slug 按 region 保留全部 target IDs；视觉数据从实际选中 target 取得 color / side，同 slug 多选按稳定映射顺序显示。补全有限 library 中的合并映射并加入真实 granularity 说明。局部图画布扩大至 `320 px`，按解剖参考重排 marker；marker size 与 selected scale 由生产常量驱动。
 - Test evidence：逐个遍历真实 `anatomyTargets` 的所有 muscle target，验证每项能解析到 slug、单选使用自身 color / side；以 `300 / 320 px` 画布遍历 knee / shoulder / ankle 的 default 和每个 selected 状态，验证 pairwise overlap 为空、每个中心只命中自身。全量因此从 69 增至 72 项。
 - Live evidence：肩部冈下肌 / 前锯肌、颈部肩胛提肌、膝部股内侧肌、踝部比目鱼肌单选后，`aria-pressed=true`、URL 写入 target，2D SVG 分别从默认蓝变为该 target 的实际颜色。desktop canvas `318 × 318 px`、mobile canvas `319 × 319 px`；三图 default / selected marker 均 `overlap=[]`、`centerMisses=[]`，逐个点击成功。
-- Post-fix comparison：在 latest fix 后重截 exact READY desktop / mobile，机械重建 `2705 × 900` comparison 并实际打开三图。人物、三栏、结果卡与 8 个区域卡无新裁切或布局退化；本轮最终无 actionable P0 / P1 / P2。
+- Reviewer evidence：非重叠圆形虽然修复中心命中，但 marker 本身替代了解剖锚点，造成膝后 / 膝外、肩胛下方和内踝等位置的空间语义漂移；该轮不能通过。
+
+### Iteration 7 — blocked → passed
+
+- [P1] 解剖锚点与可点击 marker 共用坐标，不能同时满足精确落点和 `44 / 47.52 px` 无重叠。
+- Fix：恢复原始人工标定 `anchorX / anchorY`，将非重叠 `markerX / markerY` 独立为可点击 callout，并用不拦截指针的 leader line 连接两者；锚点与连线使用 `pointer-events: none`，不会截获 marker 点击。
+- Test evidence：锁定 knee / shoulder / ankle 全部 20 个原始人工标定 anchor；逐项验证 leader 起点、长度、角度和终点，确保精确抵达 marker。以 `300 / 318 / 319 / 320 px` 画布遍历 default 与每个 selected 状态，验证 marker 不越界、pairwise overlap 为空、中心只命中自身。全量从 72 增至 73 项。
+- Live evidence：desktop canvas `318 px`、mobile canvas `319 px`；三图 default `44 px`、selected `47.52 px` 均为 `overlaps=[]`、`centerMisses=[]`、`anchorInBounds=true`，leader 数与 marker 数完全一致，全部 marker 经真实点击选中。desktop / mobile 实际截图中锚点落在预期解剖区域，连线指向分离标签，无裁切。
+- Post-fix comparison：重截 exact READY desktop / mobile，机械重建 `3120 × 900` 的 Source + desktop + mobile comparison 并实际打开检查；主布局无新视觉差异，fresh console error 为 `0 / 0`，无横向溢出。本轮最终没有 actionable P0 / P1 / P2。
 
 ## Browser interaction / accessibility evidence
 
@@ -89,6 +97,7 @@
 - 专业模式可打开；Escape 与关闭按钮都关闭 dialog，焦点返回 `.professional-mode-button`。
 - 专业模式非 primary 肌肉单独选择会把对应 2D slug 从默认蓝改为真实 target 色；前锯肌为 `rgb(76, 201, 240)`、肩胛提肌为 `rgb(255, 159, 28)`、股内侧肌为 `rgb(32, 201, 151)`、比目鱼肌为 `rgb(112, 72, 232)`。
 - knee / shoulder / ankle 局部图在 desktop `318 px` 和 mobile `319 px` 实际画布上，default 与 `47.52 px` selected marker 的 pairwise overlap 均为 `[]`，中心命中错误均为 `[]`；逐个 marker 点击成功。
+- 三图的解剖 anchor 与 callout marker 独立：20 个 anchor 均在人工标定位置，leader 数量与 marker 一致且不截获指针；`anchorInBounds=true`，目检无错误落点或裁切。
 - 红旗状态为 `blockedCount=1`、CTA `0`；解除红旗后为 `blockedCount=0`、CTA `1`。
 - CTA 进入 `movement=seated-knee-extension`；Browser Back 精确恢复 knee-front + tightness READY URL。
 - mobile `scrollWidth - clientWidth = 0`；desktop / mobile 均无页面横向溢出。
@@ -102,7 +111,7 @@
 
 ## Final verification
 
-- `npm test`：72 / 72 通过。
+- `npm test`：73 / 73 通过。
 - `npm run test:sites`：4 / 4 通过。
 - `npm run build`：通过；Sites build 已生成，release asset check passed。
 - `npm run build:github`：通过；GitHub Pages base 与 release asset check passed。
