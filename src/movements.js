@@ -23,13 +23,19 @@ export function filterMovements(items, { query = "", category = "全部" } = {})
   });
 }
 
+export function resolveAssetPath(assetPath, baseUrl = import.meta.env?.BASE_URL ?? "/") {
+  const normalizedBaseUrl = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+  const normalizedAssetPath = assetPath.replace(/^\/+/, "");
+  return `${normalizedBaseUrl}${normalizedAssetPath}`;
+}
+
 export function selectMovementFrame(movement, phase) {
-  return movement.frames?.[phase] ?? movement.image;
+  return resolveAssetPath(movement.frames?.[phase] ?? movement.image);
 }
 
 export function selectMovementThumbnail(movement) {
   const filename = movement.image.split("/").at(-1);
-  return `/assets/thumbnails/${filename}`;
+  return resolveAssetPath(`/assets/thumbnails/${filename}`);
 }
 
 export const movements = [

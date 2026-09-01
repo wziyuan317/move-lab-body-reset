@@ -66,6 +66,16 @@ test("双状态动作会返回当前选中的姿势图", () => {
   assert.equal(selectMovementFrame(movement, "end"), "/end.png");
 });
 
+test("GitHub Pages 子路径会保留在动作资源地址中", () => {
+  const resolveAssetPath = moduleUnderTest.resolveAssetPath ?? (() => null);
+
+  assert.equal(
+    resolveAssetPath("/assets/movements/example.png", "/move-lab-body-reset/"),
+    "/move-lab-body-reset/assets/movements/example.png",
+  );
+  assert.equal(resolveAssetPath("/assets/movements/example.png", "/"), "/assets/movements/example.png");
+});
+
 test("肩胛筛选会返回办公室肩胛稳定动作", () => {
   const result = filterMovements(movements, { category: "肩胛" });
 
