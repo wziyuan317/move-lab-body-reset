@@ -5,10 +5,12 @@ const moduleUnderTest = await import("../src/bodyMap.js").catch(() => ({}));
 const {
   anatomyTargets = [],
   bodyRegions = [],
+  getExplorerStep = () => undefined,
   getRecommendations = () => ({ status: "missing", movementIds: [] }),
   getRegionTargets = () => [],
   parseExplorerState = () => ({}),
   regionCameraPresets = {},
+  selectRegionState = (state) => state,
   serializeExplorerState = () => "",
   toggleTargetSelection = () => [],
 } = moduleUnderTest;
@@ -38,6 +40,42 @@ test("肌群多选再次点击只取消当前项", () => {
   const selected = toggleTargetSelection(["upper-trapezius", "levator-scapulae"], "upper-trapezius");
   assert.deepEqual(selected, ["levator-scapulae"]);
   assert.deepEqual(toggleTargetSelection(selected, "rhomboids"), ["levator-scapulae", "rhomboids"]);
+});
+
+test("选择区域后进入感受步骤并清除其他区域的具体位置", () => {
+  const next = selectRegionState({
+    regionId: "shoulder",
+    targetIds: ["rhomboids"],
+    targetSides: { rhomboids: "left" },
+    symptomIds: [],
+    redFlagIds: [],
+  }, "knee");
+
+  assert.equal(next.regionId, "knee");
+  assert.deepEqual(next.targetIds, []);
+  assert.deepEqual(next.targetSides, {});
+  assert.equal(getExplorerStep(next), 2);
+});
+
+test("没有感受时不提前推荐教程", () => {
+  const result = getRecommendations({
+    regionId: "knee",
+    targetIds: ["knee-front"],
+    symptomIds: [],
+    redFlagIds: [],
+  });
+
+  assert.equal(result.status, "incomplete");
+  assert.deepEqual(result.movementIds, []);
+});
+
+test("肿胀或麻木进入谨慎状态但红旗才阻断教程", () => {
+  assert.equal(getRecommendations({
+    regionId: "knee", targetIds: ["knee-front"], symptomIds: ["swelling"], redFlagIds: [],
+  }).status, "caution");
+  assert.equal(getRecommendations({
+    regionId: "knee", targetIds: ["knee-front"], symptomIds: ["swelling"], redFlagIds: ["deformity"],
+  }).status, "blocked");
 });
 
 test("膝和踝均提供关节附近或无法确定的安全选项", () => {
@@ -87,8 +125,11 @@ test("首页与教程深链状态可以往返并忽略未知值", () => {
     movementId: "scapular-squeeze",
     regionId: "shoulder",
     targetIds: ["rhomboids", "unknown"],
+    targetSides: { rhomboids: "left", unknown: "right" },
     symptomIds: ["tightness"],
     redFlagIds: ["major-trauma"],
+    viewSide: "back",
+    step: 3,
   });
   const restored = parseExplorerState(search);
 
@@ -97,7 +138,19 @@ test("首页与教程深链状态可以往返并忽略未知值", () => {
     movementId: "scapular-squeeze",
     regionId: "shoulder",
     targetIds: ["rhomboids"],
+    targetSides: { rhomboids: "left" },
     symptomIds: ["tightness"],
     redFlagIds: ["major-trauma"],
+    viewSide: "back",
+    step: 3,
+  });
+});
+
+test("旧 URL 没有新状态字段时仍可恢复已有定位", () => {
+  assert.deepEqual(parseExplorerState("?region=shoulder&targets=rhomboids&symptoms=tightness"), {
+    view: "home",
+    regionId: "shoulder",
+    targetIds: ["rhomboids"],
+    symptomIds: ["tightness"],
   });
 });

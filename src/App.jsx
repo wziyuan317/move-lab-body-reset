@@ -1,18 +1,30 @@
 import { useEffect, useState } from "react";
-import { parseExplorerState, serializeExplorerState } from "./bodyMap.js";
+import {
+  getExplorerStep,
+  parseExplorerState,
+  selectRegionState,
+  serializeExplorerState,
+} from "./bodyMap.js";
 import { HomePage } from "./HomePage.jsx";
 import { TutorialLibrary } from "./TutorialLibrary.jsx";
 
 const defaultExplorerState = {
   regionId: undefined,
   targetIds: [],
+  targetSides: {},
   symptomIds: [],
   redFlagIds: [],
+  viewSide: "front",
+  step: 1,
 };
+
+function synchronizeExplorerStep(state) {
+  return { ...state, step: getExplorerStep(state) };
+}
 
 function readUrlState() {
   if (typeof window === "undefined") return { view: "home", ...defaultExplorerState };
-  return { ...defaultExplorerState, ...parseExplorerState(window.location.search) };
+  return synchronizeExplorerStep({ ...defaultExplorerState, ...parseExplorerState(window.location.search) });
 }
 
 export function App() {
@@ -26,16 +38,17 @@ export function App() {
     const restore = () => {
       const next = readUrlState();
       setUrlState(next);
-      setExplorerState((current) => ({ ...current, ...next }));
+      setExplorerState(next);
     };
     window.addEventListener("popstate", restore);
     return () => window.removeEventListener("popstate", restore);
   }, []);
 
   const writeUrl = (next, mode = "push") => {
-    const search = serializeExplorerState(next);
+    const synchronized = synchronizeExplorerStep(next);
+    const search = serializeExplorerState(synchronized);
     window.history[`${mode}State`]({}, "", `${window.location.pathname}${search}`);
-    setUrlState(next);
+    setUrlState(synchronized);
   };
 
   const navigateToLibrary = (movementId) => {
@@ -62,8 +75,12 @@ export function App() {
     <HomePage
       value={explorerState}
       onChange={(next) => {
-        setExplorerState(next);
-        writeUrl({ ...next, view: "home" }, "replace");
+        const regionState = next.regionId === explorerState.regionId
+          ? next
+          : selectRegionState(next, next.regionId);
+        const synchronized = synchronizeExplorerStep(regionState);
+        setExplorerState(synchronized);
+        writeUrl({ ...synchronized, view: "home" }, "replace");
       }}
       onOpenTutorial={navigateToLibrary}
     />

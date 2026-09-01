@@ -1,6 +1,7 @@
 import { movements } from "./movements.js";
 
 const movementIds = new Set(movements.map((movement) => movement.id));
+const cautionSymptomIds = new Set(["weakness", "swelling", "tingling"]);
 
 export const symptoms = [
   { id: "tightness", label: "酸紧 / 发僵" },
@@ -138,13 +139,25 @@ export function toggleTargetSelection(selectedIds, targetId) {
     : [...selectedIds, targetId];
 }
 
-export function getRecommendations({ regionId, targetIds = [], redFlagIds = [] }) {
+export function getExplorerStep({ regionId, symptomIds = [] }) {
+  if (!regionId) return 1;
+  if (!symptomIds.length) return 2;
+  return 3;
+}
+
+export function selectRegionState(state, regionId) {
+  if (state.regionId === regionId) return state;
+  return { ...state, regionId, targetIds: [], targetSides: {} };
+}
+
+export function getRecommendations({ regionId, targetIds = [], symptomIds = [], redFlagIds = [] }) {
   if (redFlagIds.length > 0) {
-    return { status: "blocked", movementIds: [] };
+    return { status: "blocked", movementIds: [], guidanceKey: "blocked" };
   }
 
   const region = bodyRegions.find((item) => item.id === regionId);
-  if (!region) return { status: "idle", movementIds: [] };
+  if (!region) return { status: "idle", movementIds: [], guidanceKey: "idle" };
+  if (!symptomIds.length) return { status: "incomplete", movementIds: [], guidanceKey: "incomplete" };
 
   const scores = new Map(region.movementIds.map((id, index) => [id, 100 - index]));
   for (const targetId of targetIds) {
@@ -160,13 +173,16 @@ export function getRecommendations({ regionId, targetIds = [], redFlagIds = [] }
     .map(([id]) => id)
     .slice(0, 3);
 
-  return { status: "ready", movementIds: ranked };
+  const status = symptomIds.some((id) => cautionSymptomIds.has(id)) ? "caution" : "ready";
+  return { status, movementIds: ranked, guidanceKey: status };
 }
 
 const validRegionIds = new Set(bodyRegions.map((region) => region.id));
 const validTargetIds = new Set(anatomyTargets.map((target) => target.id));
 const validSymptomIds = new Set(symptoms.map((symptom) => symptom.id));
 const validRedFlagIds = new Set(redFlags.map((flag) => flag.id));
+const validTargetSides = new Set(["left", "right"]);
+const validExplorerSteps = new Set([1, 2, 3]);
 
 export function serializeExplorerState(state) {
   const params = new URLSearchParams();
@@ -175,10 +191,16 @@ export function serializeExplorerState(state) {
   if (validRegionIds.has(state.regionId)) params.set("region", state.regionId);
   const targets = (state.targetIds ?? []).filter((id) => validTargetIds.has(id));
   if (targets.length) params.set("targets", targets.join(","));
+  for (const targetId of targets) {
+    const side = state.targetSides?.[targetId];
+    if (validTargetSides.has(side)) params.append("side", `${targetId}:${side}`);
+  }
   const symptomIds = (state.symptomIds ?? []).filter((id) => validSymptomIds.has(id));
   if (symptomIds.length) params.set("symptoms", symptomIds.join(","));
   const redFlagIds = (state.redFlagIds ?? []).filter((id) => validRedFlagIds.has(id));
   if (redFlagIds.length) params.set("risks", redFlagIds.join(","));
+  if (state.viewSide === "front" || state.viewSide === "back") params.set("viewSide", state.viewSide);
+  if (validExplorerSteps.has(state.step)) params.set("step", state.step);
   return `?${params.toString()}`;
 }
 
@@ -193,9 +215,19 @@ export function parseExplorerState(search = "") {
   if (regionId) result.regionId = regionId;
   const targetIds = (params.get("targets") ?? "").split(",").filter((id) => validTargetIds.has(id));
   if (targetIds.length) result.targetIds = targetIds;
+  const targetSides = {};
+  for (const pair of params.getAll("side")) {
+    const [targetId, side] = pair.split(":");
+    if (targetIds.includes(targetId) && validTargetSides.has(side)) targetSides[targetId] = side;
+  }
+  if (Object.keys(targetSides).length) result.targetSides = targetSides;
   const symptomIds = (params.get("symptoms") ?? "").split(",").filter((id) => validSymptomIds.has(id));
   if (symptomIds.length) result.symptomIds = symptomIds;
   const redFlagIds = (params.get("risks") ?? "").split(",").filter((id) => validRedFlagIds.has(id));
   if (redFlagIds.length) result.redFlagIds = redFlagIds;
+  const viewSide = params.get("viewSide");
+  if (viewSide === "front" || viewSide === "back") result.viewSide = viewSide;
+  const step = Number(params.get("step"));
+  if (validExplorerSteps.has(step)) result.step = step;
   return result;
 }
