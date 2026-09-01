@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -100,6 +100,16 @@ test("专业解剖模型保留可审计的上游字节与两层许可证据", as
   ]) assert.ok(readme.includes(evidence), `README 缺少 ${evidence}`);
   assert.match(readme, /CC BY-SA 4\.0/);
   assert.doesNotMatch(readme.match(/### Professional anatomy[\s\S]*?(?=\n###|$)/)?.[0] ?? "", /CC0/);
+});
+
+test("legacy 专业 GLB 只保留为本地审计素材，发布目录不得包含", async () => {
+  await access(path.join(projectRoot, muscleModelPath));
+  for (const outputPath of [
+    "dist/client/assets/models/move-lab-muscles.glb",
+    "dist/github/assets/models/move-lab-muscles.glb",
+  ]) {
+    await assert.rejects(access(path.join(projectRoot, outputPath)), { code: "ENOENT" });
+  }
 });
 
 test("关节局部图都是至少 900 × 900 的有效 PNG", async () => {

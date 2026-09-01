@@ -84,6 +84,7 @@ test("普通身体图为当前区域提供左右两侧的键盘等价控件", ()
       label: "大腿前侧",
       side: "left",
       sideLabel: "左侧",
+      hitSize: 44,
       ariaLabel: "大腿前侧，左侧，已选",
       selected: true,
     },
@@ -94,6 +95,7 @@ test("普通身体图为当前区域提供左右两侧的键盘等价控件", ()
       label: "大腿前侧",
       side: "right",
       sideLabel: "右侧",
+      hitSize: 44,
       ariaLabel: "大腿前侧，右侧，已选",
       selected: true,
     },
@@ -104,6 +106,7 @@ test("普通身体图为当前区域提供左右两侧的键盘等价控件", ()
       label: "大腿后侧",
       side: "left",
       sideLabel: "左侧",
+      hitSize: 44,
       ariaLabel: "大腿后侧，左侧，未选",
       selected: false,
     },
@@ -114,6 +117,7 @@ test("普通身体图为当前区域提供左右两侧的键盘等价控件", ()
       label: "大腿后侧",
       side: "right",
       sideLabel: "右侧",
+      hitSize: 44,
       ariaLabel: "大腿后侧，右侧，未选",
       selected: false,
     },
@@ -127,6 +131,7 @@ test("身体图等价控件不为空且每个目标始终成对提供左右按�
     const sidesByTarget = Object.groupBy(controls, (control) => control.targetId);
     for (const targetControls of Object.values(sidesByTarget)) {
       assert.deepEqual(targetControls.map((control) => control.side), ["left", "right"]);
+      assert.ok(targetControls.every((control) => control.hitSize === 44));
     }
   }
 });

@@ -161,6 +161,7 @@ export function getBodySideControlData({ regionId, selectedIds = [], selectedSid
         label,
         side,
         sideLabel,
+        hitSize: 44,
         ariaLabel: `${label}，${sideLabel}，${selected ? "已选" : "未选"}`,
         selected,
       };

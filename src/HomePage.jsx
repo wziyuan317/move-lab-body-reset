@@ -110,6 +110,7 @@ export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary }) {
             <BodyExplorer
               regionId={value.regionId}
               selectedIds={value.targetIds}
+              selectedSides={value.targetSides}
               viewSide={value.viewSide}
               onSelectRegion={selectRegion}
               onToggleTarget={toggleTarget}
@@ -159,7 +160,7 @@ export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary }) {
 
       <footer id="safety-note" className="home-footer">
         <p>本页用于日常动作教育与位置记录，不提供疾病诊断，不替代医生或物理治疗师的个体评估。</p>
-        <p>3D：Quaternius CC0 · Z-Anatomy / hpfrei CC BY-SA 4.0</p>
+        <p>运行时人体：Quaternius CC0 · 专业参考图：react-muscle-highlighter · Legacy Z-Anatomy 仅本地审计</p>
       </footer>
     </div>
   );

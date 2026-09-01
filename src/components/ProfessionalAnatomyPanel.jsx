@@ -1,111 +1,26 @@
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, useLoader } from "@react-three/fiber";
-import { Html, OrbitControls } from "@react-three/drei";
+import { useEffect, useMemo, useRef } from "react";
 import { X } from "@phosphor-icons/react";
-import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
-import { anatomyTargets, getRegionTargets } from "../bodyMap.js";
+import Body from "react-muscle-highlighter";
+import { getRegionTargets } from "../bodyMap.js";
+import {
+  getBodyPartFill,
+  getBodyRegionVisualData,
+  getTargetForBodySlug,
+} from "../bodyRegionMap.js";
 
-const baseUrl = import.meta.env.BASE_URL;
-const musclesUrl = `${baseUrl}assets/models/move-lab-muscles.glb`;
-
-function useMuscleModel() {
-  return useLoader(GLTFLoader, musclesUrl, (loader) => {
-    const draco = new DRACOLoader();
-    draco.setDecoderPath(`${baseUrl}draco/`);
-    loader.setDRACOLoader(draco);
-  });
-}
-
-function normalizeVisibleObject(object, height = 2) {
-  object.updateMatrixWorld(true);
-  const box = new THREE.Box3();
-  object.traverse((child) => {
-    if (child.isMesh && child.visible) box.expandByObject(child);
-  });
-  const size = box.getSize(new THREE.Vector3());
-  const center = box.getCenter(new THREE.Vector3());
-  const scale = height / Math.max(size.y, 0.001);
-  object.scale.setScalar(scale);
-  object.position.set(-center.x * scale, -center.y * scale, -center.z * scale);
-  object.updateMatrixWorld(true);
-  return object;
-}
-
-function findTargetForObject(object, targets) {
-  const labels = [object.name, object.userData?.name, object.userData?.nameDetail].filter(Boolean);
-  return targets.find((target) => target.meshNames.some((meshName) => labels.includes(meshName)));
-}
-
-function MuscleModel({ regionId, selectedIds, onToggleTarget }) {
-  const gltf = useMuscleModel();
-  const [hoveredId, setHoveredId] = useState();
-  const targets = useMemo(
-    () => getRegionTargets(regionId).filter((target) => target.kind === "muscle"),
-    [regionId],
-  );
-  const scene = useMemo(() => {
-    const next = gltf.scene.clone(true);
-    next.traverse((object) => {
-      if (!object.isMesh) return;
-      const target = object.userData?.type === "muscle" ? findTargetForObject(object, targets) : undefined;
-      object.visible = Boolean(target);
-      if (!target) return;
-      object.userData.moveTargetId = target.id;
-      object.material = object.material.clone();
-    });
-    return normalizeVisibleObject(next, 1.75);
-  }, [gltf.scene, targets]);
-
-  useEffect(() => {
-    scene.traverse((object) => {
-      const targetId = object.userData?.moveTargetId;
-      if (!object.isMesh || !targetId) return;
-      const target = anatomyTargets.find((item) => item.id === targetId);
-      const active = selectedIds.includes(targetId);
-      const hovered = hoveredId === targetId;
-      object.material.color.set(target.color).multiplyScalar(active || hovered ? 1 : 0.48);
-      if (object.material.emissive) {
-        object.material.emissive.set(target.color);
-        object.material.emissiveIntensity = active ? 0.42 : hovered ? 0.24 : 0.03;
-      }
-      object.material.roughness = active || hovered ? 0.36 : 0.7;
-      object.material.needsUpdate = true;
-    });
-  }, [hoveredId, scene, selectedIds]);
-
-  return (
-    <primitive
-      object={scene}
-      onClick={(event) => {
-        const targetId = event.object.userData?.moveTargetId;
-        if (!targetId) return;
-        event.stopPropagation();
-        onToggleTarget(targetId);
-      }}
-      onPointerMove={(event) => {
-        const targetId = event.object.userData?.moveTargetId;
-        if (!targetId) return;
-        event.stopPropagation();
-        setHoveredId(targetId);
-        document.body.style.cursor = "pointer";
-      }}
-      onPointerOut={() => {
-        setHoveredId(undefined);
-        document.body.style.cursor = "";
-      }}
-    />
-  );
-}
-
-function LoadingModel() {
-  return <Html center><div className="model-loading" role="status">正在加载专业解剖模型…</div></Html>;
-}
-
-export default function ProfessionalAnatomyPanel({ regionId, selectedIds, onToggleTarget, onClose }) {
+export default function ProfessionalAnatomyPanel({ regionId, selectedIds, selectedSides = {}, onToggleTarget, onClose }) {
   const dialogRef = useRef(null);
   const closeButtonRef = useRef(null);
+  const targets = useMemo(() => getRegionTargets(regionId), [regionId]);
+  const muscleTargets = useMemo(() => targets.filter((target) => target.kind === "muscle"), [targets]);
+  const selectedTargets = targets.filter((target) => selectedIds.includes(target.id));
+  const bodyData = getBodyRegionVisualData({ regionId, selectedIds, selectedSides }).map(({ slug, selected, side }) => {
+    const target = targets.find((item) => item.id === getTargetForBodySlug(slug, regionId));
+    return {
+      slug,
+      ...(target ? { color: selected ? target.color : "#79a8ed", side } : {}),
+    };
+  });
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -113,14 +28,22 @@ export default function ProfessionalAnatomyPanel({ regionId, selectedIds, onTogg
     closeButtonRef.current?.focus();
   }, []);
 
+  const closeDialog = () => dialogRef.current?.close();
+
   return (
     <dialog
       ref={dialogRef}
       className="professional-anatomy"
       aria-labelledby="professional-anatomy-title"
       aria-describedby="professional-anatomy-note"
+      onCancel={(event) => {
+        event.preventDefault();
+        closeDialog();
+      }}
       onKeyDown={(event) => {
-        if (event.key === "Escape") dialogRef.current?.close();
+        if (event.key !== "Escape") return;
+        event.preventDefault();
+        closeDialog();
       }}
       onClose={onClose}
     >
@@ -129,18 +52,59 @@ export default function ProfessionalAnatomyPanel({ regionId, selectedIds, onTogg
           <small>PROFESSIONAL VIEW</small>
           <h2 id="professional-anatomy-title">专业解剖模式</h2>
         </div>
-        <button ref={closeButtonRef} type="button" onClick={() => dialogRef.current?.close()} aria-label="关闭专业解剖模式"><X size={23} weight="bold" />关闭</button>
+        <button ref={closeButtonRef} type="button" onClick={closeDialog} aria-label="关闭专业解剖模式">
+          <X size={23} weight="bold" />关闭
+        </button>
       </header>
-      <div className="professional-anatomy__canvas">
-        <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 3.8], fov: 34 }}>
-          <ambientLight intensity={2.1} />
-          <directionalLight position={[3, 4, 5]} intensity={3} />
-          <Suspense fallback={<LoadingModel />}>
-            <MuscleModel regionId={regionId} selectedIds={selectedIds} onToggleTarget={onToggleTarget} />
-          </Suspense>
-          <OrbitControls enablePan={false} minDistance={2.3} maxDistance={6} />
-        </Canvas>
+
+      <div className="professional-anatomy__legend" aria-label="解剖图例">
+        <span><i className="is-region" />当前区域</span>
+        <span><i className="is-selected" />已选目标</span>
+        <span><i className="is-reference" />其余身体参照</span>
       </div>
+
+      <div className="professional-anatomy__body-grid" aria-label="完整正背人体背景参照">
+        <figure>
+          <figcaption>正面</figcaption>
+          <Body data={bodyData} side="front" gender="male" defaultFill={getBodyPartFill()} defaultStroke="#9aacbf" defaultStrokeWidth={1} />
+        </figure>
+        <figure>
+          <figcaption>背面</figcaption>
+          <Body data={bodyData} side="back" gender="male" defaultFill={getBodyPartFill()} defaultStroke="#9aacbf" defaultStrokeWidth={1} />
+        </figure>
+      </div>
+
+      <section className="professional-anatomy__selection" aria-labelledby="professional-anatomy-selection-title">
+        <div>
+          <h3 id="professional-anatomy-selection-title">当前选中目标</h3>
+          <div className="professional-anatomy__selected-tags" aria-live="polite">
+            {selectedTargets.length > 0
+              ? selectedTargets.map((target) => <span key={target.id} style={{ "--target-color": target.color }}>{target.label}</span>)
+              : <span className="is-empty">尚未选择具体位置</span>}
+          </div>
+        </div>
+        {muscleTargets.length > 0 && (
+          <div className="professional-anatomy__target-controls" aria-label="当前区域肌群选择">
+            {muscleTargets.map((target) => {
+              const selected = selectedIds.includes(target.id);
+              return (
+                <button
+                  key={target.id}
+                  type="button"
+                  data-hit-size="44"
+                  aria-pressed={selected}
+                  className={selected ? "is-active" : ""}
+                  style={{ "--target-color": target.color }}
+                  onClick={() => onToggleTarget(target.id)}
+                >
+                  <i />{target.label}
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </section>
+
       <p id="professional-anatomy-note">仅用于解剖教育与位置沟通，不提供诊断，也不能替代医生或物理治疗师的个体评估。</p>
     </dialog>
   );

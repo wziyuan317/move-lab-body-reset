@@ -66,7 +66,7 @@ function ExplorerFallback({ regionId, onSelectRegion }) {
   );
 }
 
-export function BodyExplorer({ regionId, selectedIds, viewSide, onSelectRegion, onToggleTarget, onChangeViewSide }) {
+export function BodyExplorer({ regionId, selectedIds, selectedSides, viewSide, onSelectRegion, onToggleTarget, onChangeViewSide }) {
   const [professionalOpen, setProfessionalOpen] = useState(false);
   const professionalTriggerRef = useRef(null);
 
@@ -112,6 +112,7 @@ export function BodyExplorer({ regionId, selectedIds, viewSide, onSelectRegion, 
           <ProfessionalAnatomyPanel
             regionId={regionId}
             selectedIds={selectedIds}
+            selectedSides={selectedSides}
             onToggleTarget={onToggleTarget}
             onClose={closeProfessional}
           />

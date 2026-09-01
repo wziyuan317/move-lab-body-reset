@@ -23,6 +23,7 @@
 - hpfrei 官方许可证原文已保存为 `HPFREI-BODY-ANATOMY-3D-VIEWER-LICENSE.txt`，SHA-256 `8dddf9ce9d2004fd6bb13f1f5f0985f673d46bbb49fed4b83092bbd402a837bf`，明确为 CC BY-SA 4.0。
 - Z-Anatomy 官方许可证原文已保存为 `Z-ANATOMY-LICENSE.txt`（仅规范行尾空格并补文件末换行），SHA-256 `9d84c0eeff7a1a22027a3f2edd24b02a4cab76bf6b5038f29cfc35eff49a0209`；下载原始字节 SHA-256 为 `196b66b56551a862e59872f7cdb70e6d9a6ad84e9105962fca8ec28c14e97520`。主许可为 CC BY-SA 4.0，并保留其中列出的第三方来源与附加许可提示。
 - 许可状态：`VERIFIED_UPSTREAM_CC_BY_SA_4_0_WITH_ATTRIBUTION_NOTICE`。该专业解剖资产与上面的 Quaternius 着装角色是两个独立来源，不属于该角色的公有领域资产。
-- 用途：仅显示当前区域相关且元数据 `type` 为 `muscle` 的网格，用于教育性位置标记，不作为诊断。
+- 用途：仅作为 pre-existing 本地审计素材，用于核对历史实现和上游许可证据；生产 UI 不加载或引用该文件。
+- 发布政策：完整 `body.glb` 目前无法排除包含不允许商业分发的 NC mesh。在逐网格来源和授权未全部核验前，Sites、GitHub Pages 与普通 Vite build 都禁止分发 `move-lab-muscles.glb`；构建配置会从产物中明确排除它，自动检查同时阻止运行时 URL 回归。
 
-本项目对 Z-Anatomy 衍生模型的再分发继续采用 CC BY-SA 4.0。
+该 legacy 文件在仓库中保留原字节与 CC BY-SA 4.0 证据，但不属于可发布 runtime，也不属于 Quaternius CC0 角色素材。

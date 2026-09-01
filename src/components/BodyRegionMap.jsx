@@ -3,7 +3,6 @@ import {
   getBodyPartFill,
   getBodyRegionVisualData,
   getBodySideControlData,
-  getTargetForBodySlug,
 } from "../bodyRegionMap.js";
 
 export function BodyRegionMap({ regionId, selectedIds = [], selectedSides = {}, viewSide, onToggleTarget, onChangeViewSide }) {
@@ -38,9 +37,6 @@ export function BodyRegionMap({ regionId, selectedIds = [], selectedSides = {}, 
         </button>
       </div>
       <div id="body-region-map-body" className="body-region-map__body" role="tabpanel" aria-label={`${viewSide === "front" ? "正面" : "背面"}身体图`}>
-        <style>{`
-          .body-region-map__body path:hover { fill: ${getBodyPartFill({ hovered: true })} !important; }
-        `}</style>
         <Body
           data={bodyData}
           side={viewSide}
@@ -48,10 +44,6 @@ export function BodyRegionMap({ regionId, selectedIds = [], selectedSides = {}, 
           defaultFill={getBodyPartFill()}
           defaultStroke="#9aacbf"
           defaultStrokeWidth={1}
-          onBodyPartPress={(part, side) => {
-            const targetId = getTargetForBodySlug(part.slug, regionId);
-            if (targetId) onToggleTarget(targetId, side);
-          }}
         />
       </div>
       <div className="body-region-map__side-controls" aria-label="身体位置左右侧选择">
@@ -59,6 +51,7 @@ export function BodyRegionMap({ regionId, selectedIds = [], selectedSides = {}, 
           <button
             key={control.id}
             type="button"
+            data-hit-size={control.hitSize}
             aria-label={control.ariaLabel}
             aria-pressed={control.selected}
             className={control.selected ? "is-active" : ""}
