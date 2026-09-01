@@ -1,13 +1,11 @@
 import { useMemo } from "react";
 import {
-  ArrowRight,
-  BookOpen,
   PersonSimple,
   Sparkle,
 } from "@phosphor-icons/react";
 import {
   bodyRegions,
-  canOpenTutorials,
+  getExplorerStep,
   getRecommendations,
   toggleTargetSelection,
 } from "./bodyMap.js";
@@ -21,9 +19,20 @@ export function HomePage({ value, onChange, onOpenTutorial }) {
     () => getRecommendations(value),
     [value],
   );
-  const tutorialsAvailable = canOpenTutorials(result);
+  const explorerStep = getExplorerStep(value);
 
   const update = (patch) => onChange({ ...value, ...patch });
+  const requestStep = (requestedStep) => {
+    if (requestedStep === 3 && explorerStep !== 3) return;
+    const selector = requestedStep === 1
+      ? ".region-button-grid button"
+      : requestedStep === 2
+        ? ".choice-grid button:not(:disabled)"
+        : "#recommendation-panel";
+    const target = document.querySelector(selector);
+    target?.scrollIntoView({ behavior: "smooth", block: "center" });
+    target?.focus();
+  };
 
   return (
     <div className="home-shell">
@@ -34,13 +43,7 @@ export function HomePage({ value, onChange, onOpenTutorial }) {
         </a>
         <nav aria-label="主要导航">
           <a href="#body-map" className="is-active">身体定位</a>
-          {tutorialsAvailable && <button type="button" onClick={() => onOpenTutorial()}>动作教程</button>}
         </nav>
-        {tutorialsAvailable && (
-          <button type="button" className="library-cta" onClick={() => onOpenTutorial()}>
-            <BookOpen size={19} weight="bold" />打开 15 个教程
-          </button>
-        )}
       </header>
 
       <main id="body-map" className="home-main">
@@ -60,10 +63,12 @@ export function HomePage({ value, onChange, onOpenTutorial }) {
         <div className="explorer-layout">
           <AssessmentPanel
             region={region}
+            step={explorerStep}
             symptomIds={value.symptomIds}
             redFlagIds={value.redFlagIds}
             onChangeSymptoms={(symptomIds) => update({ symptomIds })}
             onChangeRedFlags={(redFlagIds) => update({ redFlagIds })}
+            onRequestStep={requestStep}
           />
 
           <BodyExplorer
@@ -76,15 +81,11 @@ export function HomePage({ value, onChange, onOpenTutorial }) {
           <RecommendationPanel
             region={region}
             selectedIds={value.targetIds}
+            symptomIds={value.symptomIds}
             result={result}
             onOpenTutorial={onOpenTutorial}
           />
         </div>
-
-        <section className="home-tutorial-band">
-          <div><small>ALREADY KNOW WHAT YOU NEED?</small><strong>也可以直接进入完整动作库</strong><p>搜索颈部、肩胛、腰背、膝盖等部位，查看动作原理、过程图、到位标准、好处和停止条件。</p></div>
-          {tutorialsAvailable && <button type="button" onClick={() => onOpenTutorial()}><span>浏览全部教程</span><ArrowRight size={23} weight="bold" /></button>}
-        </section>
       </main>
 
       <footer className="home-footer">

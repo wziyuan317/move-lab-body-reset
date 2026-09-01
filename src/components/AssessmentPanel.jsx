@@ -5,7 +5,17 @@ function toggle(ids, id) {
   return ids.includes(id) ? ids.filter((item) => item !== id) : [...ids, id];
 }
 
-export function AssessmentPanel({ region, symptomIds, redFlagIds, onChangeSymptoms, onChangeRedFlags }) {
+export function AssessmentPanel({ region, step, symptomIds, redFlagIds, onChangeSymptoms, onChangeRedFlags, onRequestStep }) {
+  const selectedSymptoms = symptoms
+    .filter((symptom) => symptomIds.includes(symptom.id))
+    .map((symptom) => symptom.label)
+    .join("、");
+  const steps = [
+    { id: 1, done: Boolean(region), current: step === 1, label: "选择位置", detail: region ? region.label : "在人体或文字区点选", disabled: false },
+    { id: 2, done: symptomIds.length > 0, current: step === 2, label: "描述感受", detail: selectedSymptoms || "可以同时选择多个", disabled: !region },
+    { id: 3, done: step === 3, current: step === 3, label: "获得建议", detail: step === 3 ? "查看匹配依据与动作" : "完成感受后可查看", disabled: step !== 3 },
+  ];
+
   return (
     <aside className="assessment-panel">
       <div className="quest-label">BODY QUEST</div>
@@ -13,18 +23,23 @@ export function AssessmentPanel({ region, symptomIds, redFlagIds, onChangeSympto
       <p>先标记位置，再描述感受。这里帮助你找教程，不判断疾病。</p>
 
       <ol className="quest-steps">
-        <li className={region ? "is-done" : "is-current"}>
-          <span>{region ? <Check size={18} weight="bold" /> : "1"}</span>
-          <div><strong>选择位置</strong><small>{region ? region.label : "在人体或文字区点选"}</small></div>
-        </li>
-        <li className={region ? "is-current" : ""}>
-          <span>2</span>
-          <div><strong>描述感受</strong><small>可以同时选择多个</small></div>
-        </li>
-        <li className={region && symptomIds.length ? "is-current" : ""}>
-          <span>3</span>
-          <div><strong>获得建议</strong><small>匹配原有动作教程</small></div>
-        </li>
+        {steps.map((item) => (
+          <li
+            key={item.id}
+            className={`${item.done && item.id !== 3 ? "is-done" : ""}${item.current ? " is-current" : ""}`}
+            style={{ position: "relative" }}
+          >
+            <button
+              type="button"
+              aria-label={`${item.label}：${item.detail}`}
+              disabled={item.disabled}
+              onClick={() => onRequestStep(item.id)}
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", padding: 0, background: "transparent", border: 0, cursor: item.disabled ? "not-allowed" : "pointer", zIndex: 1 }}
+            />
+            <span>{item.done && item.id !== 3 ? <Check size={18} weight="bold" /> : item.id}</span>
+            <div><strong>{item.label}</strong><small>{item.detail}</small></div>
+          </li>
+        ))}
       </ol>
 
       <div className="assessment-group">

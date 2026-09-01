@@ -6,7 +6,7 @@ import {
   Sparkle,
   Target,
 } from "@phosphor-icons/react";
-import { anatomyTargets } from "../bodyMap.js";
+import { anatomyTargets, symptoms } from "../bodyMap.js";
 import { movements, selectMovementThumbnail } from "../movements.js";
 
 const sourceLinks = [
@@ -16,25 +16,46 @@ const sourceLinks = [
   { label: "NICE 腰痛指南", href: "https://www.nice.org.uk/guidance/ng59" },
 ];
 
-function SuggestedMovement({ movement, onOpen }) {
+function SuggestedMovement({ movement }) {
   return (
-    <button type="button" className="suggested-movement" onClick={() => onOpen(movement.id)}>
+    <article className="suggested-movement">
       <img src={selectMovementThumbnail(movement)} alt="" />
       <span><small>{movement.category} · {movement.duration}</small><strong>{movement.shortTitle}</strong></span>
       <ArrowRight size={20} weight="bold" aria-hidden="true" />
-    </button>
+    </article>
   );
 }
 
-export function RecommendationPanel({ region, selectedIds, result, onOpenTutorial }) {
+const guidance = {
+  "gentle-mobility": {
+    status: "适合从温和活动开始",
+    title: "先从舒适范围内的活动开始",
+    copy: "这些动作根据你报告的位置和感受匹配，用于日常活动与放松参考，不用于判断疾病或受损组织。",
+  },
+  "caution-neuro": {
+    status: "先谨慎观察变化",
+    title: "先用低强度动作，并留意麻木或无力的变化",
+    copy: "你报告了麻木或无力。只在舒适范围内做低强度活动；若症状加重、范围扩大或影响日常活动，请停止并寻求专业评估。",
+  },
+  "caution-swelling": {
+    status: "先谨慎观察反应",
+    title: "先用低强度动作，并留意肿胀变化",
+    copy: "你报告了肿胀。只在舒适范围内做低强度活动；若肿胀或疼痛加重，请停止并寻求专业评估。",
+  },
+};
+
+export function RecommendationPanel({ region, selectedIds, symptomIds, result, onOpenTutorial }) {
   const selectedTargets = anatomyTargets.filter((target) => selectedIds.includes(target.id));
+  const selectedSymptoms = symptoms
+    .filter((symptom) => symptomIds.includes(symptom.id))
+    .map((symptom) => symptom.label);
   const recommendations = result.movementIds
     .map((id) => movements.find((movement) => movement.id === id))
     .filter(Boolean);
 
   if (result.status === "blocked") {
     return (
-      <aside className="recommendation-panel recommendation-panel--blocked" aria-live="polite">
+      <aside id="recommendation-panel" className="recommendation-panel recommendation-panel--blocked" aria-live="polite" tabIndex="-1">
         <div className="result-status result-status--danger"><ShieldWarning size={23} weight="fill" />先暂停自我训练</div>
         <h2>这次更适合先做专业评估</h2>
         <p>你勾选的表现需要排除不适合自行练习的情况。先停止会加重症状的动作，并联系医生或物理治疗师；若症状突然严重，请及时就医。</p>
@@ -43,15 +64,28 @@ export function RecommendationPanel({ region, selectedIds, result, onOpenTutoria
     );
   }
 
+  if (result.status === "idle" || result.status === "incomplete") {
+    const incomplete = result.status === "incomplete";
+    return (
+      <aside id="recommendation-panel" className="recommendation-panel" aria-live="polite" tabIndex="-1">
+        <div className="result-status"><Info size={22} weight="fill" />{incomplete ? "还差一步" : "从位置开始"}</div>
+        <h2>{incomplete ? "接着描述现在的感受" : "先在身体上选择位置"}</h2>
+        <p className="result-lead">
+          {incomplete
+            ? `${region.label}已记录。选择至少一种感受后，才会显示教育性动作建议。`
+            : "选择大区域后，再描述感受；完成两步后才会显示匹配的动作教程。"}
+        </p>
+      </aside>
+    );
+  }
+
+  const currentGuidance = guidance[result.guidanceKey];
+
   return (
-    <aside className="recommendation-panel" aria-live="polite">
-      <div className="result-status"><CheckCircle size={22} weight="fill" />教育性运动建议</div>
-      <h2>{region ? `${region.label}可以从这里开始` : "先在人体上选择位置"}</h2>
-      <p className="result-lead">
-        {region
-          ? "以下内容根据你标记的位置匹配，适合一般的日常活动与放松参考。"
-          : "选择大区域后，模型会放大并显示可点击的真实肌肉网格。"}
-      </p>
+    <aside id="recommendation-panel" className="recommendation-panel" aria-live="polite" tabIndex="-1">
+      <div className="result-status"><CheckCircle size={22} weight="fill" />{currentGuidance.status}</div>
+      <h2>{currentGuidance.title}</h2>
+      <p className="result-lead">{currentGuidance.copy}</p>
 
       {selectedTargets.length > 0 && (
         <section className="selected-anatomy">
@@ -65,19 +99,20 @@ export function RecommendationPanel({ region, selectedIds, result, onOpenTutoria
         </section>
       )}
 
-      {region && (
-        <section className="why-card">
-          <h3><Info size={20} weight="fill" />为什么从这些动作开始</h3>
-          <p>办公室久坐常让局部保持同一负荷，同时减少相邻关节和肌群的活动。温和活动、渐进负荷与舒适范围内的练习，可以帮助恢复活动选择并提高耐受。</p>
-        </section>
-      )}
+      <section className="why-card">
+        <h3><Info size={20} weight="fill" />匹配依据</h3>
+        <p>你选择了 {region.label}{selectedSymptoms.length ? `，并描述为${selectedSymptoms.join("、")}` : ""}。建议按舒适范围、由少到多尝试，不把位置标签当作诊断结论。</p>
+      </section>
 
       {recommendations.length > 0 && (
         <section className="recommendation-list">
           <div className="recommendation-list__heading"><strong>匹配的教程</strong><small>先选 1 个，舒适完成</small></div>
           {recommendations.map((movement) => (
-            <SuggestedMovement key={movement.id} movement={movement} onOpen={onOpenTutorial} />
+            <SuggestedMovement key={movement.id} movement={movement} />
           ))}
+          <button type="button" className="library-cta" onClick={() => onOpenTutorial(recommendations[0].id)}>
+            从第一个匹配动作开始
+          </button>
         </section>
       )}
 

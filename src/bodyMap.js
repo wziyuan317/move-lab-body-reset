@@ -205,11 +205,16 @@ export function getRecommendations({ regionId, targetIds = [], symptomIds = [], 
     .slice(0, 3);
 
   const status = symptomIds.some((id) => cautionSymptomIds.has(id)) ? "caution" : "ready";
-  return { status, movementIds: ranked, guidanceKey: status };
+  const guidanceKey = status === "ready"
+    ? "gentle-mobility"
+    : symptomIds.some((id) => id === "weakness" || id === "tingling")
+      ? "caution-neuro"
+      : "caution-swelling";
+  return { status, movementIds: ranked, guidanceKey };
 }
 
 export function canOpenTutorials({ status }) {
-  return status !== "blocked";
+  return status === "ready" || status === "caution";
 }
 
 const validRegionIds = new Set(bodyRegions.map((region) => region.id));

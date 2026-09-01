@@ -107,6 +107,15 @@ test("肿胀或麻木进入谨慎状态但红旗才阻断教程", () => {
   }).status, "blocked");
 });
 
+test("感受会改变教育提示而不会声明诊断", () => {
+  const tight = getRecommendations({ regionId: "neck", targetIds: [], symptomIds: ["tightness"], redFlagIds: [] });
+  const neuro = getRecommendations({ regionId: "neck", targetIds: [], symptomIds: ["tingling"], redFlagIds: [] });
+
+  assert.equal(tight.guidanceKey, "gentle-mobility");
+  assert.equal(neuro.guidanceKey, "caution-neuro");
+  assert.equal(neuro.status, "caution");
+});
+
 test("膝和踝均提供关节附近或无法确定的安全选项", () => {
   assert.deepEqual(
     getRegionTargets("knee").filter((target) => target.kind === "joint").map((target) => target.id),
@@ -153,6 +162,12 @@ test("红旗状态禁用教程入口", () => {
 
   assert.equal(canOpenTutorials(blocked), false);
   assert.equal(canOpenTutorials({ status: "ready" }), true);
+});
+
+test("只有完成感受后的建议状态才能打开教程", () => {
+  assert.equal(canOpenTutorials({ status: "idle" }), false);
+  assert.equal(canOpenTutorials({ status: "incomplete" }), false);
+  assert.equal(canOpenTutorials({ status: "caution" }), true);
 });
 
 test("多肌群推荐优先返回同时覆盖更多目标的既有教程", () => {
