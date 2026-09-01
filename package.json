@@ -8,7 +8,7 @@
     "build": "vite build && node scripts/prepare-sites-build.mjs",
     "build:github": "vite build --base=/move-lab-body-reset/ --outDir dist/github",
     "preview": "vite preview",
-    "test": "node --test tests/movements.test.mjs tests/body-map.test.mjs tests/body-assets.test.mjs",
+    "test": "node --test tests/movements.test.mjs tests/body-map.test.mjs tests/body-region-map.test.mjs tests/body-assets.test.mjs",
     "test:sites": "node --test tests/sites-worker.test.mjs"
   },
   "dependencies": {

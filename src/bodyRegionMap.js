@@ -34,6 +34,22 @@ const targetRegionsBySlug = {
   ankles: { "ankle-joint-unsure": "ankle" },
 };
 
+const primaryTargetsBySlugRegion = {
+  neck: { neck: "posterior-neck" },
+  trapezius: { neck: "upper-trapezius", shoulder: "middle-lower-trapezius" },
+  deltoids: { shoulder: "deltoid" },
+  chest: { thorax: "pectoralis-major" },
+  "upper-back": { shoulder: "rhomboids", thorax: "thoracic-erectors" },
+  "lower-back": { "low-back": "lumbar-erectors" },
+  gluteal: { hip: "gluteus-maximus" },
+  quadriceps: { thigh: "quadriceps-area", knee: "rectus-femoris" },
+  hamstring: { thigh: "hamstring-area", knee: "knee-hamstrings" },
+  knees: { knee: "knee-front" },
+  calves: { ankle: "gastrocnemius" },
+  tibialis: { ankle: "tibialis-anterior" },
+  ankles: { ankle: "ankle-joint-unsure" },
+};
+
 export const bodySlugTargets = Object.freeze(
   Object.fromEntries(
     Object.entries(targetRegionsBySlug).map(([slug, targetRegions]) => [slug, Object.freeze(Object.keys(targetRegions))]),
@@ -41,5 +57,24 @@ export const bodySlugTargets = Object.freeze(
 );
 
 export function getTargetForBodySlug(slug, regionId) {
-  return bodySlugTargets[slug]?.find((targetId) => targetRegionsBySlug[slug][targetId] === regionId);
+  return primaryTargetsBySlugRegion[slug]?.[regionId];
+}
+
+function normalizeSelectedSides(value) {
+  const values = Array.isArray(value) ? value : [value];
+  return ["left", "right"].filter((side) => values.includes(side));
+}
+
+export function getBodyRegionVisualData({ regionId, selectedIds = [], selectedSides = {} } = {}) {
+  return Object.keys(bodySlugTargets).map((slug) => {
+    const targetId = getTargetForBodySlug(slug, regionId);
+    const selected = Boolean(targetId && selectedIds.includes(targetId));
+    const sides = selected ? normalizeSelectedSides(selectedSides[targetId]) : [];
+    return { slug, selected, side: sides.length === 1 ? sides[0] : undefined };
+  });
+}
+
+export function getBodyPartFill({ selected = false, hovered = false } = {}) {
+  if (hovered) return "#ffd43b";
+  return selected ? "#ff665c" : "#dce5f2";
 }
