@@ -1,11 +1,17 @@
 import Body from "react-muscle-highlighter";
-import { getBodyPartFill, getBodyRegionVisualData, getTargetForBodySlug } from "../bodyRegionMap.js";
+import {
+  getBodyPartFill,
+  getBodyRegionVisualData,
+  getBodySideControlData,
+  getTargetForBodySlug,
+} from "../bodyRegionMap.js";
 
 export function BodyRegionMap({ regionId, selectedIds = [], selectedSides = {}, viewSide, onToggleTarget, onChangeViewSide }) {
   const bodyData = getBodyRegionVisualData({ regionId, selectedIds, selectedSides }).map(({ slug, selected, side }) => ({
     slug,
     ...(selected ? { color: getBodyPartFill({ selected }), side } : {}),
   }));
+  const sideControls = getBodySideControlData({ regionId, selectedIds, selectedSides });
 
   return (
     <section className="body-region-map" aria-label="2D 身体分区定位">
@@ -47,6 +53,21 @@ export function BodyRegionMap({ regionId, selectedIds = [], selectedSides = {}, 
             if (targetId) onToggleTarget(targetId, side);
           }}
         />
+      </div>
+      <div className="body-region-map__side-controls" aria-label="身体位置左右侧选择">
+        {sideControls.map((control) => (
+          <button
+            key={control.id}
+            type="button"
+            aria-label={control.ariaLabel}
+            aria-pressed={control.selected}
+            className={control.selected ? "is-active" : ""}
+            onClick={() => onToggleTarget(control.targetId, control.side)}
+          >
+            <span>{control.label}</span>
+            <strong>{control.sideLabel}</strong>
+          </button>
+        ))}
       </div>
     </section>
   );

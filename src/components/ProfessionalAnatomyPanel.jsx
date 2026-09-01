@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
 import { X } from "@phosphor-icons/react";
@@ -104,14 +104,32 @@ function LoadingModel() {
 }
 
 export default function ProfessionalAnatomyPanel({ regionId, selectedIds, onToggleTarget, onClose }) {
+  const dialogRef = useRef(null);
+  const closeButtonRef = useRef(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog.open) dialog.showModal();
+    closeButtonRef.current?.focus();
+  }, []);
+
   return (
-    <section className="professional-anatomy" role="dialog" aria-modal="true" aria-labelledby="professional-anatomy-title">
+    <dialog
+      ref={dialogRef}
+      className="professional-anatomy"
+      aria-labelledby="professional-anatomy-title"
+      aria-describedby="professional-anatomy-note"
+      onKeyDown={(event) => {
+        if (event.key === "Escape") dialogRef.current?.close();
+      }}
+      onClose={onClose}
+    >
       <header>
         <div>
           <small>PROFESSIONAL VIEW</small>
           <h2 id="professional-anatomy-title">专业解剖模式</h2>
         </div>
-        <button type="button" onClick={onClose} aria-label="关闭专业解剖模式"><X size={23} weight="bold" />关闭</button>
+        <button ref={closeButtonRef} type="button" onClick={() => dialogRef.current?.close()} aria-label="关闭专业解剖模式"><X size={23} weight="bold" />关闭</button>
       </header>
       <div className="professional-anatomy__canvas">
         <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 3.8], fov: 34 }}>
@@ -123,7 +141,7 @@ export default function ProfessionalAnatomyPanel({ regionId, selectedIds, onTogg
           <OrbitControls enablePan={false} minDistance={2.3} maxDistance={6} />
         </Canvas>
       </div>
-      <p>仅用于解剖教育与位置沟通，不提供诊断，也不能替代医生或物理治疗师的个体评估。</p>
-    </section>
+      <p id="professional-anatomy-note">仅用于解剖教育与位置沟通，不提供诊断，也不能替代医生或物理治疗师的个体评估。</p>
+    </dialog>
   );
 }

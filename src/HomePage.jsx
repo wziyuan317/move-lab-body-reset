@@ -20,16 +20,22 @@ function normalizeSides(value) {
   return (Array.isArray(value) ? value : [value]).filter((side) => side === "left" || side === "right");
 }
 
-export function HomePage({ value, onChange, onOpenTutorial }) {
+export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary }) {
   const region = bodyRegions.find((item) => item.id === value.regionId);
   const result = useMemo(() => getRecommendations(value), [value]);
   const explorerStep = getExplorerStep(value);
   const [mobileStep, setMobileStep] = useState(explorerStep);
+  const [locationExpanded, setLocationExpanded] = useState(false);
 
   const update = (patch) => onChange({ ...value, ...patch });
+  const selectRegion = (regionId) => {
+    setLocationExpanded(false);
+    update({ regionId });
+  };
   const requestStep = (requestedStep) => {
     if (requestedStep === 2 && !region) return;
     if (requestedStep === 3 && explorerStep !== 3) return;
+    if (requestedStep === 3) setLocationExpanded(false);
     setMobileStep(requestedStep);
     const selector = requestedStep === 1
       ? ".region-rail button"
@@ -75,15 +81,15 @@ export function HomePage({ value, onChange, onOpenTutorial }) {
         </a>
         <nav aria-label="主要导航">
           <a href="#body-map" className="is-active">身体定位</a>
-          <a href="#region-rail">动作库</a>
-          <a href="#safety-note">知识库</a>
+          <button type="button" onClick={onOpenLibrary} disabled={result.status === "blocked"}>动作库</button>
+          <a href="#safety-note">安全说明</a>
         </nav>
         <div className="home-nav__status"><ShieldCheck size={19} weight="fill" />日常动作教育</div>
       </header>
 
       <main id="body-map" className="home-main">
         <div className="location-workspace" data-mobile-step={mobileStep}>
-          <aside className="mission-column">
+          <aside className={`mission-column mission-column--step-${explorerStep}`}>
             <div className="mission-banner">
               <small>今日任务</small>
               <strong>定位不适</strong>
@@ -105,20 +111,22 @@ export function HomePage({ value, onChange, onOpenTutorial }) {
               regionId={value.regionId}
               selectedIds={value.targetIds}
               viewSide={value.viewSide}
-              onSelectRegion={(regionId) => update({ regionId })}
+              onSelectRegion={selectRegion}
               onToggleTarget={toggleTarget}
               onChangeViewSide={(viewSide) => update({ viewSide })}
             />
           </div>
 
-          <aside className="result-column">
+          <aside className={`result-column result-column--step-${explorerStep}`}>
             <BodyLocationSelector
               regionId={value.regionId}
               selectedIds={value.targetIds}
               selectedSides={value.targetSides}
               viewSide={value.viewSide}
+              step={explorerStep === 3 && !locationExpanded ? 3 : 2}
               onToggleTarget={toggleTarget}
               onChangeViewSide={(viewSide) => update({ viewSide })}
+              onEditLocation={() => setLocationExpanded(true)}
             />
             <RecommendationPanel
               region={region}
@@ -131,7 +139,7 @@ export function HomePage({ value, onChange, onOpenTutorial }) {
         </div>
 
         <div id="region-rail">
-          <RegionRail regionId={value.regionId} onSelectRegion={(regionId) => update({ regionId })} />
+          <RegionRail regionId={value.regionId} onSelectRegion={selectRegion} />
         </div>
       </main>
 

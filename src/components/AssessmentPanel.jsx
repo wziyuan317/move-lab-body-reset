@@ -18,7 +18,7 @@ export function AssessmentPanel({ region, step, symptomIds, redFlagIds, onChange
   ];
 
   return (
-    <aside className="assessment-panel">
+    <aside className="assessment-panel" data-step={step}>
       <div className="quest-label">BODY QUEST</div>
       <h2>定位身体信号</h2>
       <p>先标记位置，再描述感受。这里帮助你找教程，不判断疾病。</p>

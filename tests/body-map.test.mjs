@@ -244,6 +244,53 @@ test("首页与教程深链状态可以往返并忽略未知值", () => {
   });
 });
 
+test("双侧定位在首页与教程 URL 往返后保持双侧数组", () => {
+  const search = serializeExplorerState({
+    view: "library",
+    movementId: "supported-half-squat",
+    regionId: "thigh",
+    targetIds: ["quadriceps-area"],
+    targetSides: { "quadriceps-area": ["left", "right", "unknown"] },
+    symptomIds: ["tightness"],
+    step: 3,
+  });
+
+  assert.deepEqual(new URLSearchParams(search).getAll("side"), [
+    "quadriceps-area:left",
+    "quadriceps-area:right",
+  ]);
+  assert.deepEqual(parseExplorerState(search), {
+    view: "library",
+    movementId: "supported-half-squat",
+    regionId: "thigh",
+    targetIds: ["quadriceps-area"],
+    targetSides: { "quadriceps-area": ["left", "right"] },
+    symptomIds: ["tightness"],
+    step: 3,
+  });
+});
+
+test("旧单侧 URL 继续恢复为字符串，重复 side 才累积为数组", () => {
+  assert.deepEqual(
+    parseExplorerState("?region=thigh&targets=quadriceps-area&side=quadriceps-area%3Aleft"),
+    {
+      view: "home",
+      regionId: "thigh",
+      targetIds: ["quadriceps-area"],
+      targetSides: { "quadriceps-area": "left" },
+    },
+  );
+  assert.deepEqual(
+    parseExplorerState("?region=thigh&targets=quadriceps-area&side=quadriceps-area%3Aleft&side=quadriceps-area%3Aright"),
+    {
+      view: "home",
+      regionId: "thigh",
+      targetIds: ["quadriceps-area"],
+      targetSides: { "quadriceps-area": ["left", "right"] },
+    },
+  );
+});
+
 test("旧 URL 没有新状态字段时仍可恢复已有定位", () => {
   assert.deepEqual(parseExplorerState("?region=shoulder&targets=rhomboids&symptoms=tightness"), {
     view: "home",

@@ -236,8 +236,11 @@ export function serializeExplorerState(state) {
   const targets = (state.targetIds ?? []).filter((id) => validTargetIds.has(id));
   if (targets.length) params.set("targets", targets.join(","));
   for (const targetId of targets) {
-    const side = state.targetSides?.[targetId];
-    if (validTargetSides.has(side)) params.append("side", `${targetId}:${side}`);
+    const sideValue = state.targetSides?.[targetId];
+    const sides = Array.isArray(sideValue) ? sideValue : [sideValue];
+    for (const side of sides) {
+      if (validTargetSides.has(side)) params.append("side", `${targetId}:${side}`);
+    }
   }
   const symptomIds = (state.symptomIds ?? []).filter((id) => validSymptomIds.has(id));
   if (symptomIds.length) params.set("symptoms", symptomIds.join(","));
@@ -262,7 +265,15 @@ export function parseExplorerState(search = "") {
   const targetSides = {};
   for (const pair of params.getAll("side")) {
     const [targetId, side] = pair.split(":");
-    if (targetIds.includes(targetId) && validTargetSides.has(side)) targetSides[targetId] = side;
+    if (!targetIds.includes(targetId) || !validTargetSides.has(side)) continue;
+    const previous = targetSides[targetId];
+    if (!previous) {
+      targetSides[targetId] = side;
+    } else if (previous !== side) {
+      targetSides[targetId] = Array.isArray(previous)
+        ? [...new Set([...previous, side])]
+        : [previous, side];
+    }
   }
   if (Object.keys(targetSides).length) result.targetSides = targetSides;
   const symptomIds = (params.get("symptoms") ?? "").split(",").filter((id) => validSymptomIds.has(id));

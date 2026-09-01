@@ -50,6 +50,22 @@ const primaryTargetsBySlugRegion = {
   ankles: { ankle: "ankle-joint-unsure" },
 };
 
+const bodySlugLabels = {
+  neck: "颈后",
+  trapezius: "斜方肌",
+  deltoids: "肩部",
+  chest: "胸前",
+  "upper-back": "上背",
+  "lower-back": "下背",
+  gluteal: "臀部",
+  quadriceps: "大腿前侧",
+  hamstring: "大腿后侧",
+  knees: "膝部",
+  calves: "小腿后侧",
+  tibialis: "小腿前侧",
+  ankles: "踝部",
+};
+
 export const bodySlugTargets = Object.freeze(
   Object.fromEntries(
     Object.entries(targetRegionsBySlug).map(([slug, targetRegions]) => [slug, Object.freeze(Object.keys(targetRegions))]),
@@ -122,6 +138,33 @@ export function getBodyRegionVisualData({ regionId, selectedIds = [], selectedSi
     const selected = Boolean(targetId && selectedIds.includes(targetId));
     const sides = selected ? normalizeSelectedSides(selectedSides[targetId]) : [];
     return { slug, selected, side: sides.length === 1 ? sides[0] : undefined };
+  });
+}
+
+export function getBodySideControlData({ regionId, selectedIds = [], selectedSides = {} } = {}) {
+  return Object.keys(bodySlugTargets).flatMap((slug) => {
+    const targetId = getTargetForBodySlug(slug, regionId);
+    if (!targetId) return [];
+    const selectedForTarget = selectedIds.includes(targetId)
+      ? normalizeSelectedSides(selectedSides[targetId])
+      : [];
+    return [
+      { side: "left", sideLabel: "左侧" },
+      { side: "right", sideLabel: "右侧" },
+    ].map(({ side, sideLabel }) => {
+      const selected = selectedForTarget.includes(side);
+      const label = bodySlugLabels[slug];
+      return {
+        id: `${targetId}:${side}`,
+        targetId,
+        slug,
+        label,
+        side,
+        sideLabel,
+        ariaLabel: `${label}，${sideLabel}，${selected ? "已选" : "未选"}`,
+        selected,
+      };
+    });
   });
 }
 

@@ -53,6 +53,7 @@ export function App() {
 
   const navigateToLibrary = (movementId) => {
     const next = { ...explorerState, view: "library", movementId };
+    if (!movementId) delete next.movementId;
     writeUrl(next);
   };
 
@@ -80,6 +81,7 @@ export function App() {
         writeUrl({ ...synchronized, view: "home" }, "replace");
       }}
       onOpenTutorial={navigateToLibrary}
+      onOpenLibrary={() => navigateToLibrary()}
     />
   );
 }

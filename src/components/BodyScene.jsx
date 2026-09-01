@@ -68,7 +68,6 @@ function ClothedModel({ regionId, onSelectRegion, onBounds }) {
             bounds.sphere.center.z + region.hotspot.position[2],
           ]}
           center
-          distanceFactor={3.2}
         >
           <button
             type="button"

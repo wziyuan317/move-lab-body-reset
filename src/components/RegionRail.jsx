@@ -3,16 +3,16 @@ import { Check } from "@phosphor-icons/react";
 import { bodyRegions, getRegionTargets } from "../bodyMap.js";
 import { getBodyRegionVisualData } from "../bodyRegionMap.js";
 
-const regionCardColors = [
-  "#ff5f69",
-  "#ffc43d",
-  "#3e7cff",
-  "#2dcc78",
-  "#8457dc",
-  "#ff8a32",
-  "#ff5964",
-  "#23b8c7",
-];
+const regionCardColors = {
+  neck: "#ff5f69",
+  shoulder: "#ffc43d",
+  thorax: "#3e7cff",
+  "low-back": "#2dcc78",
+  hip: "#8457dc",
+  thigh: "#ff8a32",
+  knee: "#ff5964",
+  ankle: "#23b8c7",
+};
 
 function RegionPreview({ region }) {
   const selectedIds = getRegionTargets(region.id).map((target) => target.id);
@@ -37,14 +37,14 @@ function RegionPreview({ region }) {
 export function RegionRail({ regionId, onSelectRegion }) {
   return (
     <section className="region-rail" aria-label="选择身体区域">
-      {bodyRegions.map((region, index) => (
+      {bodyRegions.map((region) => (
         <button
           key={region.id}
           type="button"
           className={regionId === region.id ? "is-active" : ""}
           aria-pressed={regionId === region.id}
           onClick={() => onSelectRegion(region.id)}
-          style={{ "--region-card-color": regionCardColors[index] }}
+          style={{ "--region-card-color": regionCardColors[region.id] }}
         >
           <RegionPreview region={region} />
           <span className="region-rail__copy">

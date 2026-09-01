@@ -6,6 +6,7 @@ import { anatomyTargets } from "../src/bodyMap.js";
 const {
   bodySlugTargets,
   getBodyPartFill = () => undefined,
+  getBodySideControlData = () => [],
   getBodyRegionVisualData = () => [],
   getJointZoneControlData = () => [],
   getTargetForBodySlug,
@@ -66,6 +67,68 @@ test("视觉颜色仅在实际悬停路径上覆盖 selected 色", () => {
   assert.equal(getBodyPartFill({ selected: false, hovered: false }), "#dce5f2");
   assert.equal(getBodyPartFill({ selected: true, hovered: false }), "#ff665c");
   assert.equal(getBodyPartFill({ selected: true, hovered: true }), "#ffd43b");
+});
+
+test("普通身体图为当前区域提供左右两侧的键盘等价控件", () => {
+  const controls = getBodySideControlData({
+    regionId: "thigh",
+    selectedIds: ["quadriceps-area"],
+    selectedSides: { "quadriceps-area": ["left", "right"] },
+  });
+
+  assert.deepEqual(controls, [
+    {
+      id: "quadriceps-area:left",
+      targetId: "quadriceps-area",
+      slug: "quadriceps",
+      label: "大腿前侧",
+      side: "left",
+      sideLabel: "左侧",
+      ariaLabel: "大腿前侧，左侧，已选",
+      selected: true,
+    },
+    {
+      id: "quadriceps-area:right",
+      targetId: "quadriceps-area",
+      slug: "quadriceps",
+      label: "大腿前侧",
+      side: "right",
+      sideLabel: "右侧",
+      ariaLabel: "大腿前侧，右侧，已选",
+      selected: true,
+    },
+    {
+      id: "hamstring-area:left",
+      targetId: "hamstring-area",
+      slug: "hamstring",
+      label: "大腿后侧",
+      side: "left",
+      sideLabel: "左侧",
+      ariaLabel: "大腿后侧，左侧，未选",
+      selected: false,
+    },
+    {
+      id: "hamstring-area:right",
+      targetId: "hamstring-area",
+      slug: "hamstring",
+      label: "大腿后侧",
+      side: "right",
+      sideLabel: "右侧",
+      ariaLabel: "大腿后侧，右侧，未选",
+      selected: false,
+    },
+  ]);
+});
+
+test("身体图等价控件不为空且每个目标始终成对提供左右按钮", () => {
+  for (const regionId of ["neck", "thorax", "low-back", "hip", "thigh"]) {
+    const controls = getBodySideControlData({ regionId });
+    assert.ok(controls.length >= 2, `${regionId} 缺少等价控件`);
+    const sidesByTarget = Object.groupBy(controls, (control) => control.targetId);
+    for (const targetControls of Object.values(sidesByTarget)) {
+      assert.deepEqual(targetControls.map((control) => control.side), ["left", "right"]);
+    }
+  }
 });
 
 test("复杂关节图覆盖普通用户可描述的位置", () => {
