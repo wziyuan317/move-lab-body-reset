@@ -8,6 +8,7 @@ const {
   canOpenTutorials = () => true,
   applyExplorerStateChange = (_currentState, nextState) => nextState,
   getExplorerStep = () => undefined,
+  getRecommendationNavigationIds = () => [],
   getRecommendations = () => ({ status: "missing", movementIds: [] }),
   getRegionTargets = () => [],
   parseExplorerState = () => ({}),
@@ -168,6 +169,31 @@ test("只有完成感受后的建议状态才能打开教程", () => {
   assert.equal(canOpenTutorials({ status: "idle" }), false);
   assert.equal(canOpenTutorials({ status: "incomplete" }), false);
   assert.equal(canOpenTutorials({ status: "caution" }), true);
+});
+
+test("完成感受后保留每个匹配教程的导航入口", () => {
+  const ready = getRecommendations({
+    regionId: "shoulder",
+    targetIds: ["middle-lower-trapezius", "rhomboids"],
+    symptomIds: ["tightness"],
+    redFlagIds: [],
+  });
+  const caution = getRecommendations({
+    regionId: "knee",
+    targetIds: ["knee-front"],
+    symptomIds: ["swelling"],
+    redFlagIds: [],
+  });
+  const blocked = getRecommendations({
+    regionId: "knee",
+    targetIds: ["knee-front"],
+    symptomIds: ["swelling"],
+    redFlagIds: ["major-trauma"],
+  });
+
+  assert.deepEqual(getRecommendationNavigationIds(ready), ready.movementIds);
+  assert.deepEqual(getRecommendationNavigationIds(caution), caution.movementIds);
+  assert.deepEqual(getRecommendationNavigationIds(blocked), []);
 });
 
 test("多肌群推荐优先返回同时覆盖更多目标的既有教程", () => {

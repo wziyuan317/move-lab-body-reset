@@ -217,6 +217,10 @@ export function canOpenTutorials({ status }) {
   return status === "ready" || status === "caution";
 }
 
+export function getRecommendationNavigationIds({ status, movementIds = [] }) {
+  return canOpenTutorials({ status }) ? movementIds : [];
+}
+
 const validRegionIds = new Set(bodyRegions.map((region) => region.id));
 const validTargetIds = new Set(anatomyTargets.map((target) => target.id));
 const validSymptomIds = new Set(symptoms.map((symptom) => symptom.id));

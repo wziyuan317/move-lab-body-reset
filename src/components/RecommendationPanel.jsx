@@ -6,7 +6,7 @@ import {
   Sparkle,
   Target,
 } from "@phosphor-icons/react";
-import { anatomyTargets, symptoms } from "../bodyMap.js";
+import { anatomyTargets, getRecommendationNavigationIds, symptoms } from "../bodyMap.js";
 import { movements, selectMovementThumbnail } from "../movements.js";
 
 const sourceLinks = [
@@ -16,13 +16,13 @@ const sourceLinks = [
   { label: "NICE 腰痛指南", href: "https://www.nice.org.uk/guidance/ng59" },
 ];
 
-function SuggestedMovement({ movement }) {
+function SuggestedMovement({ movement, onOpen }) {
   return (
-    <article className="suggested-movement">
+    <button type="button" className="suggested-movement" onClick={() => onOpen(movement.id)}>
       <img src={selectMovementThumbnail(movement)} alt="" />
       <span><small>{movement.category} · {movement.duration}</small><strong>{movement.shortTitle}</strong></span>
       <ArrowRight size={20} weight="bold" aria-hidden="true" />
-    </article>
+    </button>
   );
 }
 
@@ -49,7 +49,7 @@ export function RecommendationPanel({ region, selectedIds, symptomIds, result, o
   const selectedSymptoms = symptoms
     .filter((symptom) => symptomIds.includes(symptom.id))
     .map((symptom) => symptom.label);
-  const recommendations = result.movementIds
+  const recommendations = getRecommendationNavigationIds(result)
     .map((id) => movements.find((movement) => movement.id === id))
     .filter(Boolean);
 
@@ -108,7 +108,7 @@ export function RecommendationPanel({ region, selectedIds, symptomIds, result, o
         <section className="recommendation-list">
           <div className="recommendation-list__heading"><strong>匹配的教程</strong><small>先选 1 个，舒适完成</small></div>
           {recommendations.map((movement) => (
-            <SuggestedMovement key={movement.id} movement={movement} />
+            <SuggestedMovement key={movement.id} movement={movement} onOpen={onOpenTutorial} />
           ))}
           <button type="button" className="library-cta" onClick={() => onOpenTutorial(recommendations[0].id)}>
             从第一个匹配动作开始
