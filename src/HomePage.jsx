@@ -160,7 +160,13 @@ export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary }) {
 
       <footer id="safety-note" className="home-footer">
         <p>本页用于日常动作教育与位置记录，不提供疾病诊断，不替代医生或物理治疗师的个体评估。</p>
-        <p>运行时人体：Quaternius CC0 · 专业参考图：react-muscle-highlighter · Legacy Z-Anatomy 仅本地审计</p>
+        <p>
+          当前 3D 角色：Man Player，作者 RiverofCreative（
+          <a href="https://sketchfab.com/3d-models/man-player-4c7133dbb06e4136891d59231372d818" target="_blank" rel="noreferrer">原作品</a>
+          {" · "}
+          <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>
+          ）；模型字节未修改，仅变更文件名。专业参考图：react-muscle-highlighter；Legacy Z-Anatomy 仅本地审计。
+        </p>
       </footer>
     </div>
   );

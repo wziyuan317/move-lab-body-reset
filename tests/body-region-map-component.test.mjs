@@ -67,3 +67,49 @@ test("专业模式使用完整正背人体图且不再引用 legacy GLB", async 
   assert.ok(dialogProps.includes("onCancel"));
   assert.ok(dialogProps.includes("onKeyDown"), "Escape 必须有显式键盘关闭路径");
 });
+
+test("HomePage 页脚展示当前角色的完整署名与可点击许可", async () => {
+  const source = await readFile(new URL("../src/HomePage.jsx", import.meta.url), "utf8");
+  const ast = parse(source, { sourceType: "module", plugins: ["jsx"] });
+  let footer;
+  visit(ast, (node) => {
+    if (node.type !== "JSXElement" || node.openingElement.name?.name !== "footer") return;
+    const id = node.openingElement.attributes.find(
+      (attribute) => attribute.type === "JSXAttribute" && attribute.name.name === "id",
+    )?.value?.value;
+    if (id === "safety-note") footer = node;
+  });
+
+  assert.ok(footer, "应保留公开安全说明页脚");
+  const textNodes = [];
+  const links = [];
+  visit(footer, (node) => {
+    if (node.type === "JSXText") textNodes.push(node.value);
+    if (node.type !== "JSXElement" || node.openingElement.name?.name !== "a") return;
+    const href = node.openingElement.attributes.find(
+      (attribute) => attribute.type === "JSXAttribute" && attribute.name.name === "href",
+    )?.value?.value;
+    const label = node.children
+      .filter((child) => child.type === "JSXText")
+      .map((child) => child.value)
+      .join("")
+      .trim();
+    links.push({ href, label });
+  });
+  const visibleText = textNodes.join(" ").replace(/\s+/g, " ").trim();
+
+  assert.doesNotMatch(visibleText, /Quaternius|CC0/);
+  assert.match(visibleText, /当前 3D 角色：Man Player/);
+  assert.match(visibleText, /作者 RiverofCreative/);
+  assert.match(visibleText, /模型字节未修改，仅变更文件名/);
+  assert.deepEqual(links, [
+    {
+      href: "https://sketchfab.com/3d-models/man-player-4c7133dbb06e4136891d59231372d818",
+      label: "原作品",
+    },
+    {
+      href: "https://creativecommons.org/licenses/by/4.0/",
+      label: "CC BY 4.0",
+    },
+  ]);
+});
