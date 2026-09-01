@@ -60,6 +60,14 @@ export const bodyRegions = [
     movementIds: ["figure-four", "supported-half-squat", "supported-hinge"],
   },
   {
+    id: "thigh",
+    label: "大腿",
+    shortLabel: "腿",
+    prompt: "大腿前侧、后侧或发力时不舒服",
+    hotspot: { position: [0.18, -0.41, 0.08], side: "front" },
+    movementIds: ["seated-knee-extension", "supported-half-squat", "supported-hinge"],
+  },
+  {
     id: "knee",
     label: "膝盖",
     shortLabel: "膝",
@@ -101,6 +109,9 @@ export const anatomyTargets = [
   { id: "gluteus-medius", regionId: "hip", label: "臀中肌", kind: "muscle", color: "#ff922b", meshNames: ["Gluteus Medius Muscle"], movementIds: ["figure-four", "supported-half-squat"] },
   { id: "piriformis", regionId: "hip", label: "梨状肌", kind: "muscle", color: "#fcc419", meshNames: ["Piriformis Muscle"], movementIds: ["figure-four", "supported-hinge"] },
   { id: "hip-flexors", regionId: "hip", label: "髋前侧屈肌群", kind: "muscle", color: "#94d82d", meshNames: ["Iliacus Muscle", "Psoas Major"], movementIds: ["supported-hinge", "supported-half-squat"] },
+
+  { id: "quadriceps-area", regionId: "thigh", label: "大腿前侧 / 股四头肌", kind: "muscle", color: "#74c69d", meshNames: ["Rectus Femoris Muscle", "Vastus Lateralis Muscle", "Vastus Medialis Muscle", "Vastus Intermedius Muscle"], movementIds: ["seated-knee-extension", "supported-half-squat"] },
+  { id: "hamstring-area", regionId: "thigh", label: "大腿后侧 / 腘绳肌", kind: "muscle", color: "#9c6644", meshNames: ["Semitendinosus Muscle", "Semimembranosus Muscle", "Long Head Of Biceps Femoris"], movementIds: ["supported-hinge", "supported-half-squat"] },
 
   { id: "rectus-femoris", regionId: "knee", label: "股直肌远端", kind: "muscle", color: "#51cf66", meshNames: ["Rectus Femoris Muscle"], movementIds: ["seated-knee-extension", "supported-half-squat"] },
   { id: "vastus-medialis", regionId: "knee", label: "股内侧肌", kind: "muscle", color: "#20c997", meshNames: ["Vastus Medialis Muscle"], movementIds: ["seated-knee-extension", "supported-half-squat"] },

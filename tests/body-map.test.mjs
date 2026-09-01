@@ -17,15 +17,22 @@ const {
   toggleTargetSelection = () => [],
 } = moduleUnderTest;
 
-test("身体地图提供 7 个稳定区域且每区至少关联 2 个教程", () => {
+test("身体地图提供 8 个稳定区域且每区至少关联 2 个教程", () => {
   assert.deepEqual(
     bodyRegions.map((region) => region.id),
-    ["neck", "shoulder", "thorax", "low-back", "hip", "knee", "ankle"],
+    ["neck", "shoulder", "thorax", "low-back", "hip", "thigh", "knee", "ankle"],
   );
   for (const region of bodyRegions) {
     assert.ok(region.movementIds.length >= 2, `${region.id} 缺少教程映射`);
     assert.equal(region.hotspot.position.length, 3, `${region.id} 缺少模型空间坐标`);
   }
+});
+
+test("大腿区域提供前后侧的可推荐定位目标", () => {
+  assert.deepEqual(
+    getRegionTargets("thigh").map((target) => target.id),
+    ["quadriceps-area", "hamstring-area"],
+  );
 });
 
 test("具体定位目标拥有唯一 ID、固定颜色和真实肌肉网格名", () => {
