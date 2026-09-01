@@ -150,6 +150,14 @@ export function selectRegionState(state, regionId) {
   return { ...state, regionId, targetIds: [], targetSides: {} };
 }
 
+export function applyExplorerStateChange(currentState, nextState) {
+  const regionState = selectRegionState(currentState, nextState.regionId);
+  const next = currentState.regionId === nextState.regionId
+    ? nextState
+    : { ...nextState, targetIds: regionState.targetIds, targetSides: regionState.targetSides };
+  return { ...next, step: getExplorerStep(next) };
+}
+
 export function getRecommendations({ regionId, targetIds = [], symptomIds = [], redFlagIds = [] }) {
   if (redFlagIds.length > 0) {
     return { status: "blocked", movementIds: [], guidanceKey: "blocked" };
@@ -175,6 +183,10 @@ export function getRecommendations({ regionId, targetIds = [], symptomIds = [], 
 
   const status = symptomIds.some((id) => cautionSymptomIds.has(id)) ? "caution" : "ready";
   return { status, movementIds: ranked, guidanceKey: status };
+}
+
+export function canOpenTutorials({ status }) {
+  return status !== "blocked";
 }
 
 const validRegionIds = new Set(bodyRegions.map((region) => region.id));

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import {
+  applyExplorerStateChange,
   getExplorerStep,
   parseExplorerState,
-  selectRegionState,
   serializeExplorerState,
 } from "./bodyMap.js";
 import { HomePage } from "./HomePage.jsx";
@@ -75,10 +75,7 @@ export function App() {
     <HomePage
       value={explorerState}
       onChange={(next) => {
-        const regionState = next.regionId === explorerState.regionId
-          ? next
-          : selectRegionState(next, next.regionId);
-        const synchronized = synchronizeExplorerStep(regionState);
+        const synchronized = applyExplorerStateChange(explorerState, next);
         setExplorerState(synchronized);
         writeUrl({ ...synchronized, view: "home" }, "replace");
       }}

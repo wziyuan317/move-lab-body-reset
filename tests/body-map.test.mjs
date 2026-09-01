@@ -5,6 +5,8 @@ const moduleUnderTest = await import("../src/bodyMap.js").catch(() => ({}));
 const {
   anatomyTargets = [],
   bodyRegions = [],
+  canOpenTutorials = () => true,
+  applyExplorerStateChange = (_currentState, nextState) => nextState,
   getExplorerStep = () => undefined,
   getRecommendations = () => ({ status: "missing", movementIds: [] }),
   getRegionTargets = () => [],
@@ -57,6 +59,26 @@ test("选择区域后进入感受步骤并清除其他区域的具体位置", ()
   assert.equal(getExplorerStep(next), 2);
 });
 
+test("首页区域切换通过状态归并清空旧具体定位", () => {
+  const currentState = {
+    regionId: "shoulder",
+    targetIds: ["rhomboids"],
+    targetSides: { rhomboids: "left" },
+    symptomIds: [],
+    redFlagIds: [],
+    viewSide: "back",
+    step: 2,
+  };
+  const nextFromHomePage = { ...currentState, regionId: "knee" };
+  const next = applyExplorerStateChange(currentState, nextFromHomePage);
+
+  assert.equal(next.regionId, "knee");
+  assert.deepEqual(next.targetIds, []);
+  assert.deepEqual(next.targetSides, {});
+  assert.equal(next.viewSide, "back");
+  assert.equal(next.step, 2);
+});
+
 test("没有感受时不提前推荐教程", () => {
   const result = getRecommendations({
     regionId: "knee",
@@ -96,6 +118,18 @@ test("红旗状态阻断训练推荐", () => {
 
   assert.equal(result.status, "blocked");
   assert.deepEqual(result.movementIds, []);
+});
+
+test("红旗状态禁用教程入口", () => {
+  const blocked = getRecommendations({
+    regionId: "knee",
+    targetIds: ["knee-joint-unsure"],
+    symptomIds: ["swelling"],
+    redFlagIds: ["major-trauma"],
+  });
+
+  assert.equal(canOpenTutorials(blocked), false);
+  assert.equal(canOpenTutorials({ status: "ready" }), true);
 });
 
 test("多肌群推荐优先返回同时覆盖更多目标的既有教程", () => {
