@@ -110,9 +110,25 @@ test("肿胀或麻木进入谨慎状态但红旗才阻断教程", () => {
 test("膝和踝均提供关节附近或无法确定的安全选项", () => {
   assert.deepEqual(
     getRegionTargets("knee").filter((target) => target.kind === "joint").map((target) => target.id),
-    ["knee-front", "knee-medial", "knee-lateral", "knee-posterior", "knee-joint-unsure"],
+    ["knee-front", "knee-medial", "knee-lateral", "knee-posterior", "upper-calf-area", "knee-joint-unsure"],
   );
   assert.ok(getRegionTargets("ankle").some((target) => target.kind === "joint"));
+});
+
+test("肩胛和踝局部图使用普通位置名称并只关联已有教程", () => {
+  const shoulderLabels = getRegionTargets("shoulder")
+    .filter((target) => target.kind === "joint")
+    .map((target) => target.label);
+  const ankleLabels = getRegionTargets("ankle")
+    .filter((target) => target.kind === "joint")
+    .map((target) => target.label);
+
+  assert.ok(shoulderLabels.includes("肩胛骨内侧"));
+  assert.ok(ankleLabels.includes("跟腱附近"));
+  for (const target of anatomyTargets.filter((item) => item.kind === "joint")) {
+    assert.ok(target.movementIds.length > 0, `${target.id} 缺少教程映射`);
+    assert.ok(target.movementIds.every((id) => bodyRegions.some((region) => region.movementIds.includes(id))), `${target.id} 关联了未知教程`);
+  }
 });
 
 test("红旗状态阻断训练推荐", () => {

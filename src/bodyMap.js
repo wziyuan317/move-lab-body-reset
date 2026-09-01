@@ -95,6 +95,12 @@ export const anatomyTargets = [
   { id: "middle-lower-trapezius", regionId: "shoulder", label: "中下斜方肌", kind: "muscle", color: "#7209b7", meshNames: ["Transverse Part Of Trapezius Muscle", "Ascending Part Of Trapezius Muscle"], movementIds: ["scapular-squeeze", "wall-pushup"] },
   { id: "rhomboids", regionId: "shoulder", label: "菱形肌", kind: "muscle", color: "#4361ee", meshNames: ["Rhomboid Major Muscle", "Rhomboid Minor Muscle"], movementIds: ["scapular-squeeze", "wall-pushup"] },
   { id: "serratus-anterior", regionId: "shoulder", label: "前锯肌", kind: "muscle", color: "#4cc9f0", meshNames: ["Serratus Anterior Muscle"], movementIds: ["wall-pushup", "scapular-squeeze"] },
+  { id: "shoulder-front", regionId: "shoulder", label: "肩膀前侧", kind: "joint", color: "#ffb4a2", meshNames: [], movementIds: ["chest-opener", "wall-pushup"] },
+  { id: "shoulder-lateral", regionId: "shoulder", label: "肩膀外侧", kind: "joint", color: "#ffadad", meshNames: [], movementIds: ["wall-pushup", "scapular-squeeze"] },
+  { id: "shoulder-posterior", regionId: "shoulder", label: "肩膀后侧", kind: "joint", color: "#ffc6a5", meshNames: [], movementIds: ["scapular-squeeze", "wall-pushup"] },
+  { id: "scapula-medial", regionId: "shoulder", label: "肩胛骨内侧", kind: "joint", color: "#ffd6a5", meshNames: [], movementIds: ["scapular-squeeze", "chest-opener"] },
+  { id: "scapula-inferior", regionId: "shoulder", label: "肩胛骨下方", kind: "joint", color: "#fdffb6", meshNames: [], movementIds: ["scapular-squeeze", "wall-pushup"] },
+  { id: "shoulder-joint-unsure", regionId: "shoulder", label: "不确定具体位置", kind: "joint", color: "#d0d7de", meshNames: [], movementIds: ["scapular-squeeze", "wall-pushup", "chest-opener"] },
 
   { id: "pectoralis-major", regionId: "thorax", label: "胸大肌", kind: "muscle", color: "#ef476f", meshNames: ["Clavicular Head Of Pectoralis Major Muscle", "Sternocostal Head Of Pectoralis Major Muscle"], movementIds: ["chest-opener", "chair-thoracic-extension"] },
   { id: "pectoralis-minor", regionId: "thorax", label: "胸小肌", kind: "muscle", color: "#f78c6b", meshNames: ["Pectoralis Minor Muscle"], movementIds: ["chest-opener", "scapular-squeeze"] },
@@ -121,12 +127,18 @@ export const anatomyTargets = [
   { id: "knee-medial", regionId: "knee", label: "膝内侧区", kind: "joint", color: "#63e6be", meshNames: [], movementIds: ["seated-knee-extension", "supported-half-squat"] },
   { id: "knee-lateral", regionId: "knee", label: "膝外侧区", kind: "joint", color: "#a9e34b", meshNames: [], movementIds: ["supported-half-squat", "supported-calf-raise"] },
   { id: "knee-posterior", regionId: "knee", label: "膝后区", kind: "joint", color: "#ffe066", meshNames: [], movementIds: ["supported-hinge", "supported-half-squat"] },
+  { id: "upper-calf-area", regionId: "knee", label: "小腿上端", kind: "joint", color: "#bde0fe", meshNames: [], movementIds: ["supported-calf-raise", "supported-hinge"] },
   { id: "knee-joint-unsure", regionId: "knee", label: "关节附近 / 无法确定具体肌肉", kind: "joint", color: "#adb5bd", meshNames: [], movementIds: ["seated-knee-extension", "supported-half-squat", "supported-calf-raise"] },
 
   { id: "gastrocnemius", regionId: "ankle", label: "腓肠肌", kind: "muscle", color: "#3b5bdb", meshNames: ["Lateral Head Of Gastrocnemius", "Medial Head Of Gastrocnemius"], movementIds: ["supported-calf-raise", "supported-hinge"] },
   { id: "soleus", regionId: "ankle", label: "比目鱼肌", kind: "muscle", color: "#7048e8", meshNames: ["Soleus Muscle"], movementIds: ["supported-calf-raise", "supported-hinge"] },
   { id: "tibialis-anterior", regionId: "ankle", label: "胫骨前肌", kind: "muscle", color: "#ae3ec9", meshNames: ["Tibialis Anterior Muscle"], movementIds: ["supported-calf-raise", "side-bend"] },
-  { id: "ankle-joint-unsure", regionId: "ankle", label: "踝关节 / 跟腱附近，无法确定具体肌肉", kind: "joint", color: "#868e96", meshNames: [], movementIds: ["supported-calf-raise", "supported-hinge"] },
+  { id: "ankle-front", regionId: "ankle", label: "踝关节前方", kind: "joint", color: "#caf0f8", meshNames: [], movementIds: ["supported-calf-raise", "supported-hinge"] },
+  { id: "ankle-medial", regionId: "ankle", label: "内踝", kind: "joint", color: "#ade8f4", meshNames: [], movementIds: ["supported-calf-raise", "supported-hinge"] },
+  { id: "ankle-lateral", regionId: "ankle", label: "外踝", kind: "joint", color: "#90e0ef", meshNames: [], movementIds: ["supported-calf-raise", "supported-hinge"] },
+  { id: "achilles-area", regionId: "ankle", label: "跟腱附近", kind: "joint", color: "#a8dadc", meshNames: [], movementIds: ["supported-calf-raise", "supported-hinge"] },
+  { id: "calf-posterior", regionId: "ankle", label: "小腿后侧", kind: "joint", color: "#b7e4c7", meshNames: [], movementIds: ["supported-calf-raise", "supported-hinge"] },
+  { id: "ankle-joint-unsure", regionId: "ankle", label: "不确定具体位置", kind: "joint", color: "#868e96", meshNames: [], movementIds: ["supported-calf-raise", "supported-hinge"] },
 ];
 
 export const regionCameraPresets = Object.fromEntries(

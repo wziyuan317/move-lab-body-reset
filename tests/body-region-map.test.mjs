@@ -1,12 +1,14 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import * as bodyRegionMap from "../src/bodyRegionMap.js";
+import { anatomyTargets } from "../src/bodyMap.js";
 
 const {
   bodySlugTargets,
   getBodyPartFill = () => undefined,
   getBodyRegionVisualData = () => [],
   getTargetForBodySlug,
+  jointDiagramZones = {},
 } = bodyRegionMap;
 
 test("宽泛身体区域都映射到可点击人体 slug", () => {
@@ -62,4 +64,21 @@ test("视觉颜色仅在实际悬停路径上覆盖 selected 色", () => {
   assert.equal(getBodyPartFill({ selected: false, hovered: false }), "#dce5f2");
   assert.equal(getBodyPartFill({ selected: true, hovered: false }), "#ff665c");
   assert.equal(getBodyPartFill({ selected: true, hovered: true }), "#ffd43b");
+});
+
+test("复杂关节图覆盖普通用户可描述的位置", () => {
+  assert.deepEqual(jointDiagramZones.knee.map((zone) => zone.id), [
+    "knee-front", "knee-medial", "knee-lateral", "knee-posterior", "quadriceps-area", "hamstring-area", "upper-calf-area", "knee-joint-unsure",
+  ]);
+  assert.ok(jointDiagramZones.shoulder.length >= 6);
+  assert.ok(jointDiagramZones.ankle.length >= 6);
+});
+
+test("关节图热点 ID 唯一并且都能进入位置与推荐数据", () => {
+  const zones = Object.values(jointDiagramZones).flat();
+  const ids = zones.map((zone) => zone.id);
+  const targetIds = new Set(anatomyTargets.map((target) => target.id));
+
+  assert.equal(new Set(ids).size, ids.length);
+  for (const id of ids) assert.ok(targetIds.has(id), `${id} 没有对应 anatomyTarget`);
 });
