@@ -87,8 +87,10 @@ test("专业模式使用完整正背人体图且不再引用 legacy GLB", async 
     const propNames = element.attributes
       .filter((attribute) => attribute.type === "JSXAttribute")
       .map((attribute) => attribute.name.name);
-    assert.equal(propNames.includes("onBodyPartPress"), false);
+    assert.equal(propNames.includes("onBodyPartPress"), true, "专业人体图必须能直接点击肌肉区域");
   }
+  assert.match(source, /JointRegionMap/);
+  assert.match(source, /查看全身/);
 
   const dialogElements = [];
   visit(ast, (node) => {
@@ -100,6 +102,16 @@ test("专业模式使用完整正背人体图且不再引用 legacy GLB", async 
     .map((attribute) => attribute.name.name);
   assert.ok(dialogProps.includes("onCancel"));
   assert.ok(dialogProps.includes("onKeyDown"), "Escape 必须有显式键盘关闭路径");
+});
+
+test("专业人体图开放点击而普通人体图保持键盘等价控件", async () => {
+  const css = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
+  const professionalRule = readCssRule(css, ".professional-anatomy__body-grid");
+  assert.notEqual(professionalRule["pointer-events"], "none");
+
+  const ordinarySource = await readFile(new URL("../src/components/BodyRegionMap.jsx", import.meta.url), "utf8");
+  assert.doesNotMatch(ordinarySource, /onBodyPartPress/);
+  assert.match(ordinarySource, /body-region-map__side-controls/);
 });
 
 test("HomePage 页脚展示当前角色的完整署名与可点击许可", async () => {
