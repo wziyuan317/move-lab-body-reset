@@ -9,7 +9,7 @@
     "build": "vite build && node scripts/prepare-sites-build.mjs && node scripts/verify-release-assets.mjs dist/client",
     "build:github": "vite build --base=/move-lab-body-reset/ --outDir dist/github && node scripts/verify-release-assets.mjs dist/github",
     "preview": "vite preview",
-    "test": "node --test tests/movements.test.mjs tests/body-map.test.mjs tests/body-region-map.test.mjs tests/body-region-map-component.test.mjs tests/body-assets.test.mjs tests/camera-framing.test.mjs tests/home-flow.test.mjs tests/hotspot-interaction.test.mjs tests/office-content.test.mjs",
+    "test": "node --test tests/movements.test.mjs tests/body-map.test.mjs tests/body-region-map.test.mjs tests/body-region-map-component.test.mjs tests/body-assets.test.mjs tests/camera-framing.test.mjs tests/home-flow.test.mjs tests/hotspot-interaction.test.mjs tests/office-content.test.mjs tests/office-routine.test.mjs",
     "test:sites": "node --test tests/sites-worker.test.mjs"
   },
   "dependencies": {
