@@ -1,0 +1,134 @@
+{
+  "stretch.feet_calves.beginner_seated_toe_extensor": {
+    "src": "assets/office/actions/toe-extensor.png",
+    "panelCount": 2,
+    "states": ["准备姿势", "脚趾向足底拉伸到位"],
+    "alt": "初级坐姿脚趾伸肌拉伸的准备姿势和拉伸到位状态，标出足背与小腿前外侧目标肌群及脚趾向下方向。"
+  },
+  "stretch.feet_calves.beginner_seated_toe_flexor": {
+    "src": "assets/office/actions/toe-flexor.png",
+    "panelCount": 2,
+    "states": ["准备姿势", "脚趾向小腿拉伸到位"],
+    "alt": "初级坐姿脚趾屈肌拉伸的准备姿势和拉伸到位状态，标出足底与小腿内后侧目标肌群及脚趾向上方向。"
+  },
+  "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor": {
+    "src": "assets/office/actions/toe-extensor-evertor.png",
+    "panelCount": 2,
+    "states": ["准备姿势", "脚趾屈曲并小幅外翻"],
+    "alt": "坐姿脚趾伸肌与足外翻肌拉伸的准备和到位状态，展示脚踝固定、脚趾向下及足外侧小幅抬起。"
+  },
+  "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor": {
+    "src": "assets/office/actions/toe-flexor-evertor.png",
+    "panelCount": 2,
+    "states": ["准备姿势", "脚趾伸展并小幅外翻"],
+    "alt": "坐姿脚趾屈肌与足外翻肌拉伸的准备和到位状态，展示脚踝固定、脚趾向上及足外侧小幅抬起。"
+  },
+  "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor": {
+    "src": "assets/office/actions/toe-extensor-invertor.png",
+    "panelCount": 2,
+    "states": ["准备姿势", "脚趾屈曲并小幅内翻"],
+    "alt": "坐姿脚趾伸肌与足内翻肌拉伸的准备和到位状态，展示脚踝固定、脚趾向下及前脚掌小幅向内。"
+  },
+  "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor": {
+    "src": "assets/office/actions/toe-flexor-invertor.png",
+    "panelCount": 2,
+    "states": ["准备姿势", "脚趾伸展并小幅内翻"],
+    "alt": "坐姿脚趾屈肌与足内翻肌拉伸的准备和到位状态，展示脚踝固定、脚趾向上及前脚掌小幅向内。"
+  },
+  "stretch.arms_wrists_hands.beginner_wrist_extensor": {
+    "src": "assets/office/actions/wrist-extensor.png",
+    "panelCount": 2,
+    "states": ["手臂向前伸直", "手腕向下拉伸到位"],
+    "alt": "初级腕伸肌拉伸的起始和到位状态，标出前臂背侧目标肌群及手腕向下方向。"
+  },
+  "stretch.arms_wrists_hands.beginner_wrist_flexor": {
+    "src": "assets/office/actions/wrist-flexor.png",
+    "panelCount": 2,
+    "states": ["十指交扣", "翻掌向前伸展"],
+    "alt": "初级腕屈肌拉伸的十指交扣准备姿势和翻掌向前伸展状态，标出前臂掌侧目标肌群。"
+  },
+  "stretch.arms_wrists_hands.finger_flexor": {
+    "src": "assets/office/actions/finger-flexor.png",
+    "panelCount": 2,
+    "states": ["掌心向前", "手指向后拉伸到位"],
+    "alt": "手指屈肌拉伸的准备和到位状态，展示另一手托住全部手指并向同侧肘部轻柔引导。"
+  },
+  "stretch.arms_wrists_hands.finger_extensor": {
+    "src": "assets/office/actions/finger-extensor.png",
+    "panelCount": 2,
+    "states": ["掌心向上", "手腕与手指向内弯曲"],
+    "alt": "手指伸肌拉伸的准备和到位状态，展示手腕与手指向前臂弯曲及前臂背侧目标肌群。"
+  },
+  "stretch.neck.neck_extensor": {
+    "src": "assets/office/actions/neck-extensor.png",
+    "panelCount": 2,
+    "states": ["坐直并放松双肩", "收下巴轻柔低头"],
+    "alt": "坐姿颈后侧伸展的准备和到位状态，双手轻放头后并标出后颈与上斜方肌，不用力压头。"
+  },
+  "stretch.neck.neck_flexor": {
+    "src": "assets/office/actions/neck-flexor.png",
+    "panelCount": 2,
+    "states": ["坐直并微收下巴", "胸骨上提并小幅抬头"],
+    "alt": "坐姿颈前侧轻柔伸展的准备和到位状态，双手仅轻触额头并标出颈前外侧目标肌群。"
+  },
+  "stretch.dynamic.hip_external_internal_rotation": {
+    "src": "assets/office/actions/hip-rotation.png",
+    "panelCount": 3,
+    "states": ["稳定单腿站姿", "髋部小幅画圈", "受控完成圆周"],
+    "alt": "扶墙髋内外旋动态活动的三个连续状态，展示支撑手、稳定腿和悬空腿从髋关节小幅画圈。"
+  },
+  "stretch.dynamic.hip_adduction_abduction": {
+    "src": "assets/office/actions/hip-adduction-abduction.png",
+    "panelCount": 3,
+    "states": ["悬空腿居中", "轻柔跨过中线", "向外侧展开"],
+    "alt": "扶墙髋内收外展动态活动的三个状态，展示悬空腿跨过身体中线再向外侧摆动。"
+  },
+  "stretch.dynamic.hip_flexion_extension": {
+    "src": "assets/office/actions/hip-flexion-extension.png",
+    "panelCount": 3,
+    "states": ["稳定单腿站姿", "悬空腿向前摆", "悬空腿向后摆"],
+    "alt": "扶墙髋屈伸动态摆腿的三个状态，展示躯干直立时悬空腿从髋关节向前和向后摆动。"
+  },
+  "stretch.dynamic.standing_knee_flexor": {
+    "src": "assets/office/actions/standing-hamstring.png",
+    "panelCount": 3,
+    "states": ["前脚跟点地", "臀部向后移动", "保持长背髋折叠"],
+    "alt": "站姿大腿后侧动态伸展的三个状态，展示前脚跟着地、臀部后移和背部自然延展的髋折叠。"
+  },
+  "stretch.dynamic.plantar_flexor": {
+    "src": "assets/office/actions/step-calf.png",
+    "panelCount": 3,
+    "states": ["脚跟保持中立", "脚跟缓慢下降", "受控回到中立"],
+    "alt": "扶稳台阶小腿动态伸展的三个状态，展示牢固扶稳、脚跟缓慢下降并回到中立位置。"
+  },
+  "stretch.dynamic.trunk_lateral_flexion": {
+    "src": "assets/office/actions/trunk-lateral-flexion.png",
+    "panelCount": 3,
+    "states": ["身体保持中立", "向右侧屈", "向左侧屈"],
+    "alt": "站姿躯干左右侧屈的三个状态，展示双脚稳定、骨盆朝前和双侧腰腹目标肌群。"
+  },
+  "stretch.dynamic.trunk_rotation": {
+    "src": "assets/office/actions/trunk-rotation.png",
+    "panelCount": 3,
+    "states": ["胸廓保持中立", "向右受控旋转", "向左受控旋转"],
+    "alt": "坐站两用躯干旋转的站姿三个状态，展示骨盆保持朝前且胸廓分别向右和向左小幅旋转。"
+  },
+  "stretch.dynamic.shoulder_flexion_extension": {
+    "src": "assets/office/actions/arm-flexion-extension.png",
+    "panelCount": 3,
+    "states": ["双臂自然下垂", "双臂向前摆动", "双臂向后摆动"],
+    "alt": "站姿手臂前后摆动的三个状态，展示肩膀下沉时手臂从肩关节向前和向后受控摆动。"
+  },
+  "stretch.dynamic.shoulder_girdle_abduction_adduction": {
+    "src": "assets/office/actions/shoulder-open-hug.png",
+    "panelCount": 3,
+    "states": ["双臂充分打开", "右臂在上抱臂", "左臂在上抱臂"],
+    "alt": "站姿开臂与抱臂的三个状态，双臂充分打开后交替上下手臂抱住自己，标出胸肩目标肌群。"
+  },
+  "stretch.dynamic.shoulder_circumduction": {
+    "src": "assets/office/actions/shoulder-circles.png",
+    "panelCount": 3,
+    "states": ["小幅向前画圈", "逐渐扩大圆周", "小幅反向画圈"],
+    "alt": "站姿肩关节画圈的三个状态，展示手臂略低于肩高时由小到大的前向圆周及反向圆周。"
+  }
+}

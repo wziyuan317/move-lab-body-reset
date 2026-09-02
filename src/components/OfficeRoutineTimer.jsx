@@ -5,10 +5,13 @@ import {
   CaretRight,
   CheckCircle,
   ClockCountdown,
+  ArrowsOutSimple,
   Pause,
   Play,
   ShieldWarning,
+  X,
 } from "@phosphor-icons/react";
+import officeActionVisuals from "../data/officeActionVisuals.json";
 import {
   advanceRoutineState,
   createRoutineState,
@@ -38,6 +41,7 @@ function DetailList({ title, items }) {
 export function OfficeRoutineTimer({ program, onBack }) {
   const [nowMs, setNowMs] = useState(() => Date.now());
   const [routineState, setRoutineState] = useState(() => createRoutineState(program, Date.now()));
+  const [visualOpen, setVisualOpen] = useState(false);
 
   useEffect(() => {
     const now = Date.now();
@@ -62,8 +66,22 @@ export function OfficeRoutineTimer({ program, onBack }) {
   const progress = getRoutineProgress(routineState, program, nowMs);
   const currentItem = program.items[progress.itemIndex];
   const action = getOfficeAction(currentItem.actionId);
+  const visual = officeActionVisuals[action.id];
   const enrichedItems = useMemo(() => program.items.map((item) => ({ ...item, action: getOfficeAction(item.actionId) })), [program]);
   const needsReview = action.reviewStatus?.includes("上线前需专业复核");
+
+  useEffect(() => {
+    setVisualOpen(false);
+  }, [action.id]);
+
+  useEffect(() => {
+    if (!visualOpen) return undefined;
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setVisualOpen(false);
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [visualOpen]);
 
   const pauseOrResume = () => {
     const now = Date.now();
@@ -87,8 +105,13 @@ export function OfficeRoutineTimer({ program, onBack }) {
     <div className="office-player">
       <section className="office-action-detail" aria-labelledby="office-action-title">
         <div className="office-action-visual">
-          <img src={`${import.meta.env.BASE_URL}assets/office/office-action-pending.png`} alt="穿运动服的办公室动作引导人物，当前动作原创示意图仍在制作中。" />
-          <span>原创动作图制作中</span>
+          <button className="office-action-visual__open" type="button" onClick={() => setVisualOpen(true)} aria-label={`查看${action.name}大图`}>
+            <img key={action.id} src={`${import.meta.env.BASE_URL}${visual.src}`} alt={visual.alt} />
+            <span><ArrowsOutSimple size={17} weight="bold" />查看大图</span>
+          </button>
+          <ol className="office-action-states" aria-label="动作状态顺序">
+            {visual.states.map((state, index) => <li key={state}><b>{index + 1}</b>{state}</li>)}
+          </ol>
         </div>
         <div className="office-action-detail__heading">
           <div>
@@ -148,6 +171,19 @@ export function OfficeRoutineTimer({ program, onBack }) {
           ))}
         </ol>
       </aside>
+
+      {visualOpen && (
+        <div className="office-visual-modal" role="dialog" aria-modal="true" aria-label={`${action.name}动作大图`} onClick={() => setVisualOpen(false)}>
+          <button className="office-visual-modal__close" type="button" onClick={() => setVisualOpen(false)} aria-label="关闭动作大图"><X size={24} weight="bold" /></button>
+          <div className="office-visual-modal__content" onClick={(event) => event.stopPropagation()}>
+            <small className="office-visual-modal__hint">可左右滑动查看动作细节</small>
+            <img src={`${import.meta.env.BASE_URL}${visual.src}`} alt={visual.alt} />
+            <ol className="office-action-states" aria-label="动作大图状态顺序">
+              {visual.states.map((state, index) => <li key={state}><b>{index + 1}</b>{state}</li>)}
+            </ol>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

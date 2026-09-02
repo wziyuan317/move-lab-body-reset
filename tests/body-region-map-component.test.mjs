@@ -177,6 +177,20 @@ test("办公室播放器使用真实课程动作和完整控制", async () => {
   }
   assert.match(source, /aria-live="polite"/);
   assert.match(source, /getRoutineProgress/);
+  assert.match(source, /officeActionVisuals/);
+  assert.match(source, /visual\.src/);
+  assert.match(source, /查看大图/);
+  assert.match(source, /role="dialog"/);
+  assert.doesNotMatch(source, /office-action-pending/);
+});
+
+test("手机端动作大图提供可横向查看的放大画布", async () => {
+  const source = await readFile(new URL("../src/components/OfficeRoutineTimer.jsx", import.meta.url), "utf8");
+  const css = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
+
+  assert.match(source, /可左右滑动查看动作细节/);
+  assert.match(css, /\.office-visual-modal__content img \{[^}]*min-width:\s*720px/);
+  assert.match(css, /\.office-visual-modal__content \.office-action-states \{[^}]*min-width:\s*720px/);
 });
 
 test("左侧任务栏不再复制感受与安全输入", async () => {
