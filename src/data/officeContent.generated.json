@@ -1,0 +1,3448 @@
+{
+  "contentPack": {
+    "id": "stretching-anatomy-cn.office-v1",
+    "name": "《拉伸解剖学》办公室人群中文动作内容包",
+    "version": "1.0.0",
+    "generatedDate": "2026-09-01",
+    "scope": "收录 Table 10.7 的 18 个久坐与差旅动作，并增加 4 个键鼠办公相关的手腕、手指动作。不是全书 79 个拉伸动作的完整替代品。",
+    "source": {
+      "书名": "《拉伸解剖学》第 3 版",
+      "作者": [
+        "阿诺德·G. 纳尔逊",
+        "尤卡·科科宁"
+      ],
+      "ISBN": "9781492593645",
+      "PDF总页数": 265,
+      "核心选取依据": "书内第 218 页 Table 10.7"
+    },
+    "copyrightBoundary": "本包是对用户提供资料的结构化中文转述。不得直接复制或分发原书文字、页面和插图；公开网站图片必须原创或取得授权。",
+    "counts": {
+      "actions": 22,
+      "muscles": 35,
+      "regions": 7,
+      "programs": 3,
+      "sourcePages": 45,
+      "completedImages": 0,
+      "pendingImages": 22
+    }
+  },
+  "regions": [
+    {
+      "id": "region.neck",
+      "名称": "颈部",
+      "上位区域": "头颈",
+      "位置": "上部",
+      "关联动作ID": [
+        "stretch.neck.neck_extensor",
+        "stretch.neck.neck_flexor",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "id": "region.shoulders_chest",
+      "名称": "肩、肩胛与胸部",
+      "上位区域": "上肢带",
+      "位置": "上部",
+      "关联动作ID": [
+        "stretch.dynamic.shoulder_flexion_extension",
+        "stretch.dynamic.shoulder_girdle_abduction_adduction",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "id": "region.arms_wrists_hands",
+      "名称": "前臂、手腕与手指",
+      "上位区域": "上肢",
+      "位置": "上部",
+      "关联动作ID": [
+        "stretch.arms_wrists_hands.beginner_wrist_extensor",
+        "stretch.arms_wrists_hands.beginner_wrist_flexor",
+        "stretch.arms_wrists_hands.finger_flexor",
+        "stretch.arms_wrists_hands.finger_extensor"
+      ]
+    },
+    {
+      "id": "region.lower_trunk",
+      "名称": "腰腹与下躯干",
+      "上位区域": "躯干",
+      "位置": "中部",
+      "关联动作ID": [
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.dynamic.standing_knee_flexor",
+        "stretch.dynamic.trunk_lateral_flexion",
+        "stretch.dynamic.trunk_rotation"
+      ]
+    },
+    {
+      "id": "region.hips",
+      "名称": "髋与臀部",
+      "上位区域": "骨盆带",
+      "位置": "中下部",
+      "关联动作ID": [
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_adduction_abduction",
+        "stretch.dynamic.hip_flexion_extension"
+      ]
+    },
+    {
+      "id": "region.knees_thighs",
+      "名称": "膝与大腿",
+      "上位区域": "下肢",
+      "位置": "下部",
+      "关联动作ID": [
+        "stretch.dynamic.hip_adduction_abduction",
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.dynamic.standing_knee_flexor",
+        "stretch.dynamic.plantar_flexor"
+      ]
+    },
+    {
+      "id": "region.feet_calves",
+      "名称": "足、踝与小腿",
+      "上位区域": "下肢",
+      "位置": "下部",
+      "关联动作ID": [
+        "stretch.feet_calves.beginner_seated_toe_extensor",
+        "stretch.feet_calves.beginner_seated_toe_flexor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+        "stretch.dynamic.standing_knee_flexor",
+        "stretch.dynamic.plantar_flexor"
+      ]
+    }
+  ],
+  "muscles": [
+    {
+      "id": "muscle.upper_trapezius",
+      "名称": "上斜方肌",
+      "别名": [
+        "斜方肌上部"
+      ],
+      "区域ID": "region.neck",
+      "方位": "颈后外侧",
+      "模型网格名称": [
+        "Descending Part Of Trapezius Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.neck.neck_extensor"
+      ]
+    },
+    {
+      "id": "muscle.posterior_neck_group",
+      "名称": "颈后伸肌群",
+      "别名": [
+        "颈后肌群"
+      ],
+      "区域ID": "region.neck",
+      "方位": "颈后侧",
+      "模型网格名称": [
+        "Splenius Capitis Muscle",
+        "Splenius Colli Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.neck.neck_extensor",
+        "stretch.neck.neck_flexor"
+      ]
+    },
+    {
+      "id": "muscle.sternocleidomastoid",
+      "名称": "胸锁乳突肌",
+      "别名": [],
+      "区域ID": "region.neck",
+      "方位": "颈前外侧",
+      "模型网格名称": [
+        "Sternocleidomastoid Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.neck.neck_flexor"
+      ]
+    },
+    {
+      "id": "muscle.scalenes",
+      "名称": "斜角肌群",
+      "别名": [],
+      "区域ID": "region.neck",
+      "方位": "颈侧深层",
+      "模型网格名称": [
+        "Anterior Scalene Muscle",
+        "Middle Scalene Muscle",
+        "Posterior Scalene Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.neck.neck_extensor",
+        "stretch.neck.neck_flexor"
+      ]
+    },
+    {
+      "id": "muscle.pectoralis_major",
+      "名称": "胸大肌",
+      "别名": [],
+      "区域ID": "region.shoulders_chest",
+      "方位": "胸前侧",
+      "模型网格名称": [
+        "Clavicular Head Of Pectoralis Major Muscle",
+        "Sternocostal Head Of Pectoralis Major Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.shoulder_flexion_extension",
+        "stretch.dynamic.shoulder_girdle_abduction_adduction",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "id": "muscle.pectoralis_minor",
+      "名称": "胸小肌",
+      "别名": [],
+      "区域ID": "region.shoulders_chest",
+      "方位": "胸前深层",
+      "模型网格名称": [
+        "Pectoralis Minor Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.shoulder_girdle_abduction_adduction",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "id": "muscle.deltoid",
+      "名称": "三角肌",
+      "别名": [],
+      "区域ID": "region.shoulders_chest",
+      "方位": "肩外侧",
+      "模型网格名称": [
+        "Acromial Part Of Deltoid Muscle",
+        "Clavicular Part Of Deltoid Muscle",
+        "Scapular Spinal Part Of Deltoid Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.shoulder_flexion_extension",
+        "stretch.dynamic.shoulder_girdle_abduction_adduction",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "id": "muscle.rotator_cuff_group",
+      "名称": "肩袖肌群",
+      "别名": [
+        "旋转袖肌群"
+      ],
+      "区域ID": "region.shoulders_chest",
+      "方位": "肩关节深层",
+      "模型网格名称": [
+        "Infraspinatus Muscle",
+        "Supraspinatus Muscle",
+        "Subscapularis Muscle",
+        "Teres Minor Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.shoulder_flexion_extension",
+        "stretch.dynamic.shoulder_girdle_abduction_adduction",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "id": "muscle.scapular_retractors",
+      "名称": "肩胛后收肌群",
+      "别名": [
+        "菱形肌与中斜方肌"
+      ],
+      "区域ID": "region.shoulders_chest",
+      "方位": "肩胛骨之间",
+      "模型网格名称": [
+        "Rhomboid Major Muscle",
+        "Rhomboid Minor Muscle",
+        "Transverse Part Of Trapezius Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.shoulder_girdle_abduction_adduction",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "id": "muscle.latissimus_dorsi",
+      "名称": "背阔肌",
+      "别名": [],
+      "区域ID": "region.shoulders_chest",
+      "方位": "背部外侧",
+      "模型网格名称": [
+        "Latissimus Dorsi Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.dynamic.shoulder_flexion_extension",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "id": "muscle.biceps_brachii",
+      "名称": "肱二头肌",
+      "别名": [],
+      "区域ID": "region.shoulders_chest",
+      "方位": "上臂前侧",
+      "模型网格名称": [
+        "Biceps Brachii Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.shoulder_flexion_extension",
+        "stretch.dynamic.shoulder_girdle_abduction_adduction",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "id": "muscle.triceps_brachii",
+      "名称": "肱三头肌",
+      "别名": [],
+      "区域ID": "region.shoulders_chest",
+      "方位": "上臂后侧",
+      "模型网格名称": [
+        "Triceps Brachii Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.shoulder_flexion_extension",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "id": "muscle.wrist_extensors",
+      "名称": "腕伸肌群",
+      "别名": [
+        "手腕伸肌群"
+      ],
+      "区域ID": "region.arms_wrists_hands",
+      "方位": "前臂后侧",
+      "模型网格名称": [],
+      "关联动作ID": [
+        "stretch.arms_wrists_hands.beginner_wrist_extensor",
+        "stretch.arms_wrists_hands.finger_extensor"
+      ]
+    },
+    {
+      "id": "muscle.wrist_flexors",
+      "名称": "腕屈肌群",
+      "别名": [
+        "手腕屈肌群"
+      ],
+      "区域ID": "region.arms_wrists_hands",
+      "方位": "前臂前侧",
+      "模型网格名称": [],
+      "关联动作ID": [
+        "stretch.arms_wrists_hands.beginner_wrist_flexor",
+        "stretch.arms_wrists_hands.finger_flexor"
+      ]
+    },
+    {
+      "id": "muscle.finger_flexors",
+      "名称": "指屈肌群",
+      "别名": [],
+      "区域ID": "region.arms_wrists_hands",
+      "方位": "前臂掌侧",
+      "模型网格名称": [],
+      "关联动作ID": [
+        "stretch.arms_wrists_hands.beginner_wrist_flexor",
+        "stretch.arms_wrists_hands.finger_flexor"
+      ]
+    },
+    {
+      "id": "muscle.finger_extensors",
+      "名称": "指伸肌群",
+      "别名": [],
+      "区域ID": "region.arms_wrists_hands",
+      "方位": "前臂背侧",
+      "模型网格名称": [],
+      "关联动作ID": [
+        "stretch.arms_wrists_hands.beginner_wrist_extensor",
+        "stretch.arms_wrists_hands.finger_extensor"
+      ]
+    },
+    {
+      "id": "muscle.thumb_extensors_abductor",
+      "名称": "拇指伸展与外展肌群",
+      "别名": [],
+      "区域ID": "region.arms_wrists_hands",
+      "方位": "前臂桡侧",
+      "模型网格名称": [],
+      "关联动作ID": [
+        "stretch.arms_wrists_hands.beginner_wrist_extensor",
+        "stretch.arms_wrists_hands.finger_extensor"
+      ]
+    },
+    {
+      "id": "muscle.obliques",
+      "名称": "腹内外斜肌",
+      "别名": [
+        "侧腹肌群"
+      ],
+      "区域ID": "region.lower_trunk",
+      "方位": "躯干两侧",
+      "模型网格名称": [
+        "External Abdominal Oblique Muscle",
+        "Internal Abdominal Oblique Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.trunk_lateral_flexion",
+        "stretch.dynamic.trunk_rotation"
+      ]
+    },
+    {
+      "id": "muscle.deep_spinal_rotators",
+      "名称": "多裂肌与回旋肌群",
+      "别名": [
+        "脊柱深层旋转肌群"
+      ],
+      "区域ID": "region.lower_trunk",
+      "方位": "脊柱深层",
+      "模型网格名称": [
+        "Multifidus Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.trunk_lateral_flexion",
+        "stretch.dynamic.trunk_rotation"
+      ]
+    },
+    {
+      "id": "muscle.quadratus_lumborum",
+      "名称": "腰方肌",
+      "别名": [],
+      "区域ID": "region.lower_trunk",
+      "方位": "腰部两侧",
+      "模型网格名称": [
+        "Quadratus Lumborum Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.trunk_lateral_flexion"
+      ]
+    },
+    {
+      "id": "muscle.lumbar_erectors",
+      "名称": "腰段竖脊肌群",
+      "别名": [
+        "下背伸肌群"
+      ],
+      "区域ID": "region.lower_trunk",
+      "方位": "腰背后侧",
+      "模型网格名称": [
+        "Iliocostalis Lumborum Muscle",
+        "Longissimus Thoracis Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.dynamic.standing_knee_flexor"
+      ]
+    },
+    {
+      "id": "muscle.gluteal_group",
+      "名称": "臀肌群",
+      "别名": [
+        "臀大肌、臀中肌与臀小肌"
+      ],
+      "区域ID": "region.hips",
+      "方位": "髋后外侧",
+      "模型网格名称": [
+        "Gluteus Maximus Muscle",
+        "Gluteus Medius Muscle",
+        "Gluteus Minimus Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_adduction_abduction",
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.dynamic.standing_knee_flexor"
+      ]
+    },
+    {
+      "id": "muscle.deep_hip_rotators",
+      "名称": "髋深层外旋肌群",
+      "别名": [
+        "梨状肌等髋外旋肌"
+      ],
+      "区域ID": "region.hips",
+      "方位": "臀部深层",
+      "模型网格名称": [
+        "Piriformis Muscle",
+        "Quadratus Femoris Muscle",
+        "Obturator Internus Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.hip_external_internal_rotation"
+      ]
+    },
+    {
+      "id": "muscle.hip_adductors",
+      "名称": "髋内收肌群",
+      "别名": [
+        "大腿内侧肌群"
+      ],
+      "区域ID": "region.hips",
+      "方位": "大腿内侧",
+      "模型网格名称": [
+        "Adductor Magnus Muscle",
+        "Adductor Longus Muscle",
+        "Adductor Brevis Muscle",
+        "Gracilis Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.hip_adduction_abduction"
+      ]
+    },
+    {
+      "id": "muscle.hip_abductors",
+      "名称": "髋外展肌群",
+      "别名": [
+        "臀中肌与阔筋膜张肌"
+      ],
+      "区域ID": "region.hips",
+      "方位": "髋外侧",
+      "模型网格名称": [
+        "Gluteus Medius Muscle",
+        "Gluteus Minimus Muscle",
+        "Tensor Fasciae Latae Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_adduction_abduction"
+      ]
+    },
+    {
+      "id": "muscle.hip_flexors",
+      "名称": "髋屈肌群",
+      "别名": [
+        "髋前侧肌群"
+      ],
+      "区域ID": "region.hips",
+      "方位": "髋前侧",
+      "模型网格名称": [
+        "Iliacus Muscle",
+        "Psoas Major"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.hip_flexion_extension"
+      ]
+    },
+    {
+      "id": "muscle.hamstrings",
+      "名称": "腘绳肌群",
+      "别名": [
+        "大腿后侧肌群"
+      ],
+      "区域ID": "region.knees_thighs",
+      "方位": "大腿后侧",
+      "模型网格名称": [
+        "Semitendinosus Muscle",
+        "Semimembranosus Muscle",
+        "Long Head Of Biceps Femoris"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_adduction_abduction",
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.dynamic.standing_knee_flexor",
+        "stretch.dynamic.plantar_flexor"
+      ]
+    },
+    {
+      "id": "muscle.quadriceps",
+      "名称": "股四头肌",
+      "别名": [
+        "大腿前侧肌群"
+      ],
+      "区域ID": "region.knees_thighs",
+      "方位": "大腿前侧",
+      "模型网格名称": [
+        "Rectus Femoris Muscle",
+        "Vastus Medialis Muscle",
+        "Vastus Lateralis Muscle",
+        "Vastus Intermedius Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.dynamic.hip_flexion_extension"
+      ]
+    },
+    {
+      "id": "muscle.calf_plantar_flexors",
+      "名称": "小腿跖屈肌群",
+      "别名": [
+        "腓肠肌与比目鱼肌"
+      ],
+      "区域ID": "region.feet_calves",
+      "方位": "小腿后侧",
+      "模型网格名称": [
+        "Lateral Head Of Gastrocnemius",
+        "Medial Head Of Gastrocnemius",
+        "Soleus Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.feet_calves.beginner_seated_toe_flexor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+        "stretch.dynamic.standing_knee_flexor",
+        "stretch.dynamic.plantar_flexor"
+      ]
+    },
+    {
+      "id": "muscle.tibialis_anterior",
+      "名称": "胫骨前肌",
+      "别名": [],
+      "区域ID": "region.feet_calves",
+      "方位": "小腿前侧",
+      "模型网格名称": [
+        "Tibialis Anterior Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.feet_calves.beginner_seated_toe_extensor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor"
+      ]
+    },
+    {
+      "id": "muscle.fibularis_group",
+      "名称": "腓骨肌群",
+      "别名": [
+        "腓骨长肌、短肌与第三腓骨肌"
+      ],
+      "区域ID": "region.feet_calves",
+      "方位": "小腿外侧",
+      "模型网格名称": [
+        "Fibularis Longus Muscle",
+        "Fibularis Brevis Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.feet_calves.beginner_seated_toe_extensor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor"
+      ]
+    },
+    {
+      "id": "muscle.toe_extensors",
+      "名称": "趾伸肌群",
+      "别名": [
+        "脚趾伸肌群"
+      ],
+      "区域ID": "region.feet_calves",
+      "方位": "足背与小腿前侧",
+      "模型网格名称": [],
+      "关联动作ID": [
+        "stretch.feet_calves.beginner_seated_toe_extensor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor"
+      ]
+    },
+    {
+      "id": "muscle.toe_flexors",
+      "名称": "趾屈肌群",
+      "别名": [
+        "脚趾屈肌群"
+      ],
+      "区域ID": "region.feet_calves",
+      "方位": "足底与小腿后侧",
+      "模型网格名称": [],
+      "关联动作ID": [
+        "stretch.feet_calves.beginner_seated_toe_flexor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+        "stretch.dynamic.plantar_flexor"
+      ]
+    },
+    {
+      "id": "muscle.intrinsic_foot_group",
+      "名称": "足内在肌群",
+      "别名": [
+        "足底小肌群"
+      ],
+      "区域ID": "region.feet_calves",
+      "方位": "足底与足背深层",
+      "模型网格名称": [],
+      "关联动作ID": [
+        "stretch.feet_calves.beginner_seated_toe_extensor",
+        "stretch.feet_calves.beginner_seated_toe_flexor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+        "stretch.dynamic.plantar_flexor"
+      ]
+    },
+    {
+      "id": "muscle.tibialis_posterior",
+      "名称": "胫骨后肌",
+      "别名": [],
+      "区域ID": "region.feet_calves",
+      "方位": "小腿后内侧",
+      "模型网格名称": [
+        "Tibialis Posterior Muscle"
+      ],
+      "关联动作ID": [
+        "stretch.feet_calves.beginner_seated_toe_flexor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+        "stretch.dynamic.plantar_flexor"
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "id": "stretch.feet_calves.beginner_seated_toe_extensor",
+      "name": "初级坐姿脚趾伸肌拉伸",
+      "type": "静态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "足背",
+        "踝前侧",
+        "小腿前侧"
+      ],
+      "targetMuscles": [
+        "趾伸肌群",
+        "胫骨前肌",
+        "腓骨肌群",
+        "足内在肌群"
+      ],
+      "regionIds": [
+        "region.feet_calves"
+      ],
+      "muscleIds": [
+        "muscle.toe_extensors",
+        "muscle.tibialis_anterior",
+        "muscle.fibularis_group",
+        "muscle.intrinsic_foot_group"
+      ],
+      "relatedActionIds": [
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+        "stretch.dynamic.plantar_flexor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.feet_calves.beginner_seated_toe_extensor",
+      "startPosition": "坐在稳定椅子上，一脚踩地，将另一侧脚踝放在支撑腿膝上，形成舒适的“4”字姿势。",
+      "steps": [
+        "用同侧手稳定脚踝。",
+        "另一只手的手指放在脚趾背面。",
+        "将脚趾尖缓慢带向足底，远离胫骨方向。",
+        "回到中立位后换另一侧。"
+      ],
+      "breathing": "保持自然呼吸；呼气时只允许身体在舒适范围内多放松一点，不屏气。",
+      "intensity": "轻微、持续的牵拉感；不以疼痛作为有效标准。",
+      "duration": "网站保守起点：每侧保持 15–20 秒，完成 1–2 轮；课程内以具体编排为准。",
+      "keyPoints": [
+        "脚踝在整个过程中保持稳定。",
+        "正常感觉主要位于足背。",
+        "如果拉脚趾尖不舒服，改在前脚掌附近施加更分散的压力。"
+      ],
+      "commonMistakes": [
+        "只扳脚趾而让脚踝跟着转动",
+        "为了追求幅度快速压脚趾",
+        "支撑腿悬空导致身体紧张"
+      ],
+      "simplifiedVersion": "不抓脚趾尖，手掌轻贴前脚掌，将脚趾整体向足底方向带动。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [
+        "稳定、无滑轮的椅子"
+      ],
+      "reviewStatus": "内容复核后可用；上线前仍需运动康复专业人员抽查",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/feet-calves/stretch.feet_calves.beginner_seated_toe_extensor/image-spec.json",
+      "reviewPath": "actions/feet-calves/stretch.feet_calves.beginner_seated_toe_extensor/content.md",
+      "source": {
+        "pdfPages": [
+          23,
+          24
+        ],
+        "bookPages": [
+          12,
+          13
+        ],
+        "chapter": "第 2 章：足与小腿",
+        "pageIds": [
+          "page.pdf_023",
+          "page.pdf_024"
+        ]
+      }
+    },
+    {
+      "id": "stretch.feet_calves.beginner_seated_toe_flexor",
+      "name": "初级坐姿脚趾屈肌拉伸",
+      "type": "静态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "足底",
+        "足弓",
+        "脚趾"
+      ],
+      "targetMuscles": [
+        "趾屈肌群",
+        "足内在肌群",
+        "胫骨后肌",
+        "小腿跖屈肌群"
+      ],
+      "regionIds": [
+        "region.feet_calves"
+      ],
+      "muscleIds": [
+        "muscle.toe_flexors",
+        "muscle.intrinsic_foot_group",
+        "muscle.tibialis_posterior",
+        "muscle.calf_plantar_flexors"
+      ],
+      "relatedActionIds": [
+        "stretch.dynamic.plantar_flexor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor",
+        "stretch.dynamic.standing_knee_flexor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.feet_calves.beginner_seated_toe_flexor",
+      "startPosition": "坐在稳定椅子上，将一侧脚踝放到另一侧膝上，并让足底朝向自己。",
+      "steps": [
+        "一只手稳定脚踝。",
+        "另一只手的手指贴住各脚趾足底侧，手指方向与脚趾一致。",
+        "将脚趾整体缓慢推向小腿前侧。",
+        "回到中立位后换另一侧。"
+      ],
+      "breathing": "保持自然呼吸；呼气时只允许身体在舒适范围内多放松一点，不屏气。",
+      "intensity": "轻微、持续的牵拉感；不以疼痛作为有效标准。",
+      "duration": "网站保守起点：每侧保持 15–20 秒，完成 1–2 轮；课程内以具体编排为准。",
+      "keyPoints": [
+        "牵拉感主要位于足底和足弓。",
+        "脚趾应整体移动，不只压某一根脚趾。",
+        "足底较敏感，力量从很轻开始。"
+      ],
+      "commonMistakes": [
+        "用力压脚趾末端",
+        "脚踝没有固定",
+        "出现足底抽筋仍继续加压"
+      ],
+      "simplifiedVersion": "用手掌托住前脚掌，仅将脚趾抬到轻微牵拉位置。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [
+        "稳定、无滑轮的椅子"
+      ],
+      "reviewStatus": "内容复核后可用；上线前仍需运动康复专业人员抽查",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/feet-calves/stretch.feet_calves.beginner_seated_toe_flexor/image-spec.json",
+      "reviewPath": "actions/feet-calves/stretch.feet_calves.beginner_seated_toe_flexor/content.md",
+      "source": {
+        "pdfPages": [
+          27,
+          28
+        ],
+        "bookPages": [
+          16,
+          17
+        ],
+        "chapter": "第 2 章：足与小腿",
+        "pageIds": [
+          "page.pdf_027",
+          "page.pdf_028"
+        ]
+      }
+    },
+    {
+      "id": "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor",
+      "name": "坐姿脚趾伸肌与足外翻肌拉伸",
+      "type": "静态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "足背",
+        "足外侧",
+        "踝外侧"
+      ],
+      "targetMuscles": [
+        "趾伸肌群",
+        "腓骨肌群",
+        "足内在肌群"
+      ],
+      "regionIds": [
+        "region.feet_calves"
+      ],
+      "muscleIds": [
+        "muscle.toe_extensors",
+        "muscle.fibularis_group",
+        "muscle.intrinsic_foot_group"
+      ],
+      "relatedActionIds": [
+        "stretch.feet_calves.beginner_seated_toe_extensor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+        "stretch.dynamic.plantar_flexor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor",
+      "startPosition": "坐姿“4”字放腿，一只手固定脚踝，另一只手拇指靠近大脚趾球部、其余手指覆盖足背。",
+      "steps": [
+        "先将脚趾缓慢带向足底。",
+        "保持脚踝被固定，按原书图示把足外侧轻轻向上带，使足部出现小幅旋转。",
+        "只到足背与足外侧出现均匀牵拉的位置。",
+        "缓慢回正后换侧。"
+      ],
+      "breathing": "保持自然呼吸；呼气时只允许身体在舒适范围内多放松一点，不屏气。",
+      "intensity": "轻微、持续的牵拉感；不以疼痛作为有效标准。",
+      "duration": "网站保守起点：每侧保持 15–20 秒，完成 1–2 轮；课程内以具体编排为准。",
+      "keyPoints": [
+        "脚趾屈曲与足部小幅旋转同步完成。",
+        "动作范围很小，不追求扭转角度。",
+        "足背和足外侧应出现近似强度的牵拉。"
+      ],
+      "commonMistakes": [
+        "脚踝未固定就扭动整条小腿",
+        "旋转速度过快",
+        "把韧带区域的尖锐感当作拉伸感"
+      ],
+      "simplifiedVersion": "只完成脚趾向足底的动作，暂不加入足部旋转。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [
+        "稳定、无滑轮的椅子"
+      ],
+      "reviewStatus": "足部旋转方向和图示需在原创图片样张阶段由专业人员复核",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/feet-calves/stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor/image-spec.json",
+      "reviewPath": "actions/feet-calves/stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor/content.md",
+      "source": {
+        "pdfPages": [
+          35,
+          36
+        ],
+        "bookPages": [
+          24,
+          25
+        ],
+        "chapter": "第 2 章：足与小腿",
+        "pageIds": [
+          "page.pdf_035",
+          "page.pdf_036"
+        ]
+      }
+    },
+    {
+      "id": "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+      "name": "坐姿脚趾屈肌与足外翻肌拉伸",
+      "type": "静态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "足底",
+        "足外侧",
+        "踝外侧"
+      ],
+      "targetMuscles": [
+        "趾屈肌群",
+        "足内在肌群",
+        "腓骨肌群",
+        "小腿跖屈肌群"
+      ],
+      "regionIds": [
+        "region.feet_calves"
+      ],
+      "muscleIds": [
+        "muscle.toe_flexors",
+        "muscle.intrinsic_foot_group",
+        "muscle.fibularis_group",
+        "muscle.calf_plantar_flexors"
+      ],
+      "relatedActionIds": [
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+        "stretch.dynamic.plantar_flexor",
+        "stretch.feet_calves.beginner_seated_toe_flexor",
+        "stretch.feet_calves.beginner_seated_toe_extensor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+      "startPosition": "坐姿“4”字放腿，一只手稳定脚踝，另一只手从足背侧握住脚趾。",
+      "steps": [
+        "把脚趾缓慢带离足底，朝向小腿前侧。",
+        "保持脚踝稳定，按原书图示把足外侧轻轻向上带，使足部出现小幅旋转。",
+        "足底和足外侧出现轻微牵拉后停留。",
+        "回正后换侧。"
+      ],
+      "breathing": "保持自然呼吸；呼气时只允许身体在舒适范围内多放松一点，不屏气。",
+      "intensity": "轻微、持续的牵拉感；不以疼痛作为有效标准。",
+      "duration": "网站保守起点：每侧保持 15–20 秒，完成 1–2 轮；课程内以具体编排为准。",
+      "keyPoints": [
+        "先完成脚趾伸展，再叠加极小的足部旋转。",
+        "一旦足底抽筋，立即回到中立位。",
+        "手的作用是引导，不是扭转关节。"
+      ],
+      "commonMistakes": [
+        "拉扯脚趾末端",
+        "足部旋转过大",
+        "膝盖被压得不舒服仍继续"
+      ],
+      "simplifiedVersion": "只将脚趾轻轻带向小腿，不加入足部旋转。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [
+        "稳定、无滑轮的椅子"
+      ],
+      "reviewStatus": "足部旋转方向和图示需在原创图片样张阶段由专业人员复核",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/feet-calves/stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor/image-spec.json",
+      "reviewPath": "actions/feet-calves/stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor/content.md",
+      "source": {
+        "pdfPages": [
+          37,
+          38
+        ],
+        "bookPages": [
+          26,
+          27
+        ],
+        "chapter": "第 2 章：足与小腿",
+        "pageIds": [
+          "page.pdf_037",
+          "page.pdf_038"
+        ]
+      }
+    },
+    {
+      "id": "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor",
+      "name": "坐姿脚趾伸肌与足内翻肌拉伸",
+      "type": "静态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "足背",
+        "足内侧",
+        "踝内侧"
+      ],
+      "targetMuscles": [
+        "趾伸肌群",
+        "胫骨前肌",
+        "胫骨后肌",
+        "足内在肌群"
+      ],
+      "regionIds": [
+        "region.feet_calves"
+      ],
+      "muscleIds": [
+        "muscle.toe_extensors",
+        "muscle.tibialis_anterior",
+        "muscle.tibialis_posterior",
+        "muscle.intrinsic_foot_group"
+      ],
+      "relatedActionIds": [
+        "stretch.feet_calves.beginner_seated_toe_extensor",
+        "stretch.dynamic.plantar_flexor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor",
+      "startPosition": "坐姿“4”字放腿，一只手稳定脚踝，另一只手覆盖前脚掌和足背。",
+      "steps": [
+        "先把脚趾缓慢带向足底。",
+        "保持脚踝稳定，按原书图示将前脚掌小幅向下推并旋转。",
+        "足背与足内侧出现轻微牵拉后停止增加幅度。",
+        "缓慢回正并换侧。"
+      ],
+      "breathing": "保持自然呼吸；呼气时只允许身体在舒适范围内多放松一点，不屏气。",
+      "intensity": "轻微、持续的牵拉感；不以疼痛作为有效标准。",
+      "duration": "网站保守起点：每侧保持 15–20 秒，完成 1–2 轮；课程内以具体编排为准。",
+      "keyPoints": [
+        "脚趾屈曲与足部旋转都应很小。",
+        "足内侧的感觉应当温和、均匀。",
+        "不允许膝关节跟着扭转。"
+      ],
+      "commonMistakes": [
+        "用手腕猛压足部",
+        "膝盖随足部一起旋转",
+        "出现踝内侧锐痛仍继续"
+      ],
+      "simplifiedVersion": "只做脚趾向足底的动作。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [
+        "稳定、无滑轮的椅子"
+      ],
+      "reviewStatus": "足部旋转方向和图示需在原创图片样张阶段由专业人员复核",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/feet-calves/stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor/image-spec.json",
+      "reviewPath": "actions/feet-calves/stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor/content.md",
+      "source": {
+        "pdfPages": [
+          41,
+          42
+        ],
+        "bookPages": [
+          30,
+          31
+        ],
+        "chapter": "第 2 章：足与小腿",
+        "pageIds": [
+          "page.pdf_041",
+          "page.pdf_042"
+        ]
+      }
+    },
+    {
+      "id": "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+      "name": "坐姿脚趾屈肌与足内翻肌拉伸",
+      "type": "静态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "足底",
+        "足内侧",
+        "踝内侧"
+      ],
+      "targetMuscles": [
+        "趾屈肌群",
+        "足内在肌群",
+        "胫骨后肌",
+        "腓骨肌群",
+        "小腿跖屈肌群"
+      ],
+      "regionIds": [
+        "region.feet_calves"
+      ],
+      "muscleIds": [
+        "muscle.toe_flexors",
+        "muscle.intrinsic_foot_group",
+        "muscle.tibialis_posterior",
+        "muscle.fibularis_group",
+        "muscle.calf_plantar_flexors"
+      ],
+      "relatedActionIds": [
+        "stretch.dynamic.plantar_flexor",
+        "stretch.feet_calves.beginner_seated_toe_flexor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_extensor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+      "startPosition": "坐姿“4”字放腿，靠近身体的手稳定脚踝，另一只手握住大脚趾和其余脚趾。",
+      "steps": [
+        "把脚趾缓慢带向小腿前侧。",
+        "保持脚踝稳定，按原书图示将前脚掌小幅向下推并旋转。",
+        "足底与足内侧出现轻微牵拉后停留。",
+        "回到中立位并换侧。"
+      ],
+      "breathing": "保持自然呼吸；呼气时只允许身体在舒适范围内多放松一点，不屏气。",
+      "intensity": "轻微、持续的牵拉感；不以疼痛作为有效标准。",
+      "duration": "网站保守起点：每侧保持 15–20 秒，完成 1–2 轮；课程内以具体编排为准。",
+      "keyPoints": [
+        "足部小肌群较敏感，力量从极轻开始。",
+        "动作可以拆成脚趾伸展和小幅旋转两段。",
+        "5–10 分钟碎片练习也应避免重复过量。"
+      ],
+      "commonMistakes": [
+        "一次旋转到最大角度",
+        "足弓抽筋后仍保持",
+        "手只抓一根脚趾"
+      ],
+      "simplifiedVersion": "只做脚趾向小腿方向的温和伸展。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [
+        "稳定、无滑轮的椅子"
+      ],
+      "reviewStatus": "足部旋转方向和图示需在原创图片样张阶段由专业人员复核",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/feet-calves/stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor/image-spec.json",
+      "reviewPath": "actions/feet-calves/stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor/content.md",
+      "source": {
+        "pdfPages": [
+          43,
+          44
+        ],
+        "bookPages": [
+          32,
+          33
+        ],
+        "chapter": "第 2 章：足与小腿",
+        "pageIds": [
+          "page.pdf_043",
+          "page.pdf_044"
+        ]
+      }
+    },
+    {
+      "id": "stretch.arms_wrists_hands.beginner_wrist_extensor",
+      "name": "初级腕伸肌拉伸",
+      "type": "静态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "前臂背侧",
+        "手腕背侧",
+        "肘外侧"
+      ],
+      "targetMuscles": [
+        "腕伸肌群",
+        "指伸肌群",
+        "拇指伸展与外展肌群"
+      ],
+      "regionIds": [
+        "region.arms_wrists_hands"
+      ],
+      "muscleIds": [
+        "muscle.wrist_extensors",
+        "muscle.finger_extensors",
+        "muscle.thumb_extensors_abductor"
+      ],
+      "relatedActionIds": [
+        "stretch.arms_wrists_hands.finger_extensor",
+        "stretch.arms_wrists_hands.beginner_wrist_flexor",
+        "stretch.arms_wrists_hands.finger_flexor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.arms_wrists_hands.beginner_wrist_extensor",
+      "startPosition": "坐姿或站姿保持躯干直立，一侧手臂向前伸到舒适高度，肘部伸直、掌心朝下。",
+      "steps": [
+        "让手腕弯曲，手指自然指向地面。",
+        "另一只手掌轻放在指根和手背处。",
+        "保持肘部稳定，将手背轻轻带向身体。",
+        "完成后换另一侧。"
+      ],
+      "breathing": "保持自然呼吸；呼气时只允许身体在舒适范围内多放松一点，不屏气。",
+      "intensity": "轻微、持续的牵拉感；不以疼痛作为有效标准。",
+      "duration": "网站保守起点：每侧保持 15–20 秒，完成 1–2 轮；课程内以具体编排为准。",
+      "keyPoints": [
+        "压力落在指根和手背，不直接掰手指关节。",
+        "肩膀保持下沉。",
+        "键鼠工作后以前臂背侧轻微牵拉为宜。"
+      ],
+      "commonMistakes": [
+        "耸肩",
+        "肘部反复弯曲",
+        "只压手指末端"
+      ],
+      "simplifiedVersion": "肘部保持微屈，不使用另一只手，只靠腕部主动弯曲。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [],
+      "reviewStatus": "内容复核后可用；上线前仍需运动康复专业人员抽查",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/arms-wrists-hands/stretch.arms_wrists_hands.beginner_wrist_extensor/image-spec.json",
+      "reviewPath": "actions/arms-wrists-hands/stretch.arms_wrists_hands.beginner_wrist_extensor/content.md",
+      "source": {
+        "pdfPages": [
+          133,
+          134
+        ],
+        "bookPages": [
+          122,
+          123
+        ],
+        "chapter": "第 6 章：手臂、手腕与手",
+        "pageIds": [
+          "page.pdf_133",
+          "page.pdf_134"
+        ]
+      }
+    },
+    {
+      "id": "stretch.arms_wrists_hands.beginner_wrist_flexor",
+      "name": "初级腕屈肌拉伸",
+      "type": "静态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "前臂掌侧",
+        "手腕掌侧",
+        "肘内侧"
+      ],
+      "targetMuscles": [
+        "腕屈肌群",
+        "指屈肌群"
+      ],
+      "regionIds": [
+        "region.arms_wrists_hands"
+      ],
+      "muscleIds": [
+        "muscle.wrist_flexors",
+        "muscle.finger_flexors"
+      ],
+      "relatedActionIds": [
+        "stretch.arms_wrists_hands.finger_flexor",
+        "stretch.arms_wrists_hands.beginner_wrist_extensor",
+        "stretch.arms_wrists_hands.finger_extensor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.arms_wrists_hands.beginner_wrist_flexor",
+      "startPosition": "坐姿或站姿，十指交扣，掌心朝向身体。",
+      "steps": [
+        "将交扣的双手翻转，使掌心朝向前方。",
+        "双臂抬到舒适高度。",
+        "缓慢伸直手肘并把掌心向前送。",
+        "在前臂掌侧出现轻微牵拉时停留。"
+      ],
+      "breathing": "保持自然呼吸；呼气时只允许身体在舒适范围内多放松一点，不屏气。",
+      "intensity": "轻微、持续的牵拉感；不以疼痛作为有效标准。",
+      "duration": "网站保守起点：每侧保持 15–20 秒，完成 1–2 轮；课程内以具体编排为准。",
+      "keyPoints": [
+        "手腕保持均匀伸展。",
+        "肘部无需用力锁死。",
+        "肩膀不向耳朵靠近。"
+      ],
+      "commonMistakes": [
+        "掌根强行向前推",
+        "肘部过伸",
+        "胸口塌陷、肩膀前扣"
+      ],
+      "simplifiedVersion": "双手不交扣，单侧手臂向前，掌心轻轻向外推。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [],
+      "reviewStatus": "内容复核后可用；上线前仍需运动康复专业人员抽查",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/arms-wrists-hands/stretch.arms_wrists_hands.beginner_wrist_flexor/image-spec.json",
+      "reviewPath": "actions/arms-wrists-hands/stretch.arms_wrists_hands.beginner_wrist_flexor/content.md",
+      "source": {
+        "pdfPages": [
+          137,
+          138
+        ],
+        "bookPages": [
+          126,
+          127
+        ],
+        "chapter": "第 6 章：手臂、手腕与手",
+        "pageIds": [
+          "page.pdf_137",
+          "page.pdf_138"
+        ]
+      }
+    },
+    {
+      "id": "stretch.arms_wrists_hands.finger_flexor",
+      "name": "手指屈肌拉伸",
+      "type": "静态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "手掌",
+        "手指掌侧",
+        "前臂掌侧"
+      ],
+      "targetMuscles": [
+        "指屈肌群",
+        "腕屈肌群"
+      ],
+      "regionIds": [
+        "region.arms_wrists_hands"
+      ],
+      "muscleIds": [
+        "muscle.finger_flexors",
+        "muscle.wrist_flexors"
+      ],
+      "relatedActionIds": [
+        "stretch.arms_wrists_hands.beginner_wrist_flexor",
+        "stretch.arms_wrists_hands.beginner_wrist_extensor",
+        "stretch.arms_wrists_hands.finger_extensor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.arms_wrists_hands.finger_flexor",
+      "startPosition": "坐或站直，一侧肘部弯曲到大约直角，手腕向后伸展，手指朝上。",
+      "steps": [
+        "另一只手托住伸展侧手指。",
+        "将手指整体缓慢带向同侧肘部方向。",
+        "选择一个手腕和手指都舒适的角度。",
+        "完成后换侧。"
+      ],
+      "breathing": "保持自然呼吸；呼气时只允许身体在舒适范围内多放松一点，不屏气。",
+      "intensity": "轻微、持续的牵拉感；不以疼痛作为有效标准。",
+      "duration": "网站保守起点：每侧保持 15–20 秒，完成 1–2 轮；课程内以具体编排为准。",
+      "keyPoints": [
+        "肘部不必严格保持 90°。",
+        "压力分散到多根手指。",
+        "手掌和前臂掌侧出现轻微牵拉即可。"
+      ],
+      "commonMistakes": [
+        "逐根猛掰手指",
+        "压到指关节疼痛",
+        "手腕完全放松导致感觉只集中在手指"
+      ],
+      "simplifiedVersion": "减少手腕后伸角度，只轻轻展开五指。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [],
+      "reviewStatus": "内容复核后可用；上线前仍需运动康复专业人员抽查",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/arms-wrists-hands/stretch.arms_wrists_hands.finger_flexor/image-spec.json",
+      "reviewPath": "actions/arms-wrists-hands/stretch.arms_wrists_hands.finger_flexor/content.md",
+      "source": {
+        "pdfPages": [
+          145,
+          146
+        ],
+        "bookPages": [
+          134,
+          135
+        ],
+        "chapter": "第 6 章：手臂、手腕与手",
+        "pageIds": [
+          "page.pdf_145",
+          "page.pdf_146"
+        ]
+      }
+    },
+    {
+      "id": "stretch.arms_wrists_hands.finger_extensor",
+      "name": "手指伸肌拉伸",
+      "type": "静态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "手背",
+        "手指背侧",
+        "前臂背侧"
+      ],
+      "targetMuscles": [
+        "指伸肌群",
+        "腕伸肌群",
+        "拇指伸展与外展肌群"
+      ],
+      "regionIds": [
+        "region.arms_wrists_hands"
+      ],
+      "muscleIds": [
+        "muscle.finger_extensors",
+        "muscle.wrist_extensors",
+        "muscle.thumb_extensors_abductor"
+      ],
+      "relatedActionIds": [
+        "stretch.arms_wrists_hands.beginner_wrist_extensor",
+        "stretch.arms_wrists_hands.beginner_wrist_flexor",
+        "stretch.arms_wrists_hands.finger_flexor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.arms_wrists_hands.finger_extensor",
+      "startPosition": "坐或站直，一侧掌心朝上，肘部弯曲到大约直角。",
+      "steps": [
+        "将手腕弯曲，使手掌靠近前臂。",
+        "手指也弯向同侧肘部。",
+        "另一只手覆盖在手指背面，轻轻向前臂方向引导。",
+        "完成后换侧。"
+      ],
+      "breathing": "保持自然呼吸；呼气时只允许身体在舒适范围内多放松一点，不屏气。",
+      "intensity": "轻微、持续的牵拉感；不以疼痛作为有效标准。",
+      "duration": "网站保守起点：每侧保持 15–20 秒，完成 1–2 轮；课程内以具体编排为准。",
+      "keyPoints": [
+        "肘部角度可以根据舒适度调整。",
+        "不要把压力集中在指甲或末端关节。",
+        "前臂背侧出现均匀牵拉即可。"
+      ],
+      "commonMistakes": [
+        "握拳过紧",
+        "手指关节被强压",
+        "肩膀耸起"
+      ],
+      "simplifiedVersion": "只主动弯曲手腕和手指，不使用另一只手加压。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [],
+      "reviewStatus": "内容复核后可用；上线前仍需运动康复专业人员抽查",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/arms-wrists-hands/stretch.arms_wrists_hands.finger_extensor/image-spec.json",
+      "reviewPath": "actions/arms-wrists-hands/stretch.arms_wrists_hands.finger_extensor/content.md",
+      "source": {
+        "pdfPages": [
+          149,
+          150
+        ],
+        "bookPages": [
+          138,
+          139
+        ],
+        "chapter": "第 6 章：手臂、手腕与手",
+        "pageIds": [
+          "page.pdf_149",
+          "page.pdf_150"
+        ]
+      }
+    },
+    {
+      "id": "stretch.neck.neck_extensor",
+      "name": "坐姿颈后侧伸展",
+      "type": "静态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "后颈",
+        "颈肩交界",
+        "上背顶部"
+      ],
+      "targetMuscles": [
+        "上斜方肌",
+        "颈后伸肌群",
+        "斜角肌群"
+      ],
+      "regionIds": [
+        "region.neck"
+      ],
+      "muscleIds": [
+        "muscle.upper_trapezius",
+        "muscle.posterior_neck_group",
+        "muscle.scalenes"
+      ],
+      "relatedActionIds": [
+        "stretch.neck.neck_flexor",
+        "stretch.dynamic.shoulder_circumduction"
+      ],
+      "websitePath": "/动作教程?动作=stretch.neck.neck_extensor",
+      "startPosition": "坐在稳定椅子上，脊柱自然延展，双肩放松下沉。",
+      "steps": [
+        "十指交扣，双手轻放在头顶偏后的位置。",
+        "先轻收下巴，让后颈保持拉长。",
+        "利用手臂重量轻微引导头部向前，不主动用力压头。",
+        "在后颈出现轻微牵拉时停留，然后缓慢回正。"
+      ],
+      "breathing": "保持自然呼吸；呼气时只允许身体在舒适范围内多放松一点，不屏气。",
+      "intensity": "轻微、持续的牵拉感；不以疼痛作为有效标准。",
+      "duration": "网站保守起点：每侧保持 15–20 秒，完成 1–2 轮；课程内以具体编排为准。",
+      "keyPoints": [
+        "书中要求保持双肩下沉。",
+        "网站版本减少手部牵拉，只保留轻微引导。",
+        "颈部保持在正前方，不偏向左右。"
+      ],
+      "commonMistakes": [
+        "用手强行把下巴压向胸口",
+        "耸肩",
+        "含胸弓背代替颈部屈曲"
+      ],
+      "simplifiedVersion": "双手放在大腿上，仅做轻收下巴和微小点头。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者",
+        "近期有挥鞭样损伤、椎动脉相关症状或医生要求避免颈部屈曲者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [
+        "稳定、有靠背或无靠背椅子"
+      ],
+      "reviewStatus": "书中包含手动牵拉；网站已改为保守版本，上线前需专业复核",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/neck/stretch.neck.neck_extensor/image-spec.json",
+      "reviewPath": "actions/neck/stretch.neck.neck_extensor/content.md",
+      "source": {
+        "pdfPages": [
+          187,
+          188
+        ],
+        "bookPages": [
+          176,
+          177
+        ],
+        "chapter": "第 8 章：颈部",
+        "pageIds": [
+          "page.pdf_187",
+          "page.pdf_188"
+        ]
+      }
+    },
+    {
+      "id": "stretch.neck.neck_flexor",
+      "name": "坐姿颈前侧轻柔伸展",
+      "type": "静态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "颈前侧",
+        "颈侧",
+        "胸锁乳突肌区域"
+      ],
+      "targetMuscles": [
+        "胸锁乳突肌",
+        "斜角肌群",
+        "颈后伸肌群"
+      ],
+      "regionIds": [
+        "region.neck"
+      ],
+      "muscleIds": [
+        "muscle.sternocleidomastoid",
+        "muscle.scalenes",
+        "muscle.posterior_neck_group"
+      ],
+      "relatedActionIds": [
+        "stretch.neck.neck_extensor",
+        "stretch.dynamic.shoulder_circumduction"
+      ],
+      "websitePath": "/动作教程?动作=stretch.neck.neck_flexor",
+      "startPosition": "坐在稳定椅子上，背部自然直立，肩膀下沉。",
+      "steps": [
+        "先保持下巴微收，胸骨轻轻向上提。",
+        "目光缓慢向斜上方移动，让头部只做小幅后移。",
+        "双手可以轻触额头作为位置提醒，但不向后推拉。",
+        "颈前侧出现轻微牵拉后停留，再缓慢回正。"
+      ],
+      "breathing": "保持自然呼吸；呼气时只允许身体在舒适范围内多放松一点，不屏气。",
+      "intensity": "轻微、持续的牵拉感；不以疼痛作为有效标准。",
+      "duration": "网站保守起点：每侧保持 15–20 秒，完成 1–2 轮；课程内以具体编排为准。",
+      "keyPoints": [
+        "原书为双手放额头并向后牵拉；网站版本取消手动牵拉。",
+        "保持肩膀下沉，不让腰部后仰代偿。",
+        "幅度宁小勿大。"
+      ],
+      "commonMistakes": [
+        "鼻尖强行朝天",
+        "用手推额头",
+        "张口、憋气或腰部明显反弓"
+      ],
+      "simplifiedVersion": "保持头部中立，只做胸骨上提和轻收下巴。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者",
+        "有眩晕史、颈椎不稳、近期颈部外伤或医生要求避免颈部后伸者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [
+        "稳定、有靠背或无靠背椅子"
+      ],
+      "reviewStatus": "与原书手动后伸版本存在安全性改写；上线前必须由专业人员确认",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/neck/stretch.neck.neck_flexor/image-spec.json",
+      "reviewPath": "actions/neck/stretch.neck.neck_flexor/content.md",
+      "source": {
+        "pdfPages": [
+          191,
+          192
+        ],
+        "bookPages": [
+          180,
+          181
+        ],
+        "chapter": "第 8 章：颈部",
+        "pageIds": [
+          "page.pdf_191",
+          "page.pdf_192"
+        ]
+      }
+    },
+    {
+      "id": "stretch.dynamic.hip_external_internal_rotation",
+      "name": "扶墙髋内外旋动态活动",
+      "type": "动态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "髋关节",
+        "臀部深层",
+        "髋外侧"
+      ],
+      "targetMuscles": [
+        "臀肌群",
+        "髋深层外旋肌群",
+        "髋外展肌群",
+        "腘绳肌群",
+        "腰段竖脊肌群",
+        "背阔肌"
+      ],
+      "regionIds": [
+        "region.hips",
+        "region.lower_trunk"
+      ],
+      "muscleIds": [
+        "muscle.gluteal_group",
+        "muscle.deep_hip_rotators",
+        "muscle.hip_abductors",
+        "muscle.hamstrings",
+        "muscle.lumbar_erectors",
+        "muscle.latissimus_dorsi"
+      ],
+      "relatedActionIds": [
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.dynamic.hip_adduction_abduction",
+        "stretch.dynamic.standing_knee_flexor",
+        "stretch.dynamic.plantar_flexor",
+        "stretch.dynamic.shoulder_circumduction"
+      ],
+      "websitePath": "/动作教程?动作=stretch.dynamic.hip_external_internal_rotation",
+      "startPosition": "一侧身体靠近墙或稳固支撑物，支撑腿站稳，另一侧髋膝微屈并自然悬空。",
+      "steps": [
+        "用靠近支撑物的手扶稳。",
+        "让悬空腿以髋关节为中心画小圆。",
+        "先向一个方向连续画圈，再反向画圈。",
+        "保持躯干直立，换侧重复。"
+      ],
+      "breathing": "保持连续呼吸，让动作速度跟随呼吸自然减慢；不要屏气发力。",
+      "intensity": "小幅、平稳、可随时停下；不使用猛烈弹振。",
+      "duration": "网站保守起点：连续活动 20–30 秒；初次练习可缩短为 10 秒。课程内以具体编排为准。",
+      "keyPoints": [
+        "圆周来自髋关节，不靠扭腰。",
+        "从很小的圆开始。",
+        "支撑膝不过度锁死。"
+      ],
+      "commonMistakes": [
+        "骨盆大幅摇晃",
+        "摆动速度过快",
+        "支撑物不稳定"
+      ],
+      "simplifiedVersion": "脚尖轻点地，以髋为轴做更小的圆周。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [
+        "墙面或稳固支撑物"
+      ],
+      "reviewStatus": "内容复核后可用；上线前仍需运动康复专业人员抽查",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/dynamic/stretch.dynamic.hip_external_internal_rotation/image-spec.json",
+      "reviewPath": "actions/dynamic/stretch.dynamic.hip_external_internal_rotation/content.md",
+      "source": {
+        "pdfPages": [
+          199,
+          200
+        ],
+        "bookPages": [
+          188,
+          189
+        ],
+        "chapter": "第 9 章：动态拉伸",
+        "pageIds": [
+          "page.pdf_199",
+          "page.pdf_200"
+        ]
+      }
+    },
+    {
+      "id": "stretch.dynamic.hip_adduction_abduction",
+      "name": "扶墙髋内收外展动态活动",
+      "type": "动态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "大腿内侧",
+        "髋外侧",
+        "臀部外侧"
+      ],
+      "targetMuscles": [
+        "髋内收肌群",
+        "髋外展肌群",
+        "臀肌群",
+        "腘绳肌群"
+      ],
+      "regionIds": [
+        "region.hips",
+        "region.knees_thighs"
+      ],
+      "muscleIds": [
+        "muscle.hip_adductors",
+        "muscle.hip_abductors",
+        "muscle.gluteal_group",
+        "muscle.hamstrings"
+      ],
+      "relatedActionIds": [
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.dynamic.standing_knee_flexor",
+        "stretch.dynamic.plantar_flexor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.dynamic.hip_adduction_abduction",
+      "startPosition": "身体一侧靠近稳固支撑物，支撑腿站稳，另一侧髋膝微屈、脚离地。",
+      "steps": [
+        "扶住支撑物。",
+        "将悬空腿在身体前方小幅左右摆动。",
+        "摆过身体中线时留出空间，不碰到支撑腿。",
+        "躯干保持直立，完成后换侧。"
+      ],
+      "breathing": "保持连续呼吸，让动作速度跟随呼吸自然减慢；不要屏气发力。",
+      "intensity": "小幅、平稳、可随时停下；不使用猛烈弹振。",
+      "duration": "网站保守起点：连续活动 20–30 秒；初次练习可缩短为 10 秒。课程内以具体编排为准。",
+      "keyPoints": [
+        "摆动来自髋部。",
+        "悬空腿膝盖保持微屈。",
+        "幅度随控制能力逐渐增加。"
+      ],
+      "commonMistakes": [
+        "摆腿碰到支撑腿",
+        "躯干左右倒",
+        "追求速度和幅度"
+      ],
+      "simplifiedVersion": "脚尖点地做左右滑步。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [
+        "墙面或稳固支撑物"
+      ],
+      "reviewStatus": "内容复核后可用；上线前仍需运动康复专业人员抽查",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/dynamic/stretch.dynamic.hip_adduction_abduction/image-spec.json",
+      "reviewPath": "actions/dynamic/stretch.dynamic.hip_adduction_abduction/content.md",
+      "source": {
+        "pdfPages": [
+          201,
+          202
+        ],
+        "bookPages": [
+          190,
+          191
+        ],
+        "chapter": "第 9 章：动态拉伸",
+        "pageIds": [
+          "page.pdf_201",
+          "page.pdf_202"
+        ]
+      }
+    },
+    {
+      "id": "stretch.dynamic.hip_flexion_extension",
+      "name": "扶墙髋屈伸动态摆腿",
+      "type": "动态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "髋前侧",
+        "臀部",
+        "大腿前后侧"
+      ],
+      "targetMuscles": [
+        "髋屈肌群",
+        "股四头肌",
+        "臀肌群",
+        "腘绳肌群",
+        "腰段竖脊肌群",
+        "背阔肌"
+      ],
+      "regionIds": [
+        "region.hips",
+        "region.knees_thighs",
+        "region.lower_trunk"
+      ],
+      "muscleIds": [
+        "muscle.hip_flexors",
+        "muscle.quadriceps",
+        "muscle.gluteal_group",
+        "muscle.hamstrings",
+        "muscle.lumbar_erectors",
+        "muscle.latissimus_dorsi"
+      ],
+      "relatedActionIds": [
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.standing_knee_flexor",
+        "stretch.dynamic.hip_adduction_abduction",
+        "stretch.dynamic.plantar_flexor",
+        "stretch.dynamic.shoulder_circumduction"
+      ],
+      "websitePath": "/动作教程?动作=stretch.dynamic.hip_flexion_extension",
+      "startPosition": "面向墙边或门框，单手扶稳；一侧腿站立，另一侧髋膝微屈并自然悬空。",
+      "steps": [
+        "保持躯干直立。",
+        "让悬空腿从髋关节向前摆，再向后摆。",
+        "前后摆动都保持膝盖微屈。",
+        "完成后换侧。"
+      ],
+      "breathing": "保持连续呼吸，让动作速度跟随呼吸自然减慢；不要屏气发力。",
+      "intensity": "小幅、平稳、可随时停下；不使用猛烈弹振。",
+      "duration": "网站保守起点：连续活动 20–30 秒；初次练习可缩短为 10 秒。课程内以具体编排为准。",
+      "keyPoints": [
+        "腰部不随腿前后摆动。",
+        "脚尖自然朝前。",
+        "先小幅，再逐渐增加。"
+      ],
+      "commonMistakes": [
+        "塌腰向后甩腿",
+        "摆腿速度太快",
+        "支撑腿膝盖锁死"
+      ],
+      "simplifiedVersion": "脚尖轻点地，做前后小滑步。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [
+        "墙面、门框或稳固支撑物"
+      ],
+      "reviewStatus": "内容复核后可用；上线前仍需运动康复专业人员抽查",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/dynamic/stretch.dynamic.hip_flexion_extension/image-spec.json",
+      "reviewPath": "actions/dynamic/stretch.dynamic.hip_flexion_extension/content.md",
+      "source": {
+        "pdfPages": [
+          203,
+          204
+        ],
+        "bookPages": [
+          192,
+          193
+        ],
+        "chapter": "第 9 章：动态拉伸",
+        "pageIds": [
+          "page.pdf_203",
+          "page.pdf_204"
+        ]
+      }
+    },
+    {
+      "id": "stretch.dynamic.standing_knee_flexor",
+      "name": "站姿大腿后侧动态伸展",
+      "type": "动态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "大腿后侧",
+        "臀部",
+        "小腿后侧"
+      ],
+      "targetMuscles": [
+        "腘绳肌群",
+        "臀肌群",
+        "小腿跖屈肌群",
+        "腰段竖脊肌群"
+      ],
+      "regionIds": [
+        "region.knees_thighs",
+        "region.feet_calves",
+        "region.lower_trunk"
+      ],
+      "muscleIds": [
+        "muscle.hamstrings",
+        "muscle.gluteal_group",
+        "muscle.calf_plantar_flexors",
+        "muscle.lumbar_erectors"
+      ],
+      "relatedActionIds": [
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.plantar_flexor",
+        "stretch.dynamic.hip_adduction_abduction",
+        "stretch.feet_calves.beginner_seated_toe_flexor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.dynamic.standing_knee_flexor",
+      "startPosition": "一脚向前放，脚跟着地；后侧膝盖微屈，身体保持稳定。",
+      "steps": [
+        "前侧膝盖保持自然伸直。",
+        "臀部向后移动，从髋部折叠，躯干朝前腿方向移动。",
+        "到轻微牵拉位置后立即回到直立。",
+        "连续、平稳重复，然后换侧。"
+      ],
+      "breathing": "保持连续呼吸，让动作速度跟随呼吸自然减慢；不要屏气发力。",
+      "intensity": "小幅、平稳、可随时停下；不使用猛烈弹振。",
+      "duration": "网站保守起点：连续活动 20–30 秒；初次练习可缩短为 10 秒。课程内以具体编排为准。",
+      "keyPoints": [
+        "原书使用弹振动作；网站版本改为受控往返。",
+        "背部保持自然延展。",
+        "髋折叠比手是否碰到脚更重要。"
+      ],
+      "commonMistakes": [
+        "弓背去够脚",
+        "在终点快速弹动",
+        "前膝过伸并锁死"
+      ],
+      "simplifiedVersion": "减少前后脚距离，只做轻微髋折叠。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [],
+      "reviewStatus": "原书为动态弹振；网站改为受控往返，上线前需专业复核",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/dynamic/stretch.dynamic.standing_knee_flexor/image-spec.json",
+      "reviewPath": "actions/dynamic/stretch.dynamic.standing_knee_flexor/content.md",
+      "source": {
+        "pdfPages": [
+          205,
+          206
+        ],
+        "bookPages": [
+          194,
+          195
+        ],
+        "chapter": "第 9 章：动态拉伸",
+        "pageIds": [
+          "page.pdf_205",
+          "page.pdf_206"
+        ]
+      }
+    },
+    {
+      "id": "stretch.dynamic.plantar_flexor",
+      "name": "扶稳台阶小腿动态伸展",
+      "type": "动态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "小腿后侧",
+        "跟腱区域",
+        "足底"
+      ],
+      "targetMuscles": [
+        "小腿跖屈肌群",
+        "胫骨后肌",
+        "趾屈肌群",
+        "足内在肌群",
+        "腘绳肌群"
+      ],
+      "regionIds": [
+        "region.feet_calves",
+        "region.knees_thighs"
+      ],
+      "muscleIds": [
+        "muscle.calf_plantar_flexors",
+        "muscle.tibialis_posterior",
+        "muscle.toe_flexors",
+        "muscle.intrinsic_foot_group",
+        "muscle.hamstrings"
+      ],
+      "relatedActionIds": [
+        "stretch.feet_calves.beginner_seated_toe_flexor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+        "stretch.dynamic.standing_knee_flexor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.dynamic.plantar_flexor",
+      "startPosition": "双脚前脚掌踩在稳定台阶边缘，至少一只手牢固扶住支撑物。",
+      "steps": [
+        "双膝保持自然伸直但不锁死。",
+        "脚跟缓慢下降到舒适位置。",
+        "再回到脚掌与地面近似水平的中立位置。",
+        "连续平稳升降，不在最低点弹动。"
+      ],
+      "breathing": "保持连续呼吸，让动作速度跟随呼吸自然减慢；不要屏气发力。",
+      "intensity": "小幅、平稳、可随时停下；不使用猛烈弹振。",
+      "duration": "网站保守起点：连续活动 20–30 秒；初次练习可缩短为 10 秒。课程内以具体编排为准。",
+      "keyPoints": [
+        "必须有稳定支撑。",
+        "穿防滑鞋更稳妥。",
+        "下降幅度由小腿的舒适程度决定。"
+      ],
+      "commonMistakes": [
+        "没有扶稳",
+        "脚跟快速下坠",
+        "在台阶边缘做大幅弹振"
+      ],
+      "simplifiedVersion": "在平地扶墙做提踵与回落，不让脚跟低于地面。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者",
+        "平衡能力不足、近期踝扭伤或跟腱急性疼痛者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [
+        "稳定台阶",
+        "牢固扶手或墙面"
+      ],
+      "reviewStatus": "原书为台阶动态弹振；网站改为平稳升降，上线前需专业复核",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/dynamic/stretch.dynamic.plantar_flexor/image-spec.json",
+      "reviewPath": "actions/dynamic/stretch.dynamic.plantar_flexor/content.md",
+      "source": {
+        "pdfPages": [
+          207,
+          208
+        ],
+        "bookPages": [
+          196,
+          197
+        ],
+        "chapter": "第 9 章：动态拉伸",
+        "pageIds": [
+          "page.pdf_207",
+          "page.pdf_208"
+        ]
+      }
+    },
+    {
+      "id": "stretch.dynamic.trunk_lateral_flexion",
+      "name": "站姿躯干左右侧屈",
+      "type": "动态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "侧腰",
+        "腹部两侧",
+        "腰背"
+      ],
+      "targetMuscles": [
+        "腹内外斜肌",
+        "腰方肌",
+        "多裂肌与回旋肌群"
+      ],
+      "regionIds": [
+        "region.lower_trunk"
+      ],
+      "muscleIds": [
+        "muscle.obliques",
+        "muscle.quadratus_lumborum",
+        "muscle.deep_spinal_rotators"
+      ],
+      "relatedActionIds": [
+        "stretch.dynamic.trunk_rotation",
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.dynamic.standing_knee_flexor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.dynamic.trunk_lateral_flexion",
+      "startPosition": "双脚与肩同宽站立，手臂自然垂在身体两侧。",
+      "steps": [
+        "身体向右侧轻轻倾斜，右手沿大腿向下滑。",
+        "回到中立位。",
+        "向左侧重复。",
+        "左右交替，保持身体朝向正前方。"
+      ],
+      "breathing": "保持连续呼吸，让动作速度跟随呼吸自然减慢；不要屏气发力。",
+      "intensity": "小幅、平稳、可随时停下；不使用猛烈弹振。",
+      "duration": "网站保守起点：连续活动 20–30 秒；初次练习可缩短为 10 秒。课程内以具体编排为准。",
+      "keyPoints": [
+        "侧屈发生在躯干侧面。",
+        "骨盆保持相对稳定。",
+        "动作范围以能顺畅回正为准。"
+      ],
+      "commonMistakes": [
+        "身体同时向前弯",
+        "骨盆大幅侧移",
+        "快速甩动上半身"
+      ],
+      "simplifiedVersion": "坐在稳定椅子上完成小幅左右侧屈。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [],
+      "reviewStatus": "内容复核后可用；上线前仍需运动康复专业人员抽查",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/dynamic/stretch.dynamic.trunk_lateral_flexion/image-spec.json",
+      "reviewPath": "actions/dynamic/stretch.dynamic.trunk_lateral_flexion/content.md",
+      "source": {
+        "pdfPages": [
+          209,
+          210
+        ],
+        "bookPages": [
+          198,
+          199
+        ],
+        "chapter": "第 9 章：动态拉伸",
+        "pageIds": [
+          "page.pdf_209",
+          "page.pdf_210"
+        ]
+      }
+    },
+    {
+      "id": "stretch.dynamic.trunk_rotation",
+      "name": "坐站两用躯干旋转",
+      "type": "动态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "腰腹",
+        "胸腰交界",
+        "躯干两侧"
+      ],
+      "targetMuscles": [
+        "多裂肌与回旋肌群",
+        "腹内外斜肌"
+      ],
+      "regionIds": [
+        "region.lower_trunk"
+      ],
+      "muscleIds": [
+        "muscle.deep_spinal_rotators",
+        "muscle.obliques"
+      ],
+      "relatedActionIds": [
+        "stretch.dynamic.trunk_lateral_flexion",
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.dynamic.standing_knee_flexor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.dynamic.trunk_rotation",
+      "startPosition": "站立时双脚与肩同宽；也可坐在稳定椅子上。双肘弯曲，双手靠近胸前。",
+      "steps": [
+        "保持躯干直立。",
+        "向右侧做小幅旋转。",
+        "回到中间，再向左侧旋转。",
+        "左右连续交替。"
+      ],
+      "breathing": "保持连续呼吸，让动作速度跟随呼吸自然减慢；不要屏气发力。",
+      "intensity": "小幅、平稳、可随时停下；不使用猛烈弹振。",
+      "duration": "网站保守起点：连续活动 20–30 秒；初次练习可缩短为 10 秒。课程内以具体编排为准。",
+      "keyPoints": [
+        "网站版本强调受控旋转。",
+        "骨盆尽量朝前。",
+        "头部跟随胸廓，不单独甩头。"
+      ],
+      "commonMistakes": [
+        "追求转到身后",
+        "膝盖和骨盆跟着大幅扭转",
+        "利用手臂惯性甩动"
+      ],
+      "simplifiedVersion": "坐姿双手放胸前，只转动很小角度。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [],
+      "reviewStatus": "内容复核后可用；上线前仍需运动康复专业人员抽查",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/dynamic/stretch.dynamic.trunk_rotation/image-spec.json",
+      "reviewPath": "actions/dynamic/stretch.dynamic.trunk_rotation/content.md",
+      "source": {
+        "pdfPages": [
+          211,
+          212
+        ],
+        "bookPages": [
+          200,
+          201
+        ],
+        "chapter": "第 9 章：动态拉伸",
+        "pageIds": [
+          "page.pdf_211",
+          "page.pdf_212"
+        ]
+      }
+    },
+    {
+      "id": "stretch.dynamic.shoulder_flexion_extension",
+      "name": "站姿手臂前后摆动",
+      "type": "动态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "肩前侧",
+        "肩后侧",
+        "胸部",
+        "背部外侧"
+      ],
+      "targetMuscles": [
+        "三角肌",
+        "背阔肌",
+        "肱三头肌",
+        "肱二头肌",
+        "胸大肌",
+        "肩袖肌群"
+      ],
+      "regionIds": [
+        "region.shoulders_chest"
+      ],
+      "muscleIds": [
+        "muscle.deltoid",
+        "muscle.latissimus_dorsi",
+        "muscle.triceps_brachii",
+        "muscle.biceps_brachii",
+        "muscle.pectoralis_major",
+        "muscle.rotator_cuff_group"
+      ],
+      "relatedActionIds": [
+        "stretch.dynamic.shoulder_circumduction",
+        "stretch.dynamic.shoulder_girdle_abduction_adduction",
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_flexion_extension"
+      ],
+      "websitePath": "/动作教程?动作=stretch.dynamic.shoulder_flexion_extension",
+      "startPosition": "双脚与肩同宽站立，手臂自然垂在身体两侧。",
+      "steps": [
+        "一侧或双侧手臂从肩关节向前摆动。",
+        "顺势回落并向后摆动。",
+        "保持躯干直立。",
+        "在无痛范围内连续往返。"
+      ],
+      "breathing": "保持连续呼吸，让动作速度跟随呼吸自然减慢；不要屏气发力。",
+      "intensity": "小幅、平稳、可随时停下；不使用猛烈弹振。",
+      "duration": "网站保守起点：连续活动 20–30 秒；初次练习可缩短为 10 秒。课程内以具体编排为准。",
+      "keyPoints": [
+        "动作来自肩关节。",
+        "幅度不必达到极限。",
+        "肩膀保持远离耳朵。"
+      ],
+      "commonMistakes": [
+        "腰部前后摆动代偿",
+        "手臂甩得过快",
+        "肩前侧夹挤仍继续"
+      ],
+      "simplifiedVersion": "改为单臂、小幅度前后摆动。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [],
+      "reviewStatus": "内容复核后可用；上线前仍需运动康复专业人员抽查",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/dynamic/stretch.dynamic.shoulder_flexion_extension/image-spec.json",
+      "reviewPath": "actions/dynamic/stretch.dynamic.shoulder_flexion_extension/content.md",
+      "source": {
+        "pdfPages": [
+          213,
+          214
+        ],
+        "bookPages": [
+          202,
+          203
+        ],
+        "chapter": "第 9 章：动态拉伸",
+        "pageIds": [
+          "page.pdf_213",
+          "page.pdf_214"
+        ]
+      }
+    },
+    {
+      "id": "stretch.dynamic.shoulder_girdle_abduction_adduction",
+      "name": "站姿开臂与抱臂",
+      "type": "动态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "胸前",
+        "肩后侧",
+        "肩胛骨之间"
+      ],
+      "targetMuscles": [
+        "胸大肌",
+        "胸小肌",
+        "三角肌",
+        "肱二头肌",
+        "肩胛后收肌群",
+        "肩袖肌群"
+      ],
+      "regionIds": [
+        "region.shoulders_chest"
+      ],
+      "muscleIds": [
+        "muscle.pectoralis_major",
+        "muscle.pectoralis_minor",
+        "muscle.deltoid",
+        "muscle.biceps_brachii",
+        "muscle.scapular_retractors",
+        "muscle.rotator_cuff_group"
+      ],
+      "relatedActionIds": [
+        "stretch.dynamic.shoulder_circumduction",
+        "stretch.dynamic.shoulder_flexion_extension"
+      ],
+      "websitePath": "/动作教程?动作=stretch.dynamic.shoulder_girdle_abduction_adduction",
+      "startPosition": "双脚与肩同宽站立，双臂向两侧展开，略低于肩高。",
+      "steps": [
+        "双臂向胸前合拢并轻轻交叉，像抱住自己。",
+        "再向两侧打开。",
+        "下一次交叉时交换上下手臂。",
+        "保持躯干直立，连续开合。"
+      ],
+      "breathing": "保持连续呼吸，让动作速度跟随呼吸自然减慢；不要屏气发力。",
+      "intensity": "小幅、平稳、可随时停下；不使用猛烈弹振。",
+      "duration": "网站保守起点：连续活动 20–30 秒；初次练习可缩短为 10 秒。课程内以具体编排为准。",
+      "keyPoints": [
+        "手臂略低于肩高。",
+        "肩胛骨自然前后滑动。",
+        "动作连贯但不依赖惯性。"
+      ],
+      "commonMistakes": [
+        "手臂抬得过高",
+        "开臂时腰部反弓",
+        "交叉时耸肩"
+      ],
+      "simplifiedVersion": "肘部弯曲，以更短的力臂完成开合。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [],
+      "reviewStatus": "内容复核后可用；上线前仍需运动康复专业人员抽查",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/dynamic/stretch.dynamic.shoulder_girdle_abduction_adduction/image-spec.json",
+      "reviewPath": "actions/dynamic/stretch.dynamic.shoulder_girdle_abduction_adduction/content.md",
+      "source": {
+        "pdfPages": [
+          215,
+          216
+        ],
+        "bookPages": [
+          204,
+          205
+        ],
+        "chapter": "第 9 章：动态拉伸",
+        "pageIds": [
+          "page.pdf_215",
+          "page.pdf_216"
+        ]
+      }
+    },
+    {
+      "id": "stretch.dynamic.shoulder_circumduction",
+      "name": "站姿肩关节画圈",
+      "type": "动态拉伸",
+      "difficulty": "初级",
+      "bodyAreas": [
+        "肩关节",
+        "腋下",
+        "肩胛周围"
+      ],
+      "targetMuscles": [
+        "三角肌",
+        "肩袖肌群",
+        "胸大肌",
+        "胸小肌",
+        "背阔肌",
+        "肱二头肌",
+        "肱三头肌",
+        "肩胛后收肌群"
+      ],
+      "regionIds": [
+        "region.shoulders_chest",
+        "region.neck"
+      ],
+      "muscleIds": [
+        "muscle.deltoid",
+        "muscle.rotator_cuff_group",
+        "muscle.pectoralis_major",
+        "muscle.pectoralis_minor",
+        "muscle.latissimus_dorsi",
+        "muscle.biceps_brachii",
+        "muscle.triceps_brachii",
+        "muscle.scapular_retractors"
+      ],
+      "relatedActionIds": [
+        "stretch.dynamic.shoulder_flexion_extension",
+        "stretch.dynamic.shoulder_girdle_abduction_adduction",
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.neck.neck_extensor"
+      ],
+      "websitePath": "/动作教程?动作=stretch.dynamic.shoulder_circumduction",
+      "startPosition": "双脚与肩同宽站立，双臂向两侧伸展，接近但不高于肩部，拇指朝上。",
+      "steps": [
+        "双臂向前画小圆。",
+        "在保持舒适的前提下逐渐扩大圆周。",
+        "缩小圆周并停止。",
+        "换成向后画圈。"
+      ],
+      "breathing": "保持连续呼吸，让动作速度跟随呼吸自然减慢；不要屏气发力。",
+      "intensity": "小幅、平稳、可随时停下；不使用猛烈弹振。",
+      "duration": "网站保守起点：连续活动 20–30 秒；初次练习可缩短为 10 秒。课程内以具体编排为准。",
+      "keyPoints": [
+        "从小圆开始。",
+        "手臂不高于肩部。",
+        "若手臂变沉，立即缩短力臂。"
+      ],
+      "commonMistakes": [
+        "一开始就画大圈",
+        "肩膀圆向前并耸起",
+        "出现肩部夹挤痛仍继续"
+      ],
+      "simplifiedVersion": "双手放在同侧肩膀上，用肘部画小圆。",
+      "stopConditions": [
+        "出现锐痛、麻木、电击感或症状向肢体远端放射",
+        "出现眩晕、恶心、胸闷或呼吸困难",
+        "动作结束后不适持续加重而不是逐渐缓解"
+      ],
+      "contraindications": [
+        "近期急性外伤、明显肿胀或关节无法正常活动者",
+        "术后恢复期且尚未获得专业人员许可者",
+        "存在进行性无力、麻木或其他神经症状者"
+      ],
+      "sideRule": "双侧分别完成",
+      "equipment": [],
+      "reviewStatus": "内容复核后可用；上线前仍需运动康复专业人员抽查",
+      "imageStatus": "待原创制作",
+      "imageCopyright": "不得复制或临摹原书插图；使用原创拍摄、原创绘制或另行取得授权的资产。",
+      "imageSpecPath": "actions/dynamic/stretch.dynamic.shoulder_circumduction/image-spec.json",
+      "reviewPath": "actions/dynamic/stretch.dynamic.shoulder_circumduction/content.md",
+      "source": {
+        "pdfPages": [
+          217,
+          218
+        ],
+        "bookPages": [
+          206,
+          207
+        ],
+        "chapter": "第 9 章：动态拉伸",
+        "pageIds": [
+          "page.pdf_217",
+          "page.pdf_218"
+        ]
+      }
+    }
+  ],
+  "programs": [
+    {
+      "id": "program.office.micro_5",
+      "name": "5 分钟微放松",
+      "durationMinutes": 5,
+      "totalSeconds": 300,
+      "scenario": "连续伏案后快速中断久坐",
+      "intensityPrinciple": "动作保持轻松、可控制；出现疼痛、麻木、眩晕或放射性不适时停止。",
+      "items": [
+        {
+          "actionId": "stretch.neck.neck_extensor",
+          "seconds": 40,
+          "guidance": "双手只作轻微引导；也可只做小幅点头"
+        },
+        {
+          "actionId": "stretch.dynamic.shoulder_circumduction",
+          "seconds": 40,
+          "guidance": "从小圈开始，肩膀远离耳朵"
+        },
+        {
+          "actionId": "stretch.arms_wrists_hands.beginner_wrist_extensor",
+          "seconds": 35,
+          "guidance": "每侧轻柔完成"
+        },
+        {
+          "actionId": "stretch.arms_wrists_hands.beginner_wrist_flexor",
+          "seconds": 35,
+          "guidance": "掌心向外，肘不过度锁死"
+        },
+        {
+          "actionId": "stretch.dynamic.trunk_lateral_flexion",
+          "seconds": 40,
+          "guidance": "左右交替，小幅侧移"
+        },
+        {
+          "actionId": "stretch.dynamic.hip_flexion_extension",
+          "seconds": 55,
+          "guidance": "扶稳后前后摆腿"
+        },
+        {
+          "actionId": "stretch.dynamic.plantar_flexor",
+          "seconds": 55,
+          "guidance": "有稳定支撑才使用台阶；否则做平地版本"
+        }
+      ]
+    },
+    {
+      "id": "program.office.reset_10",
+      "name": "10 分钟全身放松",
+      "durationMinutes": 10,
+      "totalSeconds": 600,
+      "scenario": "上午或下午的全身活动间歇",
+      "intensityPrinciple": "动作保持轻松、可控制；出现疼痛、麻木、眩晕或放射性不适时停止。",
+      "items": [
+        {
+          "actionId": "stretch.neck.neck_extensor",
+          "seconds": 40,
+          "guidance": "手臂只作轻微引导"
+        },
+        {
+          "actionId": "stretch.neck.neck_flexor",
+          "seconds": 40,
+          "guidance": "使用网站温和版本，不强行后仰"
+        },
+        {
+          "actionId": "stretch.dynamic.shoulder_circumduction",
+          "seconds": 50,
+          "guidance": "小圈逐渐扩大"
+        },
+        {
+          "actionId": "stretch.dynamic.shoulder_flexion_extension",
+          "seconds": 50,
+          "guidance": "躯干保持直立"
+        },
+        {
+          "actionId": "stretch.dynamic.shoulder_girdle_abduction_adduction",
+          "seconds": 50,
+          "guidance": "肩胛自然滑动"
+        },
+        {
+          "actionId": "stretch.arms_wrists_hands.beginner_wrist_extensor",
+          "seconds": 45,
+          "guidance": "每侧约一半时间"
+        },
+        {
+          "actionId": "stretch.arms_wrists_hands.beginner_wrist_flexor",
+          "seconds": 45,
+          "guidance": "不压迫掌根"
+        },
+        {
+          "actionId": "stretch.dynamic.trunk_lateral_flexion",
+          "seconds": 55,
+          "guidance": "侧腰交替延展"
+        },
+        {
+          "actionId": "stretch.dynamic.trunk_rotation",
+          "seconds": 55,
+          "guidance": "骨盆稳定、小幅转动"
+        },
+        {
+          "actionId": "stretch.dynamic.hip_external_internal_rotation",
+          "seconds": 70,
+          "guidance": "扶稳后做髋部小圆周"
+        },
+        {
+          "actionId": "stretch.dynamic.hip_flexion_extension",
+          "seconds": 60,
+          "guidance": "前后摆动来自髋关节"
+        },
+        {
+          "actionId": "stretch.dynamic.plantar_flexor",
+          "seconds": 40,
+          "guidance": "慢速回到中立位"
+        }
+      ]
+    },
+    {
+      "id": "program.office.deep_15",
+      "name": "15 分钟深度放松",
+      "durationMinutes": 15,
+      "totalSeconds": 900,
+      "scenario": "工作结束前后的完整身体恢复",
+      "intensityPrinciple": "动作保持轻松、可控制；出现疼痛、麻木、眩晕或放射性不适时停止。",
+      "items": [
+        {
+          "actionId": "stretch.neck.neck_extensor",
+          "seconds": 50,
+          "guidance": "肩膀保持下沉"
+        },
+        {
+          "actionId": "stretch.neck.neck_flexor",
+          "seconds": 50,
+          "guidance": "保持可控，不追求鼻尖朝天"
+        },
+        {
+          "actionId": "stretch.dynamic.shoulder_circumduction",
+          "seconds": 60,
+          "guidance": "正向和反向各完成一轮"
+        },
+        {
+          "actionId": "stretch.dynamic.shoulder_flexion_extension",
+          "seconds": 55,
+          "guidance": "手臂前后摆动"
+        },
+        {
+          "actionId": "stretch.dynamic.shoulder_girdle_abduction_adduction",
+          "seconds": 55,
+          "guidance": "开合手臂"
+        },
+        {
+          "actionId": "stretch.arms_wrists_hands.beginner_wrist_extensor",
+          "seconds": 45,
+          "guidance": "照顾鼠标侧前臂"
+        },
+        {
+          "actionId": "stretch.arms_wrists_hands.beginner_wrist_flexor",
+          "seconds": 45,
+          "guidance": "掌心向外延伸"
+        },
+        {
+          "actionId": "stretch.arms_wrists_hands.finger_flexor",
+          "seconds": 40,
+          "guidance": "逐指轻推，不压关节"
+        },
+        {
+          "actionId": "stretch.arms_wrists_hands.finger_extensor",
+          "seconds": 40,
+          "guidance": "手指弯向前臂"
+        },
+        {
+          "actionId": "stretch.dynamic.trunk_lateral_flexion",
+          "seconds": 55,
+          "guidance": "左右侧屈"
+        },
+        {
+          "actionId": "stretch.dynamic.trunk_rotation",
+          "seconds": 55,
+          "guidance": "躯干受控旋转"
+        },
+        {
+          "actionId": "stretch.dynamic.hip_external_internal_rotation",
+          "seconds": 70,
+          "guidance": "髋关节画小圆"
+        },
+        {
+          "actionId": "stretch.dynamic.hip_adduction_abduction",
+          "seconds": 70,
+          "guidance": "腿在身体前方横向摆动"
+        },
+        {
+          "actionId": "stretch.dynamic.hip_flexion_extension",
+          "seconds": 70,
+          "guidance": "腿前后摆动"
+        },
+        {
+          "actionId": "stretch.dynamic.standing_knee_flexor",
+          "seconds": 70,
+          "guidance": "用髋折叠代替弹振"
+        },
+        {
+          "actionId": "stretch.dynamic.plantar_flexor",
+          "seconds": 70,
+          "guidance": "平稳升降脚跟"
+        }
+      ]
+    }
+  ],
+  "modelBindings": [
+    {
+      "肌肉ID": "muscle.upper_trapezius",
+      "模型网格名称": [
+        "Descending Part Of Trapezius Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.neck.neck_extensor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.posterior_neck_group",
+      "模型网格名称": [
+        "Splenius Capitis Muscle",
+        "Splenius Colli Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.neck.neck_extensor",
+        "stretch.neck.neck_flexor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.sternocleidomastoid",
+      "模型网格名称": [
+        "Sternocleidomastoid Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.neck.neck_flexor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.scalenes",
+      "模型网格名称": [
+        "Anterior Scalene Muscle",
+        "Middle Scalene Muscle",
+        "Posterior Scalene Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.neck.neck_extensor",
+        "stretch.neck.neck_flexor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.pectoralis_major",
+      "模型网格名称": [
+        "Clavicular Head Of Pectoralis Major Muscle",
+        "Sternocostal Head Of Pectoralis Major Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.shoulder_flexion_extension",
+        "stretch.dynamic.shoulder_girdle_abduction_adduction",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.pectoralis_minor",
+      "模型网格名称": [
+        "Pectoralis Minor Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.shoulder_girdle_abduction_adduction",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.deltoid",
+      "模型网格名称": [
+        "Acromial Part Of Deltoid Muscle",
+        "Clavicular Part Of Deltoid Muscle",
+        "Scapular Spinal Part Of Deltoid Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.shoulder_flexion_extension",
+        "stretch.dynamic.shoulder_girdle_abduction_adduction",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.rotator_cuff_group",
+      "模型网格名称": [
+        "Infraspinatus Muscle",
+        "Supraspinatus Muscle",
+        "Subscapularis Muscle",
+        "Teres Minor Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.shoulder_flexion_extension",
+        "stretch.dynamic.shoulder_girdle_abduction_adduction",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.scapular_retractors",
+      "模型网格名称": [
+        "Rhomboid Major Muscle",
+        "Rhomboid Minor Muscle",
+        "Transverse Part Of Trapezius Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.shoulder_girdle_abduction_adduction",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.latissimus_dorsi",
+      "模型网格名称": [
+        "Latissimus Dorsi Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.dynamic.shoulder_flexion_extension",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.biceps_brachii",
+      "模型网格名称": [
+        "Biceps Brachii Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.shoulder_flexion_extension",
+        "stretch.dynamic.shoulder_girdle_abduction_adduction",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.triceps_brachii",
+      "模型网格名称": [
+        "Triceps Brachii Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.shoulder_flexion_extension",
+        "stretch.dynamic.shoulder_circumduction"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.wrist_extensors",
+      "模型网格名称": [],
+      "左右侧": "分别绑定",
+      "绑定状态": "等待模型清单",
+      "关联动作ID": [
+        "stretch.arms_wrists_hands.beginner_wrist_extensor",
+        "stretch.arms_wrists_hands.finger_extensor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.wrist_flexors",
+      "模型网格名称": [],
+      "左右侧": "分别绑定",
+      "绑定状态": "等待模型清单",
+      "关联动作ID": [
+        "stretch.arms_wrists_hands.beginner_wrist_flexor",
+        "stretch.arms_wrists_hands.finger_flexor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.finger_flexors",
+      "模型网格名称": [],
+      "左右侧": "分别绑定",
+      "绑定状态": "等待模型清单",
+      "关联动作ID": [
+        "stretch.arms_wrists_hands.beginner_wrist_flexor",
+        "stretch.arms_wrists_hands.finger_flexor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.finger_extensors",
+      "模型网格名称": [],
+      "左右侧": "分别绑定",
+      "绑定状态": "等待模型清单",
+      "关联动作ID": [
+        "stretch.arms_wrists_hands.beginner_wrist_extensor",
+        "stretch.arms_wrists_hands.finger_extensor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.thumb_extensors_abductor",
+      "模型网格名称": [],
+      "左右侧": "分别绑定",
+      "绑定状态": "等待模型清单",
+      "关联动作ID": [
+        "stretch.arms_wrists_hands.beginner_wrist_extensor",
+        "stretch.arms_wrists_hands.finger_extensor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.obliques",
+      "模型网格名称": [
+        "External Abdominal Oblique Muscle",
+        "Internal Abdominal Oblique Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.trunk_lateral_flexion",
+        "stretch.dynamic.trunk_rotation"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.deep_spinal_rotators",
+      "模型网格名称": [
+        "Multifidus Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.trunk_lateral_flexion",
+        "stretch.dynamic.trunk_rotation"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.quadratus_lumborum",
+      "模型网格名称": [
+        "Quadratus Lumborum Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.trunk_lateral_flexion"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.lumbar_erectors",
+      "模型网格名称": [
+        "Iliocostalis Lumborum Muscle",
+        "Longissimus Thoracis Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.dynamic.standing_knee_flexor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.gluteal_group",
+      "模型网格名称": [
+        "Gluteus Maximus Muscle",
+        "Gluteus Medius Muscle",
+        "Gluteus Minimus Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_adduction_abduction",
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.dynamic.standing_knee_flexor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.deep_hip_rotators",
+      "模型网格名称": [
+        "Piriformis Muscle",
+        "Quadratus Femoris Muscle",
+        "Obturator Internus Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.hip_external_internal_rotation"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.hip_adductors",
+      "模型网格名称": [
+        "Adductor Magnus Muscle",
+        "Adductor Longus Muscle",
+        "Adductor Brevis Muscle",
+        "Gracilis Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.hip_adduction_abduction"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.hip_abductors",
+      "模型网格名称": [
+        "Gluteus Medius Muscle",
+        "Gluteus Minimus Muscle",
+        "Tensor Fasciae Latae Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_adduction_abduction"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.hip_flexors",
+      "模型网格名称": [
+        "Iliacus Muscle",
+        "Psoas Major"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.hip_flexion_extension"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.hamstrings",
+      "模型网格名称": [
+        "Semitendinosus Muscle",
+        "Semimembranosus Muscle",
+        "Long Head Of Biceps Femoris"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.hip_external_internal_rotation",
+        "stretch.dynamic.hip_adduction_abduction",
+        "stretch.dynamic.hip_flexion_extension",
+        "stretch.dynamic.standing_knee_flexor",
+        "stretch.dynamic.plantar_flexor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.quadriceps",
+      "模型网格名称": [
+        "Rectus Femoris Muscle",
+        "Vastus Medialis Muscle",
+        "Vastus Lateralis Muscle",
+        "Vastus Intermedius Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.dynamic.hip_flexion_extension"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.calf_plantar_flexors",
+      "模型网格名称": [
+        "Lateral Head Of Gastrocnemius",
+        "Medial Head Of Gastrocnemius",
+        "Soleus Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.feet_calves.beginner_seated_toe_flexor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+        "stretch.dynamic.standing_knee_flexor",
+        "stretch.dynamic.plantar_flexor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.tibialis_anterior",
+      "模型网格名称": [
+        "Tibialis Anterior Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.feet_calves.beginner_seated_toe_extensor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.fibularis_group",
+      "模型网格名称": [
+        "Fibularis Longus Muscle",
+        "Fibularis Brevis Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.feet_calves.beginner_seated_toe_extensor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.toe_extensors",
+      "模型网格名称": [],
+      "左右侧": "分别绑定",
+      "绑定状态": "等待模型清单",
+      "关联动作ID": [
+        "stretch.feet_calves.beginner_seated_toe_extensor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.toe_flexors",
+      "模型网格名称": [],
+      "左右侧": "分别绑定",
+      "绑定状态": "等待模型清单",
+      "关联动作ID": [
+        "stretch.feet_calves.beginner_seated_toe_flexor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+        "stretch.dynamic.plantar_flexor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.intrinsic_foot_group",
+      "模型网格名称": [],
+      "左右侧": "分别绑定",
+      "绑定状态": "等待模型清单",
+      "关联动作ID": [
+        "stretch.feet_calves.beginner_seated_toe_extensor",
+        "stretch.feet_calves.beginner_seated_toe_flexor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+        "stretch.dynamic.plantar_flexor"
+      ]
+    },
+    {
+      "肌肉ID": "muscle.tibialis_posterior",
+      "模型网格名称": [
+        "Tibialis Posterior Muscle"
+      ],
+      "左右侧": "分别绑定",
+      "绑定状态": "来自现有模型命名，待实机核对",
+      "关联动作ID": [
+        "stretch.feet_calves.beginner_seated_toe_flexor",
+        "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor",
+        "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+        "stretch.dynamic.plantar_flexor"
+      ]
+    }
+  ],
+  "muscleToActions": {
+    "muscle.upper_trapezius": [
+      "stretch.neck.neck_extensor"
+    ],
+    "muscle.posterior_neck_group": [
+      "stretch.neck.neck_extensor",
+      "stretch.neck.neck_flexor"
+    ],
+    "muscle.sternocleidomastoid": [
+      "stretch.neck.neck_flexor"
+    ],
+    "muscle.scalenes": [
+      "stretch.neck.neck_extensor",
+      "stretch.neck.neck_flexor"
+    ],
+    "muscle.pectoralis_major": [
+      "stretch.dynamic.shoulder_flexion_extension",
+      "stretch.dynamic.shoulder_girdle_abduction_adduction",
+      "stretch.dynamic.shoulder_circumduction"
+    ],
+    "muscle.pectoralis_minor": [
+      "stretch.dynamic.shoulder_girdle_abduction_adduction",
+      "stretch.dynamic.shoulder_circumduction"
+    ],
+    "muscle.deltoid": [
+      "stretch.dynamic.shoulder_flexion_extension",
+      "stretch.dynamic.shoulder_girdle_abduction_adduction",
+      "stretch.dynamic.shoulder_circumduction"
+    ],
+    "muscle.rotator_cuff_group": [
+      "stretch.dynamic.shoulder_flexion_extension",
+      "stretch.dynamic.shoulder_girdle_abduction_adduction",
+      "stretch.dynamic.shoulder_circumduction"
+    ],
+    "muscle.scapular_retractors": [
+      "stretch.dynamic.shoulder_girdle_abduction_adduction",
+      "stretch.dynamic.shoulder_circumduction"
+    ],
+    "muscle.latissimus_dorsi": [
+      "stretch.dynamic.hip_external_internal_rotation",
+      "stretch.dynamic.hip_flexion_extension",
+      "stretch.dynamic.shoulder_flexion_extension",
+      "stretch.dynamic.shoulder_circumduction"
+    ],
+    "muscle.biceps_brachii": [
+      "stretch.dynamic.shoulder_flexion_extension",
+      "stretch.dynamic.shoulder_girdle_abduction_adduction",
+      "stretch.dynamic.shoulder_circumduction"
+    ],
+    "muscle.triceps_brachii": [
+      "stretch.dynamic.shoulder_flexion_extension",
+      "stretch.dynamic.shoulder_circumduction"
+    ],
+    "muscle.wrist_extensors": [
+      "stretch.arms_wrists_hands.beginner_wrist_extensor",
+      "stretch.arms_wrists_hands.finger_extensor"
+    ],
+    "muscle.wrist_flexors": [
+      "stretch.arms_wrists_hands.beginner_wrist_flexor",
+      "stretch.arms_wrists_hands.finger_flexor"
+    ],
+    "muscle.finger_flexors": [
+      "stretch.arms_wrists_hands.beginner_wrist_flexor",
+      "stretch.arms_wrists_hands.finger_flexor"
+    ],
+    "muscle.finger_extensors": [
+      "stretch.arms_wrists_hands.beginner_wrist_extensor",
+      "stretch.arms_wrists_hands.finger_extensor"
+    ],
+    "muscle.thumb_extensors_abductor": [
+      "stretch.arms_wrists_hands.beginner_wrist_extensor",
+      "stretch.arms_wrists_hands.finger_extensor"
+    ],
+    "muscle.obliques": [
+      "stretch.dynamic.trunk_lateral_flexion",
+      "stretch.dynamic.trunk_rotation"
+    ],
+    "muscle.deep_spinal_rotators": [
+      "stretch.dynamic.trunk_lateral_flexion",
+      "stretch.dynamic.trunk_rotation"
+    ],
+    "muscle.quadratus_lumborum": [
+      "stretch.dynamic.trunk_lateral_flexion"
+    ],
+    "muscle.lumbar_erectors": [
+      "stretch.dynamic.hip_external_internal_rotation",
+      "stretch.dynamic.hip_flexion_extension",
+      "stretch.dynamic.standing_knee_flexor"
+    ],
+    "muscle.gluteal_group": [
+      "stretch.dynamic.hip_external_internal_rotation",
+      "stretch.dynamic.hip_adduction_abduction",
+      "stretch.dynamic.hip_flexion_extension",
+      "stretch.dynamic.standing_knee_flexor"
+    ],
+    "muscle.deep_hip_rotators": [
+      "stretch.dynamic.hip_external_internal_rotation"
+    ],
+    "muscle.hip_adductors": [
+      "stretch.dynamic.hip_adduction_abduction"
+    ],
+    "muscle.hip_abductors": [
+      "stretch.dynamic.hip_external_internal_rotation",
+      "stretch.dynamic.hip_adduction_abduction"
+    ],
+    "muscle.hip_flexors": [
+      "stretch.dynamic.hip_flexion_extension"
+    ],
+    "muscle.hamstrings": [
+      "stretch.dynamic.hip_external_internal_rotation",
+      "stretch.dynamic.hip_adduction_abduction",
+      "stretch.dynamic.hip_flexion_extension",
+      "stretch.dynamic.standing_knee_flexor",
+      "stretch.dynamic.plantar_flexor"
+    ],
+    "muscle.quadriceps": [
+      "stretch.dynamic.hip_flexion_extension"
+    ],
+    "muscle.calf_plantar_flexors": [
+      "stretch.feet_calves.beginner_seated_toe_flexor",
+      "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+      "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+      "stretch.dynamic.standing_knee_flexor",
+      "stretch.dynamic.plantar_flexor"
+    ],
+    "muscle.tibialis_anterior": [
+      "stretch.feet_calves.beginner_seated_toe_extensor",
+      "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor"
+    ],
+    "muscle.fibularis_group": [
+      "stretch.feet_calves.beginner_seated_toe_extensor",
+      "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor",
+      "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+      "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor"
+    ],
+    "muscle.toe_extensors": [
+      "stretch.feet_calves.beginner_seated_toe_extensor",
+      "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor",
+      "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor"
+    ],
+    "muscle.toe_flexors": [
+      "stretch.feet_calves.beginner_seated_toe_flexor",
+      "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+      "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+      "stretch.dynamic.plantar_flexor"
+    ],
+    "muscle.intrinsic_foot_group": [
+      "stretch.feet_calves.beginner_seated_toe_extensor",
+      "stretch.feet_calves.beginner_seated_toe_flexor",
+      "stretch.feet_calves.beginner_seated_toe_extensor_foot_evertor",
+      "stretch.feet_calves.beginner_seated_toe_flexor_foot_evertor",
+      "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor",
+      "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+      "stretch.dynamic.plantar_flexor"
+    ],
+    "muscle.tibialis_posterior": [
+      "stretch.feet_calves.beginner_seated_toe_flexor",
+      "stretch.feet_calves.beginner_seated_toe_extensor_foot_invertor",
+      "stretch.feet_calves.beginner_seated_toe_flexor_foot_invertor",
+      "stretch.dynamic.plantar_flexor"
+    ]
+  }
+}
