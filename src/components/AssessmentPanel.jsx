@@ -1,27 +1,30 @@
 import { Check, ShieldCheck, WarningCircle } from "@phosphor-icons/react";
-import { redFlags, symptoms } from "../bodyMap.js";
+import { getTaskSummary } from "../homeFlow.js";
 
-function toggle(ids, id) {
-  return ids.includes(id) ? ids.filter((item) => item !== id) : [...ids, id];
-}
-
-export function AssessmentPanel({ region, step, activeStep = step, symptomIds, redFlagIds, onChangeSymptoms, onChangeRedFlags, onRequestStep }) {
-  const selectedSymptoms = symptoms
-    .filter((symptom) => symptomIds.includes(symptom.id))
-    .map((symptom) => symptom.label)
-    .join("、");
+export function AssessmentPanel({ region, step, activeStep = step, selectedTargets = [], selectedSymptoms = [], result, onRequestStep }) {
+  const summary = getTaskSummary({
+    regionLabel: region?.label,
+    targetLabels: selectedTargets.map((target) => target.label),
+    symptomLabels: selectedSymptoms.map((symptom) => symptom.label),
+    resultStatus: result.status,
+  });
   const locationLockedCopy = "先完成上一步，选择位置后解锁";
   const steps = [
-    { id: 1, done: Boolean(region), current: activeStep === 1, label: "选择位置", detail: region ? region.label : "在人体或文字区点选", disabled: false },
-    { id: 2, done: symptomIds.length > 0, current: activeStep === 2, label: "描述感受", detail: region ? selectedSymptoms || "可以同时选择多个" : locationLockedCopy, disabled: !region },
-    { id: 3, done: step === 3, current: activeStep === 3, label: "获得建议", detail: step === 3 ? "查看匹配依据与动作" : region ? "选择感受后解锁" : locationLockedCopy, disabled: step !== 3 },
+    { id: 1, done: Boolean(region), current: activeStep === 1, label: "选择位置", detail: summary.location, disabled: false },
+    { id: 2, done: selectedSymptoms.length > 0, current: activeStep === 2, label: "描述感受", detail: region ? summary.feeling : locationLockedCopy, disabled: !region },
+    { id: 3, done: step === 3, current: activeStep === 3, label: "获得建议", detail: region ? summary.recommendation : locationLockedCopy, disabled: step !== 3 },
   ];
+  const safetyLabel = result.status === "blocked"
+    ? "已触发暂停训练提示"
+    : result.status === "caution"
+      ? "建议采用更低强度"
+      : "当前未发现已勾选红旗";
 
   return (
     <aside className="assessment-panel" data-step={step}>
       <div className="quest-label">BODY QUEST</div>
       <h2>定位身体信号</h2>
-      <p>先标记位置，再描述感受。这里帮助你找教程，不判断疾病。</p>
+      <p>右侧会按顺序完成位置、感受和建议；这里保留任务进度与任务摘要。</p>
 
       <ol className="quest-steps">
         {steps.map((item) => (
@@ -43,40 +46,18 @@ export function AssessmentPanel({ region, step, activeStep = step, symptomIds, r
         ))}
       </ol>
 
-      <div className="assessment-group">
-        <div className="assessment-group__title">
-          <strong>现在是什么感觉？</strong><small>可多选</small>
-        </div>
-        <div className="choice-grid">
-          {symptoms.map((symptom) => (
-            <button
-              key={symptom.id}
-              type="button"
-              disabled={!region}
-              className={symptomIds.includes(symptom.id) ? "is-active" : ""}
-              aria-pressed={symptomIds.includes(symptom.id)}
-              onClick={() => onChangeSymptoms(toggle(symptomIds, symptom.id))}
-            >
-              {symptom.label}
-            </button>
-          ))}
-        </div>
+      <section className="task-summary" aria-label="任务摘要">
+        <h3>任务摘要</h3>
+        <dl>
+          <div><dt>位置</dt><dd>{summary.location}</dd></div>
+          <div><dt>感受</dt><dd>{summary.feeling}</dd></div>
+          <div><dt>建议</dt><dd>{summary.recommendation}</dd></div>
+        </dl>
+      </section>
+
+      <div className={`assessment-safety${result.status === "blocked" ? " is-blocked" : ""}`}>
+        <WarningCircle size={20} weight="fill" />{safetyLabel}
       </div>
-
-      <fieldset className="safety-check">
-        <legend><WarningCircle size={20} weight="fill" />先确认这些情况</legend>
-        {redFlags.map((flag) => (
-          <label key={flag.id}>
-            <input
-              type="checkbox"
-              checked={redFlagIds.includes(flag.id)}
-              onChange={() => onChangeRedFlags(toggle(redFlagIds, flag.id))}
-            />
-            <span>{flag.label}</span>
-          </label>
-        ))}
-      </fieldset>
-
       <div className="education-note">
         <ShieldCheck size={21} weight="fill" aria-hidden="true" />
         <span>定位代表你报告的不适位置，不等于疼痛来源或受损组织。</span>

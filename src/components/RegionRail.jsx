@@ -1,7 +1,14 @@
-import Body from "react-muscle-highlighter";
-import { Check } from "@phosphor-icons/react";
-import { bodyRegions, getRegionTargets } from "../bodyMap.js";
-import { getBodyRegionVisualData } from "../bodyRegionMap.js";
+import {
+  Check,
+  PersonArmsSpread,
+  PersonSimple,
+  PersonSimpleRun,
+  PersonSimpleTaiChi,
+  PersonSimpleThrow,
+  PersonSimpleWalk,
+  SneakerMove,
+} from "@phosphor-icons/react";
+import { bodyRegions } from "../bodyMap.js";
 
 const regionCardColors = {
   neck: "#ff5f69",
@@ -14,46 +21,40 @@ const regionCardColors = {
   ankle: "#23b8c7",
 };
 
-function RegionPreview({ region }) {
-  const selectedIds = getRegionTargets(region.id).map((target) => target.id);
-  const data = getBodyRegionVisualData({ regionId: region.id, selectedIds })
-    .filter((part) => part.selected)
-    .map(({ slug }) => ({ slug, color: "#fff4d6" }));
-
-  return (
-    <span className="region-rail__preview" aria-hidden="true">
-      <Body
-        data={data}
-        side={region.hotspot.side}
-        gender="male"
-        defaultFill="rgba(255,255,255,.28)"
-        defaultStroke="rgba(255,255,255,.86)"
-        defaultStrokeWidth={1.4}
-      />
-    </span>
-  );
-}
+const regionIcons = {
+  neck: PersonSimple,
+  shoulder: PersonSimpleThrow,
+  thorax: PersonArmsSpread,
+  "low-back": PersonSimpleTaiChi,
+  hip: PersonSimpleRun,
+  thigh: PersonSimpleWalk,
+  knee: PersonSimpleRun,
+  ankle: SneakerMove,
+};
 
 export function RegionRail({ regionId, onSelectRegion }) {
   return (
     <section className="region-rail" aria-label="选择身体区域">
-      {bodyRegions.map((region) => (
-        <button
-          key={region.id}
-          type="button"
-          className={regionId === region.id ? "is-active" : ""}
-          aria-pressed={regionId === region.id}
-          onClick={() => onSelectRegion(region.id)}
-          style={{ "--region-card-color": regionCardColors[region.id] }}
-        >
-          <RegionPreview region={region} />
-          <span className="region-rail__copy">
-            <strong>{region.label}</strong>
-            <small>{region.prompt.replace("不舒服", "")}</small>
-          </span>
-          {regionId === region.id && <span className="region-rail__check" aria-hidden="true"><Check size={15} weight="bold" /></span>}
-        </button>
-      ))}
+      {bodyRegions.map((region) => {
+        const Icon = regionIcons[region.id];
+        return (
+          <button
+            key={region.id}
+            type="button"
+            className={regionId === region.id ? "is-active" : ""}
+            aria-pressed={regionId === region.id}
+            onClick={() => onSelectRegion(region.id)}
+            style={{ "--region-card-color": regionCardColors[region.id] }}
+          >
+            <span className="region-rail__icon" aria-hidden="true"><Icon size={42} weight="duotone" /></span>
+            <span className="region-rail__copy">
+              <strong>{region.label}</strong>
+              <small>{region.prompt.replace("不舒服", "")}</small>
+            </span>
+            {regionId === region.id && <span className="region-rail__check" aria-hidden="true"><Check size={15} weight="bold" /></span>}
+          </button>
+        );
+      })}
     </section>
   );
 }

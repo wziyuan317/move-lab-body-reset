@@ -178,3 +178,30 @@ test("办公室播放器使用真实课程动作和完整控制", async () => {
   assert.match(source, /aria-live="polite"/);
   assert.match(source, /getRoutineProgress/);
 });
+
+test("左侧任务栏不再复制感受与安全输入", async () => {
+  const source = await readFile(new URL("../src/components/AssessmentPanel.jsx", import.meta.url), "utf8");
+
+  assert.doesNotMatch(source, /choice-grid/);
+  assert.doesNotMatch(source, /onChangeSymptoms/);
+  assert.doesNotMatch(source, /onChangeRedFlags/);
+  assert.match(source, /任务摘要/);
+});
+
+test("右侧单工作台集中位置感受安全与建议", async () => {
+  const source = await readFile(new URL("../src/components/LocationTaskPanel.jsx", import.meta.url), "utf8");
+
+  for (const contract of ["symptoms", "redFlags", "BodyLocationSelector", "RecommendationPanel"]) {
+    assert.match(source, new RegExp(contract));
+  }
+  assert.match(source, /choice-grid/);
+  assert.match(source, /safety-check/);
+});
+
+test("底部区域卡只使用图标库，不再渲染微型肌肉图", async () => {
+  const source = await readFile(new URL("../src/components/RegionRail.jsx", import.meta.url), "utf8");
+
+  assert.doesNotMatch(source, /react-muscle-highlighter/);
+  assert.match(source, /@phosphor-icons\/react/);
+  assert.match(source, /region-rail__icon/);
+});

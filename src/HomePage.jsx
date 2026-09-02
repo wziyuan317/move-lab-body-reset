@@ -4,14 +4,16 @@ import {
   ArrowRight,
 } from "@phosphor-icons/react";
 import {
+  anatomyTargets,
   bodyRegions,
   getExplorerStep,
   getRecommendations,
+  symptoms,
   toggleTargetSelection,
 } from "./bodyMap.js";
 import { AssessmentPanel } from "./components/AssessmentPanel.jsx";
-import { BodyExplorer, BodyLocationSelector } from "./components/BodyExplorer.jsx";
-import { RecommendationPanel } from "./components/RecommendationPanel.jsx";
+import { BodyExplorer } from "./components/BodyExplorer.jsx";
+import { LocationTaskPanel } from "./components/LocationTaskPanel.jsx";
 import { RegionRail } from "./components/RegionRail.jsx";
 import { SiteHeader } from "./components/SiteHeader.jsx";
 import { getMissionDisplayStep, getStepFocusSelector } from "./homeFlow.js";
@@ -23,6 +25,8 @@ function normalizeSides(value) {
 export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary, onNavigate, onOpenSafety }) {
   const region = bodyRegions.find((item) => item.id === value.regionId);
   const result = useMemo(() => getRecommendations(value), [value]);
+  const selectedTargets = anatomyTargets.filter((target) => value.targetIds.includes(target.id));
+  const selectedSymptoms = symptoms.filter((symptom) => value.symptomIds.includes(symptom.id));
   const explorerStep = getExplorerStep(value);
   const [mobileStep, setMobileStep] = useState(explorerStep);
   const [locationExpanded, setLocationExpanded] = useState(false);
@@ -96,10 +100,9 @@ export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary, onNav
               region={region}
               step={explorerStep}
               activeStep={missionDisplayStep}
-              symptomIds={value.symptomIds}
-              redFlagIds={value.redFlagIds}
-              onChangeSymptoms={(symptomIds) => update({ symptomIds })}
-              onChangeRedFlags={(redFlagIds) => update({ redFlagIds })}
+              selectedTargets={selectedTargets}
+              selectedSymptoms={selectedSymptoms}
+              result={result}
               onRequestStep={requestStep}
             />
           </aside>
@@ -117,22 +120,16 @@ export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary, onNav
           </div>
 
           <aside className={`result-column result-column--step-${explorerStep}`}>
-            <BodyLocationSelector
-              regionId={value.regionId}
-              selectedIds={value.targetIds}
-              selectedSides={value.targetSides}
-              viewSide={value.viewSide}
-              step={explorerStep === 3 && !locationExpanded ? 3 : 2}
-              onToggleTarget={toggleTarget}
-              onChangeViewSide={(viewSide) => update({ viewSide })}
-              onEditLocation={() => setLocationExpanded(true)}
-            />
-            <RecommendationPanel
+            <LocationTaskPanel
               region={region}
-              selectedIds={value.targetIds}
-              symptomIds={value.symptomIds}
+              value={value}
+              explorerStep={explorerStep}
+              locationExpanded={locationExpanded}
               result={result}
+              onUpdate={update}
+              onToggleTarget={toggleTarget}
               onOpenTutorial={onOpenTutorial}
+              onEditLocation={() => setLocationExpanded(true)}
             />
           </aside>
         </div>
