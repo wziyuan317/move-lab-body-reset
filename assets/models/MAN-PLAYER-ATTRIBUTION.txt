@@ -1,0 +1,20 @@
+Man Player — attribution and license evidence
+
+Current production filename: move-lab-clothed.glb
+Original input filename: man_player.glb
+Received from user: 2026-09-01
+Original byte size: 12123012
+SHA-256: bb0e9f1ed0147b988d93b7dc6564b480efb05085c3bb78d2d74e7b01cff0d78b
+
+Embedded GLB asset.extras values:
+title: Man Player
+author: RiverofCreative (https://sketchfab.com/RiverofCreative)
+source: https://sketchfab.com/3d-models/man-player-4c7133dbb06e4136891d59231372d818
+license: CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+
+Attribution notice:
+“Man Player” by RiverofCreative, licensed under CC BY 4.0.
+Source: https://sketchfab.com/3d-models/man-player-4c7133dbb06e4136891d59231372d818
+License: https://creativecommons.org/licenses/by/4.0/
+
+Changes to the asset bytes: none. The user-supplied file was copied byte-for-byte and renamed to move-lab-clothed.glb for the application asset path.
