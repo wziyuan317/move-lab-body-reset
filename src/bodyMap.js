@@ -259,10 +259,17 @@ const validSymptomIds = new Set(symptoms.map((symptom) => symptom.id));
 const validRedFlagIds = new Set(redFlags.map((flag) => flag.id));
 const validTargetSides = new Set(["left", "right"]);
 const validExplorerSteps = new Set([1, 2, 3]);
+const validOfficeProgramIds = new Set([
+  "program.office.micro_5",
+  "program.office.reset_10",
+  "program.office.deep_15",
+]);
 
 export function serializeExplorerState(state) {
   const params = new URLSearchParams();
   if (state.view === "library") params.set("view", "library");
+  if (state.view === "office") params.set("view", "office");
+  if (state.view === "office" && validOfficeProgramIds.has(state.programId)) params.set("program", state.programId);
   if (state.movementId && movementIds.has(state.movementId)) params.set("movement", state.movementId);
   if (validRegionIds.has(state.regionId)) params.set("region", state.regionId);
   const targets = (state.targetIds ?? []).filter((id) => validTargetIds.has(id));
@@ -286,9 +293,12 @@ export function serializeExplorerState(state) {
 export function parseExplorerState(search = "") {
   const params = new URLSearchParams(search.startsWith("?") ? search.slice(1) : search);
   const regionId = validRegionIds.has(params.get("region")) ? params.get("region") : undefined;
+  const requestedView = params.get("view");
   const result = {
-    view: params.get("view") === "library" ? "library" : "home",
+    view: requestedView === "library" || requestedView === "office" ? requestedView : "home",
   };
+  const programId = params.get("program");
+  if (result.view === "office" && validOfficeProgramIds.has(programId)) result.programId = programId;
   const movementId = params.get("movement");
   if (movementIds.has(movementId)) result.movementId = movementId;
   if (regionId) result.regionId = regionId;

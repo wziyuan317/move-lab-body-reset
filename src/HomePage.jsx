@@ -2,8 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
-  PersonSimple,
-  ShieldCheck,
 } from "@phosphor-icons/react";
 import {
   bodyRegions,
@@ -15,13 +13,14 @@ import { AssessmentPanel } from "./components/AssessmentPanel.jsx";
 import { BodyExplorer, BodyLocationSelector } from "./components/BodyExplorer.jsx";
 import { RecommendationPanel } from "./components/RecommendationPanel.jsx";
 import { RegionRail } from "./components/RegionRail.jsx";
+import { SiteHeader } from "./components/SiteHeader.jsx";
 import { getMissionDisplayStep, getStepFocusSelector } from "./homeFlow.js";
 
 function normalizeSides(value) {
   return (Array.isArray(value) ? value : [value]).filter((side) => side === "left" || side === "right");
 }
 
-export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary }) {
+export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary, onNavigate, onOpenSafety }) {
   const region = bodyRegions.find((item) => item.id === value.regionId);
   const result = useMemo(() => getRecommendations(value), [value]);
   const explorerStep = getExplorerStep(value);
@@ -83,18 +82,7 @@ export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary }) {
 
   return (
     <div className="home-shell">
-      <header className="home-nav">
-        <a className="home-brand" href="#body-map" aria-label="MOVE LAB 身体定位首页">
-          <span><PersonSimple size={30} weight="fill" /></span>
-          <div><strong>MOVE LAB</strong><small>身体放松图鉴</small></div>
-        </a>
-        <nav aria-label="主要导航">
-          <a href="#body-map" className="is-active">身体定位</a>
-          <button type="button" onClick={onOpenLibrary} disabled={result.status === "blocked"}>动作库</button>
-          <a href="#safety-note">安全说明</a>
-        </nav>
-        <div className="home-nav__status"><ShieldCheck size={19} weight="fill" />日常动作教育</div>
-      </header>
+      <SiteHeader activeView="home" onNavigate={onNavigate} onOpenSafety={onOpenSafety} />
 
       <main id="body-map" className="home-main">
         <div className="location-workspace" data-mobile-step={mobileStep}>

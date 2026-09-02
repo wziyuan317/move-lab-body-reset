@@ -19,6 +19,7 @@ import {
   selectMovementFrame,
   selectMovementThumbnail,
 } from "./movements.js";
+import { SiteHeader } from "./components/SiteHeader.jsx";
 
 const categories = ["全部", "颈部", "斜方肌", "胸椎", "胸肩", "肩胛", "腰背", "臀髋", "膝盖", "侧链"];
 
@@ -193,7 +194,7 @@ function MovementDetail({ movement, phase, onPhaseChange }) {
   );
 }
 
-export function TutorialLibrary({ initialMovementId, onNavigateHome }) {
+export function TutorialLibrary({ initialMovementId, onNavigateHome, onNavigate, onOpenSafety }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("全部");
   const [selectedId, setSelectedId] = useState(initialMovementId ?? movements[0].id);
@@ -216,7 +217,9 @@ export function TutorialLibrary({ initialMovementId, onNavigateHome }) {
   };
 
   return (
-    <div className="app-shell">
+    <div className="library-page">
+      <SiteHeader activeView="library" onNavigate={onNavigate} onOpenSafety={onOpenSafety} />
+      <div className="app-shell">
       <aside className="sidebar">
         <button className="brand brand--button" type="button" onClick={onNavigateHome} aria-label="返回身体定位首页">
           <span className="brand__mark">
@@ -355,6 +358,7 @@ export function TutorialLibrary({ initialMovementId, onNavigateHome }) {
           </div>
         </footer>
       </main>
+      </div>
     </div>
   );
 }

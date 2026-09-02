@@ -7,6 +7,7 @@ import {
 } from "./bodyMap.js";
 import { HomePage } from "./HomePage.jsx";
 import { TutorialLibrary } from "./TutorialLibrary.jsx";
+import { OfficeRoutinePage } from "./components/OfficeRoutinePage.jsx";
 
 const defaultExplorerState = {
   regionId: undefined,
@@ -54,13 +55,38 @@ export function App() {
   const navigateToLibrary = (movementId) => {
     const next = { ...explorerState, view: "library", movementId };
     if (!movementId) delete next.movementId;
+    delete next.programId;
     writeUrl(next);
   };
 
   const navigateHome = () => {
     const next = { ...explorerState, view: "home" };
     delete next.movementId;
+    delete next.programId;
     writeUrl(next);
+  };
+
+  const navigateOffice = (programId) => {
+    const next = { ...explorerState, view: "office", programId };
+    delete next.movementId;
+    if (!programId) delete next.programId;
+    writeUrl(next);
+  };
+
+  const navigateView = (view) => {
+    if (view === "library") navigateToLibrary();
+    else if (view === "office") navigateOffice();
+    else navigateHome();
+  };
+
+  const openSafety = () => {
+    const scrollToSafety = () => document.querySelector("#safety-note")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (urlState.view === "home") {
+      scrollToSafety();
+      return;
+    }
+    navigateHome();
+    window.setTimeout(scrollToSafety, 0);
   };
 
   if (urlState.view === "library") {
@@ -68,6 +94,19 @@ export function App() {
       <TutorialLibrary
         initialMovementId={urlState.movementId}
         onNavigateHome={navigateHome}
+        onNavigate={navigateView}
+        onOpenSafety={openSafety}
+      />
+    );
+  }
+
+  if (urlState.view === "office") {
+    return (
+      <OfficeRoutinePage
+        programId={urlState.programId}
+        onSelectProgram={navigateOffice}
+        onNavigate={navigateView}
+        onOpenSafety={openSafety}
       />
     );
   }
@@ -82,6 +121,8 @@ export function App() {
       }}
       onOpenTutorial={navigateToLibrary}
       onOpenLibrary={() => navigateToLibrary()}
+      onNavigate={navigateView}
+      onOpenSafety={openSafety}
     />
   );
 }

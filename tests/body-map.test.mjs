@@ -375,3 +375,16 @@ test("旧 URL 没有新状态字段时仍可恢复已有定位", () => {
     symptomIds: ["tightness"],
   });
 });
+
+test("办公室课程深链只保留三个稳定课程 ID", () => {
+  const serialized = serializeExplorerState({
+    view: "office",
+    programId: "program.office.reset_10",
+  });
+  assert.equal(serialized, "?view=office&program=program.office.reset_10");
+  assert.deepEqual(parseExplorerState(serialized), {
+    view: "office",
+    programId: "program.office.reset_10",
+  });
+  assert.deepEqual(parseExplorerState("?view=office&program=unknown"), { view: "office" });
+});

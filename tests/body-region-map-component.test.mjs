@@ -147,3 +147,22 @@ test("HomePage 页脚展示当前角色的完整署名与可点击许可", async
     },
   ]);
 });
+
+test("共享导航提供四个醒目的真实入口", async () => {
+  const source = await readFile(new URL("../src/components/SiteHeader.jsx", import.meta.url), "utf8");
+
+  for (const label of ["身体定位", "办公室放松", "动作库", "安全说明"]) {
+    assert.match(source, new RegExp(label));
+  }
+  assert.match(source, /onNavigate/);
+});
+
+test("办公室播放器使用真实课程动作和完整控制", async () => {
+  const source = await readFile(new URL("../src/components/OfficeRoutineTimer.jsx", import.meta.url), "utf8");
+
+  for (const label of ["暂停", "继续", "上一个", "下一个", "重新开始"]) {
+    assert.match(source, new RegExp(label));
+  }
+  assert.match(source, /aria-live="polite"/);
+  assert.match(source, /getRoutineProgress/);
+});
