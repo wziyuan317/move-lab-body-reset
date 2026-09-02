@@ -190,12 +190,17 @@ test("左侧任务栏不再复制感受与安全输入", async () => {
 
 test("右侧单工作台集中位置感受安全与建议", async () => {
   const source = await readFile(new URL("../src/components/LocationTaskPanel.jsx", import.meta.url), "utf8");
+  const homeSource = await readFile(new URL("../src/HomePage.jsx", import.meta.url), "utf8");
+  const css = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
 
   for (const contract of ["symptoms", "redFlags", "BodyLocationSelector", "RecommendationPanel"]) {
     assert.match(source, new RegExp(contract));
   }
   assert.match(source, /choice-grid/);
   assert.match(source, /safety-check/);
+  assert.match(homeSource, /region \? "" : " is-empty"/);
+  assert.match(css, /\.result-column \.recommendation-panel \{[^}]*grid-row:\s*auto/);
+  assert.match(css, /\.result-column\.is-empty \{ display:\s*none; \}/);
 });
 
 test("底部区域卡只使用图标库，不再渲染微型肌肉图", async () => {

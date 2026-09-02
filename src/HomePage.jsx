@@ -119,7 +119,7 @@ export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary, onNav
             />
           </div>
 
-          <aside className={`result-column result-column--step-${explorerStep}`}>
+          <aside className={`result-column result-column--step-${explorerStep}${region ? "" : " is-empty"}`}>
             <LocationTaskPanel
               region={region}
               value={value}
