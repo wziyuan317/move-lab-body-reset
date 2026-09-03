@@ -63,7 +63,8 @@ test("主要教程 CTA 使用黄色行动色而非危险 coral", async () => {
   assert.equal(declarations.color, "var(--navy)");
 });
 
-test("专业模式使用完整正背人体图且不再引用 legacy GLB", async () => {
+test("专业解剖与 3D 人体是中央舞台同级模式", async () => {
+  const explorerSource = await readFile(new URL("../src/components/BodyExplorer.jsx", import.meta.url), "utf8");
   const source = await readFile(new URL("../src/components/ProfessionalAnatomyPanel.jsx", import.meta.url), "utf8");
   const ast = parse(source, { sourceType: "module", plugins: ["jsx"] });
   const imports = [];
@@ -77,31 +78,38 @@ test("专业模式使用完整正背人体图且不再引用 legacy GLB", async 
   assert.equal(imports.includes("@react-three/fiber"), false);
   assert.equal(imports.includes("@react-three/drei"), false);
   assert.equal(source.includes("move-lab-muscles.glb"), false);
-  assert.equal(bodyElements.length, 2, "应同时保留完整的正面和背面人体参照图");
+  assert.equal(bodyElements.length, 1, "当前观察方向只渲染一个完整人体");
 
-  const sides = bodyElements.map((element) => element.attributes.find(
-    (attribute) => attribute.type === "JSXAttribute" && attribute.name.name === "side",
-  )?.value?.value);
-  assert.deepEqual(sides.sort(), ["back", "front"]);
   for (const element of bodyElements) {
     const propNames = element.attributes
       .filter((attribute) => attribute.type === "JSXAttribute")
       .map((attribute) => attribute.name.name);
     assert.equal(propNames.includes("onBodyPartPress"), true, "专业人体图必须能直接点击肌肉区域");
+    assert.equal(propNames.includes("gender"), true, "专业人体图必须响应男生/女生选择");
+    assert.equal(propNames.includes("side"), true, "专业人体图必须响应当前观察方向");
   }
+  assert.match(source, /gender=\{sex\}/);
+  assert.match(source, /side=\{view\}/);
   assert.match(source, /JointRegionMap/);
-  assert.match(source, /查看全身/);
+  assert.match(source, /男生/);
+  assert.match(source, /女生/);
+  assert.match(source, /缩小/);
+  assert.match(source, /放大/);
+  assert.match(source, /复位/);
 
   const dialogElements = [];
   visit(ast, (node) => {
     if (node.type === "JSXOpeningElement" && node.name?.name === "dialog") dialogElements.push(node);
   });
-  assert.equal(dialogElements.length, 1);
-  const dialogProps = dialogElements[0].attributes
-    .filter((attribute) => attribute.type === "JSXAttribute")
-    .map((attribute) => attribute.name.name);
-  assert.ok(dialogProps.includes("onCancel"));
-  assert.ok(dialogProps.includes("onKeyDown"), "Escape 必须有显式键盘关闭路径");
+  assert.equal(dialogElements.length, 0, "专业解剖不能继续作为弹窗");
+  assert.doesNotMatch(source, /showModal|onClose|关闭专业解剖/);
+
+  assert.match(explorerSource, /role="tablist"/);
+  assert.match(explorerSource, />3D 人体</);
+  assert.match(explorerSource, />专业解剖</);
+  assert.doesNotMatch(explorerSource, /professionalOpen|ProfessionalLoadingDialog/);
+  assert.match(explorerSource, /role="status"/);
+  assert.doesNotMatch(explorerSource, /disabled=\{!regionId\}/);
 });
 
 test("专业人体图开放点击而普通人体图保持键盘等价控件", async () => {

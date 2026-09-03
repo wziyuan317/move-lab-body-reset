@@ -1,19 +1,27 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowsOutSimple, X } from "@phosphor-icons/react";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowsClockwise, Minus, Plus } from "@phosphor-icons/react";
 import Body from "react-muscle-highlighter";
 import { getRegionTargets } from "../bodyMap.js";
 import {
   getBodyPartFill,
   getBodyRegionVisualData,
 } from "../bodyRegionMap.js";
-import { getProfessionalFocus, resolveProfessionalPress } from "../professionalFocus.js";
+import { getNextAnatomyZoom, getProfessionalFocus, resolveProfessionalPress } from "../professionalFocus.js";
 import { JointRegionMap } from "./JointRegionMap.jsx";
 
-export default function ProfessionalAnatomyPanel({ regionId, selectedIds, selectedSides = {}, onToggleTarget, onClose }) {
-  const dialogRef = useRef(null);
-  const closeButtonRef = useRef(null);
+export default function ProfessionalAnatomyPanel({
+  regionId,
+  selectedIds = [],
+  selectedSides = {},
+  sex,
+  view,
+  zoom,
+  onChangeSex,
+  onChangeView,
+  onChangeZoom,
+  onToggleTarget,
+}) {
   const [focusKey, setFocusKey] = useState();
-  const [focusedBodySide, setFocusedBodySide] = useState();
   const [candidateSelection, setCandidateSelection] = useState();
   const targets = useMemo(() => getRegionTargets(regionId), [regionId]);
   const muscleTargets = useMemo(() => targets.filter((target) => target.kind === "muscle"), [targets]);
@@ -23,24 +31,22 @@ export default function ProfessionalAnatomyPanel({ regionId, selectedIds, select
     ...(targetIds.length > 0 ? { color: selected ? color : "#79a8ed", side } : {}),
   }));
   const focus = getProfessionalFocus(focusKey);
+  const bodyScale = Math.round(focus.scale * zoom * 100) / 100;
 
   useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog.open) dialog.showModal();
-    closeButtonRef.current?.focus();
-  }, []);
-
-  const closeDialog = () => dialogRef.current?.close();
-  const resetFocus = () => {
     setFocusKey(undefined);
-    setFocusedBodySide(undefined);
     setCandidateSelection(undefined);
+  }, [regionId]);
+
+  const resetView = () => {
+    setFocusKey(undefined);
+    setCandidateSelection(undefined);
+    onChangeZoom(getNextAnatomyZoom(zoom, "reset"));
   };
-  const handlePress = (slug, side, bodySide) => {
+  const handlePress = (slug, side) => {
     const resolution = resolveProfessionalPress({ slug, regionId, side });
     if (resolution.type === "ignore") return;
     setFocusKey(resolution.focusKey);
-    setFocusedBodySide(bodySide);
     if (resolution.type === "toggle") {
       setCandidateSelection(undefined);
       onToggleTarget(resolution.targetId, resolution.side);
@@ -49,40 +55,35 @@ export default function ProfessionalAnatomyPanel({ regionId, selectedIds, select
     setCandidateSelection(resolution);
   };
 
-  const frontFocus = focusedBodySide === "front" ? focus : getProfessionalFocus();
-  const backFocus = focusedBodySide === "back" ? focus : getProfessionalFocus();
-
   return (
-    <dialog
-      ref={dialogRef}
-      className="professional-anatomy"
-      aria-labelledby="professional-anatomy-title"
-      aria-describedby="professional-anatomy-note"
-      onCancel={(event) => {
-        event.preventDefault();
-        closeDialog();
-      }}
-      onKeyDown={(event) => {
-        if (event.key !== "Escape") return;
-        event.preventDefault();
-        closeDialog();
-      }}
-      onClose={onClose}
-    >
-      <header>
+    <section className="professional-anatomy-stage" aria-labelledby="professional-anatomy-title" aria-describedby="professional-anatomy-note">
+      <header className="professional-anatomy-stage__header">
         <div>
           <small>PROFESSIONAL VIEW</small>
-          <h2 id="professional-anatomy-title">专业解剖模式</h2>
+          <h2 id="professional-anatomy-title">专业解剖</h2>
         </div>
-        <div className="professional-anatomy__header-actions">
-          <button type="button" onClick={resetFocus} disabled={!focusKey}>
-            <ArrowsOutSimple size={21} weight="bold" />查看全身
-          </button>
-          <button ref={closeButtonRef} type="button" onClick={closeDialog} aria-label="关闭专业解剖模式">
-            <X size={23} weight="bold" />关闭
-          </button>
-        </div>
+        <p>切换人体和观察方向，点击图形或下方名称定位。</p>
       </header>
+
+      <div className="professional-anatomy-stage__controls">
+        <div className="anatomy-control-group" role="group" aria-label="人体类别">
+          <span>人体</span>
+          <button type="button" aria-pressed={sex === "male"} className={sex === "male" ? "is-active" : ""} onClick={() => onChangeSex("male")}>男生</button>
+          <button type="button" aria-pressed={sex === "female"} className={sex === "female" ? "is-active" : ""} onClick={() => onChangeSex("female")}>女生</button>
+        </div>
+        <div className="anatomy-control-group" role="group" aria-label="观察方向">
+          <span>方向</span>
+          <button type="button" aria-pressed={view === "front"} className={view === "front" ? "is-active" : ""} onClick={() => onChangeView("front")}>正面</button>
+          <button type="button" aria-pressed={view === "back"} className={view === "back" ? "is-active" : ""} onClick={() => onChangeView("back")}>背面</button>
+        </div>
+        <div className="anatomy-control-group anatomy-control-group--zoom" role="group" aria-label="人体缩放">
+          <span>缩放</span>
+          <button type="button" aria-label="缩小解剖人体" onClick={() => onChangeZoom(getNextAnatomyZoom(zoom, "out"))}><Minus size={18} weight="bold" />缩小</button>
+          <output aria-live="polite">{Math.round(zoom * 100)}%</output>
+          <button type="button" aria-label="放大解剖人体" onClick={() => onChangeZoom(getNextAnatomyZoom(zoom, "in"))}><Plus size={18} weight="bold" />放大</button>
+          <button type="button" onClick={resetView}><ArrowsClockwise size={18} weight="bold" />复位</button>
+        </div>
+      </div>
 
       <div className="professional-anatomy__legend" aria-label="解剖图例">
         <span><i className="is-region" />当前区域</span>
@@ -90,32 +91,21 @@ export default function ProfessionalAnatomyPanel({ regionId, selectedIds, select
         <span><i className="is-reference" />其余身体参照</span>
       </div>
 
-      <div className="professional-anatomy__body-grid" aria-label="完整正背人体背景参照">
-        <figure className={focusedBodySide === "front" ? "is-focused" : ""}>
-          <figcaption>正面</figcaption>
-          <div className="professional-anatomy__viewport" style={{ "--focus-scale": frontFocus.scale, "--focus-x": `${frontFocus.originX}%`, "--focus-y": `${frontFocus.originY}%` }}>
+      <div className="professional-anatomy__body-grid" aria-label={`${view === "front" ? "正面" : "背面"}完整人体参照`}>
+        <figure className={focusKey ? "is-focused" : ""}>
+          <figcaption>{sex === "male" ? "男生" : "女生"} · {view === "front" ? "正面" : "背面"}</figcaption>
+          <div
+            className="professional-anatomy__viewport"
+            style={{ "--focus-scale": bodyScale, "--focus-x": `${focus.originX}%`, "--focus-y": `${focus.originY}%` }}
+          >
             <Body
               data={bodyData}
-              side="front"
-              gender="male"
+              side={view}
+              gender={sex}
               defaultFill={getBodyPartFill()}
               defaultStroke="#9aacbf"
               defaultStrokeWidth={1}
-              onBodyPartPress={(part, pressedSide) => handlePress(part.slug, pressedSide, "front")}
-            />
-          </div>
-        </figure>
-        <figure className={focusedBodySide === "back" ? "is-focused" : ""}>
-          <figcaption>背面</figcaption>
-          <div className="professional-anatomy__viewport" style={{ "--focus-scale": backFocus.scale, "--focus-x": `${backFocus.originX}%`, "--focus-y": `${backFocus.originY}%` }}>
-            <Body
-              data={bodyData}
-              side="back"
-              gender="male"
-              defaultFill={getBodyPartFill()}
-              defaultStroke="#9aacbf"
-              defaultStrokeWidth={1}
-              onBodyPartPress={(part, pressedSide) => handlePress(part.slug, pressedSide, "back")}
+              onBodyPartPress={(part, pressedSide) => handlePress(part.slug, pressedSide)}
             />
           </div>
         </figure>
@@ -129,7 +119,7 @@ export default function ProfessionalAnatomyPanel({ regionId, selectedIds, select
               ? selectedTargets.map((target) => <span key={target.id} style={{ "--target-color": target.color }}>{target.label}</span>)
               : <span className="is-empty">尚未选择具体位置</span>}
           </div>
-          <p className="professional-anatomy__granularity-note">2D 分区会合并落在同一轮廓区域的肌肉；彩色标签保留多选详情。</p>
+          <p className="professional-anatomy__granularity-note">图形分区可能合并多块肌肉；下方名称列表保留完整选择。</p>
         </div>
         {candidateSelection && (
           <div className="professional-anatomy__candidate-controls" role="group" aria-label="选择精确肌肉">
@@ -185,6 +175,6 @@ export default function ProfessionalAnatomyPanel({ regionId, selectedIds, select
       </section>
 
       <p id="professional-anatomy-note">仅用于解剖教育与位置沟通，不提供诊断，也不能替代医生或物理治疗师的个体评估。</p>
-    </dialog>
+    </section>
   );
 }

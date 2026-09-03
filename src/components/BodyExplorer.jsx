@@ -1,12 +1,12 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import {
   ArrowsClockwise,
   Eye,
   EyeClosed,
-  PersonSimpleRun,
   WarningCircle,
 } from "@phosphor-icons/react";
 import { bodyRegions, getExplorerResetChange, getModelRegionSelectionChange, getRegionTargets } from "../bodyMap.js";
+import { ANATOMY_DEFAULTS } from "../professionalFocus.js";
 import { BodyRegionMap } from "./BodyRegionMap.jsx";
 import { BodyScene } from "./BodyScene.jsx";
 import { JointRegionMap } from "./JointRegionMap.jsx";
@@ -15,38 +15,8 @@ import { ModelErrorBoundary } from "./ModelErrorBoundary.jsx";
 const ProfessionalAnatomyPanel = lazy(() => import("./ProfessionalAnatomyPanel.jsx"));
 const jointMapRegions = new Set(["knee", "shoulder", "ankle"]);
 
-function ProfessionalLoadingDialog({ onClose }) {
-  const dialogRef = useRef(null);
-  const closeButtonRef = useRef(null);
-  useEffect(() => {
-    if (!dialogRef.current?.open) dialogRef.current?.showModal();
-    closeButtonRef.current?.focus();
-  }, []);
-  return (
-    <dialog
-      ref={dialogRef}
-      className="professional-anatomy professional-anatomy--loading"
-      aria-label="正在进入专业解剖模式"
-      onCancel={(event) => {
-        event.preventDefault();
-        dialogRef.current?.close();
-        onClose();
-      }}
-    >
-      <button
-        ref={closeButtonRef}
-        type="button"
-        onClick={() => {
-          dialogRef.current?.close();
-          onClose();
-        }}
-        aria-label="关闭专业解剖模式"
-      >
-        关闭
-      </button>
-      <div role="status">正在进入专业解剖模式…</div>
-    </dialog>
-  );
+function ProfessionalLoadingStage() {
+  return <div className="professional-anatomy-loading" role="status">正在加载专业解剖图…</div>;
 }
 
 function ExplorerFallback({ regionId, onSelectRegion }) {
@@ -54,7 +24,7 @@ function ExplorerFallback({ regionId, onSelectRegion }) {
     <div className="model-fallback">
       <WarningCircle size={30} weight="fill" aria-hidden="true" />
       <strong>3D 模型暂时没有加载成功</strong>
-      <p>仍可用下方区域卡和右侧位置图完成定位。</p>
+      <p>仍可用下方区域卡和右侧文字选项完成定位。</p>
       <div className="fallback-regions">
         {bodyRegions.map((region) => (
           <button key={region.id} type="button" className={regionId === region.id ? "is-active" : ""} onClick={() => onSelectRegion(region.id)}>
@@ -67,54 +37,79 @@ function ExplorerFallback({ regionId, onSelectRegion }) {
 }
 
 export function BodyExplorer({ regionId, selectedIds, selectedSides, viewSide, onSelectRegion, onToggleTarget, onChangeViewSide }) {
-  const [professionalOpen, setProfessionalOpen] = useState(false);
-  const professionalTriggerRef = useRef(null);
+  const [explorerMode, setExplorerMode] = useState("3d");
+  const [anatomyPreference, setAnatomyPreference] = useState(ANATOMY_DEFAULTS);
+
+  useEffect(() => {
+    setAnatomyPreference((current) => ({ ...current, zoom: ANATOMY_DEFAULTS.zoom }));
+  }, [regionId]);
 
   const selectRegion = (id) => {
     onSelectRegion(getModelRegionSelectionChange(id));
   };
-  const closeProfessional = () => {
-    setProfessionalOpen(false);
-    requestAnimationFrame(() => professionalTriggerRef.current?.focus());
-  };
 
   return (
-    <section className="body-explorer" aria-label="3D 身体定位">
-      <div className="body-explorer__toolbar">
-        <button ref={professionalTriggerRef} className="professional-mode-button" type="button" onClick={() => setProfessionalOpen(true)} disabled={!regionId}>
-          <PersonSimpleRun size={19} weight="bold" />专业解剖模式
-        </button>
-        <div className="model-view-controls">
-          <button type="button" onClick={() => onChangeViewSide(viewSide === "front" ? "back" : "front")}>
-            {viewSide === "front" ? <Eye size={19} weight="bold" /> : <EyeClosed size={19} weight="bold" />}
-            {viewSide === "front" ? "看背面" : "看正面"}
-          </button>
-          <button type="button" onClick={() => onSelectRegion(getExplorerResetChange())}>
-            <ArrowsClockwise size={19} weight="bold" />重置
-          </button>
+    <section className="body-explorer" aria-label="身体定位主舞台">
+      <div className="body-explorer__mode-tabs" role="tablist" aria-label="身体定位显示模式">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={explorerMode === "3d"}
+          aria-controls="body-explorer-3d"
+          className={explorerMode === "3d" ? "is-active" : ""}
+          onClick={() => setExplorerMode("3d")}
+        >3D 人体</button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={explorerMode === "anatomy"}
+          aria-controls="body-explorer-anatomy"
+          className={explorerMode === "anatomy" ? "is-active" : ""}
+          onClick={() => setExplorerMode("anatomy")}
+        >专业解剖</button>
+      </div>
+
+      {explorerMode === "3d" ? (
+        <div id="body-explorer-3d" className="body-explorer__mode-panel" role="tabpanel">
+          <div className="body-explorer__toolbar">
+            <div className="model-view-controls">
+              <button type="button" onClick={() => onChangeViewSide(viewSide === "front" ? "back" : "front")}>
+                {viewSide === "front" ? <Eye size={19} weight="bold" /> : <EyeClosed size={19} weight="bold" />}
+                {viewSide === "front" ? "看背面" : "看正面"}
+              </button>
+              <button type="button" onClick={() => onSelectRegion(getExplorerResetChange())}>
+                <ArrowsClockwise size={19} weight="bold" />重置
+              </button>
+            </div>
+          </div>
+
+          <div
+            className="body-canvas-wrap"
+            style={{ "--arena-image": `url("${import.meta.env.BASE_URL}assets/models/body-adventure-arena.png")` }}
+          >
+            <div className="body-canvas-badge">点击身体热点选择区域 · 可拖动旋转</div>
+            <ModelErrorBoundary fallback={<ExplorerFallback regionId={regionId} onSelectRegion={selectRegion} />}>
+              <BodyScene regionId={regionId} viewSide={viewSide} onSelectRegion={selectRegion} />
+            </ModelErrorBoundary>
+          </div>
         </div>
-      </div>
-
-      <div
-        className="body-canvas-wrap"
-        style={{ "--arena-image": `url("${import.meta.env.BASE_URL}assets/models/body-adventure-arena.png")` }}
-      >
-        <div className="body-canvas-badge">点击身体热点选择区域 · 可拖动旋转</div>
-        <ModelErrorBoundary fallback={<ExplorerFallback regionId={regionId} onSelectRegion={selectRegion} />}>
-          <BodyScene regionId={regionId} viewSide={viewSide} onSelectRegion={selectRegion} />
-        </ModelErrorBoundary>
-      </div>
-
-      {professionalOpen && (
-        <Suspense fallback={<ProfessionalLoadingDialog onClose={closeProfessional} />}>
-          <ProfessionalAnatomyPanel
-            regionId={regionId}
-            selectedIds={selectedIds}
-            selectedSides={selectedSides}
-            onToggleTarget={onToggleTarget}
-            onClose={closeProfessional}
-          />
-        </Suspense>
+      ) : (
+        <div id="body-explorer-anatomy" className="body-explorer__mode-panel" role="tabpanel">
+          <Suspense fallback={<ProfessionalLoadingStage />}>
+            <ProfessionalAnatomyPanel
+              regionId={regionId}
+              selectedIds={selectedIds}
+              selectedSides={selectedSides}
+              sex={anatomyPreference.sex}
+              view={anatomyPreference.view}
+              zoom={anatomyPreference.zoom}
+              onChangeSex={(sex) => setAnatomyPreference((current) => ({ ...current, sex }))}
+              onChangeView={(view) => setAnatomyPreference((current) => ({ ...current, view }))}
+              onChangeZoom={(zoom) => setAnatomyPreference((current) => ({ ...current, zoom }))}
+              onToggleTarget={onToggleTarget}
+            />
+          </Suspense>
+        </div>
       )}
     </section>
   );
@@ -176,7 +171,6 @@ export function BodyLocationSelector({ regionId, selectedIds, selectedSides, vie
       <p>{region.prompt}。在位置图或名称列表中继续标记。</p>
 
       {locationMap}
-
     </section>
   );
 }
