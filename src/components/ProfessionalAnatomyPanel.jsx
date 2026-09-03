@@ -12,6 +12,7 @@ import { SideAnatomyFigure } from "./SideAnatomyFigure.jsx";
 import { TargetSelectionList } from "./TargetSelectionList.jsx";
 
 const viewLabels = { front: "正面", side: "侧面", back: "背面" };
+const jointRegionLabels = { knee: "膝部", shoulder: "肩部", ankle: "踝部" };
 
 export default function ProfessionalAnatomyPanel({
   regionId,
@@ -164,11 +165,11 @@ export default function ProfessionalAnatomyPanel({
           onToggleTarget={onToggleTarget}
           title="本区域全部位置"
         />
-        {regionId === "knee" && (
+        {jointRegionLabels[regionId] && (
           <div className="professional-anatomy__joint-map">
-            <h3>膝部具体不适位置</h3>
+            <h3>{jointRegionLabels[regionId]}具体不适位置</h3>
             <p>先按你实际感受到的位置选择，可与上方肌群同时多选。</p>
-            <JointRegionMap regionId="knee" selectedIds={selectedIds} onToggleTarget={onToggleTarget} />
+            <JointRegionMap regionId={regionId} selectedIds={selectedIds} onToggleTarget={onToggleTarget} />
           </div>
         )}
       </section>

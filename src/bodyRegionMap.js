@@ -101,8 +101,7 @@ export const bodySlugTargets = Object.freeze(
 
 const anatomyTargetById = new Map(anatomyTargets.map((target) => [target.id, target]));
 
-export const JOINT_MARKER_SIZE = 44;
-export const JOINT_MARKER_SELECTED_SCALE = 1.08;
+export const JOINT_ANCHOR_SIZE = 12;
 
 // anchor 坐标由最终 PNG 的 0–100% 画布手动标定；marker 是独立 callout 布局。替换图片时须先目检并同步更新锁定测试。
 export const jointDiagramMetadata = Object.freeze({
@@ -159,15 +158,17 @@ export function getJointZoneControlData(regionId, selectedIds = []) {
 
 export function getJointLeaderLineData(regionId, selectedIds = []) {
   return getJointZoneControlData(regionId, selectedIds).map((zone) => {
-    const deltaX = zone.markerX - zone.anchorX;
-    const deltaY = zone.markerY - zone.anchorY;
+    const edgeX = zone.anchorX < 50 ? 0 : 100;
+    const edgeY = zone.anchorY;
+    const deltaX = edgeX - zone.anchorX;
+    const deltaY = edgeY - zone.anchorY;
     return {
       id: zone.id,
       selected: zone.selected,
       anchorX: zone.anchorX,
       anchorY: zone.anchorY,
-      markerX: zone.markerX,
-      markerY: zone.markerY,
+      edgeX,
+      edgeY,
       lengthPercent: Math.hypot(deltaX, deltaY),
       angleDeg: Math.atan2(deltaY, deltaX) * 180 / Math.PI,
     };
@@ -202,22 +203,6 @@ export function getBodyRegionVisualData({ regionId, selectedIds = [], selectedSi
       selected,
       color: targetId ? anatomyTargetById.get(targetId)?.color : undefined,
       side: sides.length === 1 ? sides[0] : undefined,
-    };
-  });
-}
-
-export function getJointMarkerRects(regionId, { canvasSize = 320, selectedIds = [] } = {}) {
-  return getJointZoneControlData(regionId, selectedIds).map((zone) => {
-    const scale = zone.selected ? JOINT_MARKER_SELECTED_SCALE : 1;
-    const size = JOINT_MARKER_SIZE * scale;
-    const centerX = canvasSize * zone.markerX / 100;
-    const centerY = canvasSize * zone.markerY / 100;
-    return {
-      id: zone.id,
-      left: centerX - size / 2,
-      right: centerX + size / 2,
-      top: centerY - size / 2,
-      bottom: centerY + size / 2,
     };
   });
 }

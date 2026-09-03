@@ -136,6 +136,16 @@ test("专业解剖侧面视图使用男女项目资源并复用既有点击解�
   assert.doesNotMatch(sideSource, /onToggleTarget/);
 });
 
+test("关节图把编号按钮放到肌肉画面外", async () => {
+  const source = await readFile(new URL("../src/components/JointRegionMap.jsx", import.meta.url), "utf8");
+  const canvasSource = source.match(/className="joint-region-map__canvas"[\s\S]*?<\/div>/)?.[0] ?? "";
+
+  assert.doesNotMatch(canvasSource, /<button|joint-region-map__marker/);
+  assert.match(source, /joint-region-map__callouts/);
+  assert.match(source, /data-hit-size="44"/);
+  assert.match(source, /joint-region-map__anchor/);
+});
+
 test("HomePage 页脚展示当前角色的完整署名与可点击许可", async () => {
   const source = await readFile(new URL("../src/HomePage.jsx", import.meta.url), "utf8");
   const ast = parse(source, { sourceType: "module", plugins: ["jsx"] });
