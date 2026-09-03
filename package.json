@@ -1,0 +1,29 @@
+{
+  "name": "v1",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "import:office-content": "node scripts/import-office-content.mjs",
+    "build:content": "node scripts/content-library/build-web-library.mjs",
+    "build": "npm run build:content && vite build && node scripts/prepare-sites-build.mjs && node scripts/verify-release-assets.mjs dist/client",
+    "build:github": "npm run build:content && vite build --base=/move-lab-body-reset/ --outDir dist/github && node scripts/prepare-github-build.mjs && node scripts/verify-release-assets.mjs dist/github",
+    "preview": "vite preview",
+    "test": "node --test tests/movements.test.mjs tests/body-map.test.mjs tests/body-region-map.test.mjs tests/body-region-map-component.test.mjs tests/body-assets.test.mjs tests/camera-framing.test.mjs tests/home-flow.test.mjs tests/hotspot-interaction.test.mjs tests/office-content.test.mjs tests/office-routine.test.mjs tests/professional-location.test.mjs tests/stretching-adapters.test.mjs tests/tutorial-library-contract.test.mjs tests/typography-safety.test.mjs",
+    "test:sites": "node --test tests/sites-worker.test.mjs",
+    "test:content": "node --test tests/stretching-web-library.test.mjs tests/pose-frame-audit.test.mjs"
+  },
+  "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.7.0",
+    "@vitejs/plugin-react": "5.0.4",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "react-muscle-highlighter": "^1.2.0",
+    "sharp": "0.34.4",
+    "three": "^0.185.1",
+    "vite": "6.4.2"
+  }
+}

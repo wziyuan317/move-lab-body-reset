@@ -1,0 +1,6 @@
+node_modules/
+dist/
+qa/
+*.tar.gz
+.DS_Store
+.worktrees/
