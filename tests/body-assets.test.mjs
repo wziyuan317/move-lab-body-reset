@@ -22,6 +22,10 @@ const jointMapAssets = [
   "public/assets/body-map/shoulder-location-map.png",
   "public/assets/body-map/ankle-location-map.png",
 ];
+const sideAnatomyAssets = [
+  "public/assets/body-map/anatomy-side-male.png",
+  "public/assets/body-map/anatomy-side-female.png",
+];
 
 function sha256(bytes) {
   return createHash("sha256").update(bytes).digest("hex");
@@ -154,4 +158,23 @@ test("关节局部图都是至少 900 × 900 的有效 PNG", async () => {
     assert.ok(bytes.readUInt32BE(16) >= 900, `${relativePath} 宽度不足 900`);
     assert.ok(bytes.readUInt32BE(20) >= 900, `${relativePath} 高度不足 900`);
   }
+});
+
+test("男女侧面解剖图使用一致的大尺寸 PNG 画布", async () => {
+  const sizes = [];
+  for (const relativePath of sideAnatomyAssets) {
+    const bytes = await readFile(path.join(projectRoot, relativePath));
+    assert.deepEqual(
+      [...bytes.subarray(0, 8)],
+      [137, 80, 78, 71, 13, 10, 26, 10],
+      `${relativePath} 不是 PNG`,
+    );
+    const width = bytes.readUInt32BE(16);
+    const height = bytes.readUInt32BE(20);
+    assert.ok(Math.max(width, height) >= 1024, `${relativePath} 长边不足 1024`);
+    assert.ok(height >= width, `${relativePath} 应使用适合全身人物的竖向画布`);
+    assert.ok(bytes.length >= 100_000, `${relativePath} 疑似空白或极小占位图`);
+    sizes.push([width, height]);
+  }
+  assert.deepEqual(sizes[0], sizes[1], "男女侧面解剖图画布尺寸必须一致");
 });

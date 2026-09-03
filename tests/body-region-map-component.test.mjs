@@ -122,6 +122,20 @@ test("专业人体图开放点击而普通人体图保持键盘等价控件", as
   assert.match(ordinarySource, /body-region-map__side-controls/);
 });
 
+test("专业解剖侧面视图使用男女项目资源并复用既有点击解析", async () => {
+  const panelSource = await readFile(new URL("../src/components/ProfessionalAnatomyPanel.jsx", import.meta.url), "utf8");
+  const sideSource = await readFile(new URL("../src/components/SideAnatomyFigure.jsx", import.meta.url), "utf8");
+
+  assert.match(panelSource, /SideAnatomyFigure/);
+  assert.match(panelSource, /view === "side"/);
+  assert.match(panelSource, />侧面</);
+  assert.match(sideSource, /anatomy-side-male\.png/);
+  assert.match(sideSource, /anatomy-side-female\.png/);
+  assert.match(sideSource, /sideAnatomyHotspots/);
+  assert.match(sideSource, /onBodyPartPress/);
+  assert.doesNotMatch(sideSource, /onToggleTarget/);
+});
+
 test("HomePage 页脚展示当前角色的完整署名与可点击许可", async () => {
   const source = await readFile(new URL("../src/HomePage.jsx", import.meta.url), "utf8");
   const ast = parse(source, { sourceType: "module", plugins: ["jsx"] });

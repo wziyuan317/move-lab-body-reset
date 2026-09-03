@@ -496,6 +496,12 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 4px solid 
 .professional-anatomy__viewport { min-height: 0; overflow: hidden; }
 .professional-anatomy__viewport > div { transform: scale(var(--focus-scale, 1)); transform-origin: var(--focus-x, 50%) var(--focus-y, 50%); transition: transform 220ms ease; }
 .professional-anatomy__viewport svg path { cursor: pointer; }
+.side-anatomy-figure { position: relative; width: 100%; height: 100%; min-height: 390px; }
+.side-anatomy-figure > img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.side-anatomy-figure > button { position: absolute; display: grid; min-width: 44px; min-height: 44px; place-items: center; padding: 0; color: transparent; background: transparent; border: 2px solid transparent; border-radius: 999px; cursor: pointer; }
+.side-anatomy-figure > button:hover, .side-anatomy-figure > button:focus-visible { color: var(--navy); background: rgba(255, 212, 59, .28); border-color: var(--navy); outline: 3px solid #fff; }
+.side-anatomy-figure > button.is-selected { color: var(--navy); background: rgba(255, 102, 92, .3); border-color: var(--coral); }
+.side-anatomy-figure > button span { padding: 2px 5px; font-size: 11px; font-weight: 900; background: rgba(255,255,255,.9); border-radius: 999px; }
 .professional-anatomy__body-grid figure.is-focused { border-color: var(--yellow); box-shadow: inset 0 0 0 2px var(--yellow); }
 .professional-anatomy__selection { display: grid; grid-template-columns: minmax(180px, .75fr) minmax(0, 1.5fr); gap: 10px; padding: 9px; color: var(--navy); background: #edf4ff; border-radius: 13px; }
 .professional-anatomy__selection h3 { margin: 0 0 6px; font-size: 12px; }

@@ -8,6 +8,9 @@ import {
 } from "../bodyRegionMap.js";
 import { getNextAnatomyZoom, getProfessionalFocus, resolveProfessionalPress } from "../professionalFocus.js";
 import { JointRegionMap } from "./JointRegionMap.jsx";
+import { SideAnatomyFigure } from "./SideAnatomyFigure.jsx";
+
+const viewLabels = { front: "正面", side: "侧面", back: "背面" };
 
 export default function ProfessionalAnatomyPanel({
   regionId,
@@ -74,6 +77,7 @@ export default function ProfessionalAnatomyPanel({
         <div className="anatomy-control-group" role="group" aria-label="观察方向">
           <span>方向</span>
           <button type="button" aria-pressed={view === "front"} className={view === "front" ? "is-active" : ""} onClick={() => onChangeView("front")}>正面</button>
+          <button type="button" aria-pressed={view === "side"} className={view === "side" ? "is-active" : ""} onClick={() => onChangeView("side")}>侧面</button>
           <button type="button" aria-pressed={view === "back"} className={view === "back" ? "is-active" : ""} onClick={() => onChangeView("back")}>背面</button>
         </div>
         <div className="anatomy-control-group anatomy-control-group--zoom" role="group" aria-label="人体缩放">
@@ -91,22 +95,31 @@ export default function ProfessionalAnatomyPanel({
         <span><i className="is-reference" />其余身体参照</span>
       </div>
 
-      <div className="professional-anatomy__body-grid" aria-label={`${view === "front" ? "正面" : "背面"}完整人体参照`}>
+      <div className="professional-anatomy__body-grid" aria-label={`${viewLabels[view]}完整人体参照`}>
         <figure className={focusKey ? "is-focused" : ""}>
-          <figcaption>{sex === "male" ? "男生" : "女生"} · {view === "front" ? "正面" : "背面"}</figcaption>
+          <figcaption>{sex === "male" ? "男生" : "女生"} · {viewLabels[view]}</figcaption>
           <div
             className="professional-anatomy__viewport"
             style={{ "--focus-scale": bodyScale, "--focus-x": `${focus.originX}%`, "--focus-y": `${focus.originY}%` }}
           >
-            <Body
-              data={bodyData}
-              side={view}
-              gender={sex}
-              defaultFill={getBodyPartFill()}
-              defaultStroke="#9aacbf"
-              defaultStrokeWidth={1}
-              onBodyPartPress={(part, pressedSide) => handlePress(part.slug, pressedSide)}
-            />
+            {view === "side" ? (
+              <SideAnatomyFigure
+                sex={sex}
+                regionId={regionId}
+                data={bodyData}
+                onBodyPartPress={(slug) => handlePress(slug)}
+              />
+            ) : (
+              <Body
+                data={bodyData}
+                side={view}
+                gender={sex}
+                defaultFill={getBodyPartFill()}
+                defaultStroke="#9aacbf"
+                defaultStrokeWidth={1}
+                onBodyPartPress={(part, pressedSide) => handlePress(part.slug, pressedSide)}
+              />
+            )}
           </div>
         </figure>
       </div>

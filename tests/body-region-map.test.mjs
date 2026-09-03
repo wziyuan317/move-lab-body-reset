@@ -15,6 +15,7 @@ const {
   getTargetForBodySlug,
   jointDiagramMetadata = {},
   jointDiagramZones = {},
+  sideAnatomyHotspots = [],
 } = bodyRegionMap;
 
 function rectanglesOverlap(a, b) {
@@ -28,6 +29,30 @@ function rectContainsPoint(rect, point) {
 test("宽泛身体区域都映射到可点击人体 slug", () => {
   for (const slug of ["neck", "trapezius", "deltoids", "chest", "upper-back", "lower-back", "gluteal", "quadriceps", "hamstring", "knees", "calves", "tibialis", "ankles"]) {
     assert.ok(bodySlugTargets[slug]?.length > 0, `${slug} 缺少目标映射`);
+  }
+});
+
+test("侧面解剖热区覆盖全部身体定位区域且保持可访问点击尺寸", () => {
+  const coveredRegions = new Set(sideAnatomyHotspots.flatMap((hotspot) => hotspot.regionIds ?? []));
+  assert.deepEqual(
+    [...coveredRegions].sort(),
+    ["ankle", "hip", "knee", "low-back", "neck", "shoulder", "thigh", "thorax"],
+  );
+
+  for (const hotspot of sideAnatomyHotspots) {
+    assert.ok(hotspot.slug);
+    assert.ok(hotspot.label);
+    assert.equal(hotspot.hitSize, 44);
+    for (const value of [hotspot.x, hotspot.y, hotspot.width, hotspot.height]) {
+      assert.equal(Number.isFinite(value), true, `${hotspot.slug} 热区坐标无效`);
+    }
+    assert.ok(hotspot.x >= 0 && hotspot.y >= 0);
+    assert.ok(hotspot.x + hotspot.width <= 100);
+    assert.ok(hotspot.y + hotspot.height <= 100);
+    assert.ok(
+      hotspot.regionIds.some((regionId) => getTargetIdsForBodySlug(hotspot.slug, regionId).length > 0),
+      `${hotspot.slug} 没有连接到现有定位目标`,
+    );
   }
 });
 

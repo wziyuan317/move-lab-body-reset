@@ -77,6 +77,22 @@ const bodySlugLabels = {
   ankles: "踝部",
 };
 
+export const sideAnatomyHotspots = Object.freeze([
+  { slug: "neck", label: "颈后", regionIds: ["neck"], x: 43, y: 9, width: 14, height: 10, hitSize: 44 },
+  { slug: "trapezius", label: "斜方肌", regionIds: ["neck", "shoulder"], x: 44, y: 15, width: 18, height: 9, hitSize: 44 },
+  { slug: "deltoids", label: "肩部", regionIds: ["shoulder"], x: 50, y: 18, width: 14, height: 12, hitSize: 44 },
+  { slug: "chest", label: "胸前", regionIds: ["thorax"], x: 37, y: 23, width: 15, height: 17, hitSize: 44 },
+  { slug: "upper-back", label: "上背", regionIds: ["shoulder", "thorax"], x: 51, y: 24, width: 12, height: 17, hitSize: 44 },
+  { slug: "lower-back", label: "下背", regionIds: ["low-back"], x: 48, y: 37, width: 14, height: 13, hitSize: 44 },
+  { slug: "gluteal", label: "臀部", regionIds: ["hip"], x: 50, y: 43, width: 14, height: 14, hitSize: 44 },
+  { slug: "quadriceps", label: "大腿前侧", regionIds: ["hip", "thigh", "knee"], x: 38, y: 49, width: 14, height: 20, hitSize: 44 },
+  { slug: "hamstring", label: "大腿后侧", regionIds: ["thigh", "knee"], x: 50, y: 52, width: 12, height: 17, hitSize: 44 },
+  { slug: "knees", label: "膝部", regionIds: ["knee"], x: 42, y: 65, width: 16, height: 10, hitSize: 44 },
+  { slug: "calves", label: "小腿后侧", regionIds: ["ankle"], x: 49, y: 71, width: 12, height: 18, hitSize: 44 },
+  { slug: "tibialis", label: "小腿前侧", regionIds: ["ankle"], x: 42, y: 71, width: 10, height: 18, hitSize: 44 },
+  { slug: "ankles", label: "踝部", regionIds: ["ankle"], x: 41, y: 87, width: 18, height: 10, hitSize: 44 },
+].map((hotspot) => Object.freeze({ ...hotspot, regionIds: Object.freeze(hotspot.regionIds) })));
+
 export const bodySlugTargets = Object.freeze(
   Object.fromEntries(
     Object.entries(targetRegionsBySlug).map(([slug, targetRegions]) => [slug, Object.freeze(Object.keys(targetRegions))]),
