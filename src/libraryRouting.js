@@ -7,8 +7,15 @@ function normalizedBase(baseUrl) {
   return `/${baseUrl.replace(/^\/+|\/+$/g, "")}/`;
 }
 
-export function buildLibraryPath(movementId, baseUrl = "/") {
+export function buildLibraryPath(movementId, baseUrl = "/", routeMode = "path") {
   const base = normalizedBase(baseUrl);
+  if (routeMode === "query") {
+    const params = new URLSearchParams({ view: "library" });
+    if (movementId && validMovementIds.has(movementId)) {
+      params.set("movement", movementId);
+    }
+    return `${base}?${params.toString()}`;
+  }
   const detailPath = `${base}动作教程`;
   return movementId && validMovementIds.has(movementId)
     ? `${detailPath}?动作=${encodeURIComponent(movementId)}`

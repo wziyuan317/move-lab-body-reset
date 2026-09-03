@@ -73,3 +73,10 @@ test("动作教程中文深链兼容站点根路径和 GitHub Pages base", () =>
     "/move-lab-body-reset/动作教程?动作=%E5%8A%A8%E4%BD%9C-%E8%B6%B3%E5%B0%8F%E8%85%BF-001",
   );
 });
+
+test("Sites 发布模式把动作链接保留在根路径查询参数中", () => {
+  assert.equal(
+    buildLibraryPath("动作-足小腿-001", "/", "query"),
+    "/?view=library&movement=%E5%8A%A8%E4%BD%9C-%E8%B6%B3%E5%B0%8F%E8%85%BF-001",
+  );
+});

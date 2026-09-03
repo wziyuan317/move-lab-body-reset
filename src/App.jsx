@@ -77,7 +77,11 @@ export function App() {
       window.history.pushState(
         {},
         "",
-        buildLibraryPath(movementId, import.meta.env.BASE_URL ?? "/"),
+        buildLibraryPath(
+          movementId,
+          import.meta.env.BASE_URL ?? "/",
+          window.location.hostname.endsWith(".chatgpt.site") ? "query" : "path",
+        ),
       );
       setUrlState(synchronized);
       return;
