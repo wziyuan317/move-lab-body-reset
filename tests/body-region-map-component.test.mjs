@@ -152,10 +152,10 @@ test("HomePage 页脚展示当前角色的完整署名与可点击许可", async
   let footer;
   visit(ast, (node) => {
     if (node.type !== "JSXElement" || node.openingElement.name?.name !== "footer") return;
-    const id = node.openingElement.attributes.find(
-      (attribute) => attribute.type === "JSXAttribute" && attribute.name.name === "id",
+    const className = node.openingElement.attributes.find(
+      (attribute) => attribute.type === "JSXAttribute" && attribute.name.name === "className",
     )?.value?.value;
-    if (id === "safety-note") footer = node;
+    if (className === "home-footer") footer = node;
   });
 
   assert.ok(footer, "应保留公开安全说明页脚");

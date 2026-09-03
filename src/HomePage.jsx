@@ -15,6 +15,7 @@ import { AssessmentPanel } from "./components/AssessmentPanel.jsx";
 import { BodyExplorer } from "./components/BodyExplorer.jsx";
 import { LocationTaskPanel } from "./components/LocationTaskPanel.jsx";
 import { RegionRail } from "./components/RegionRail.jsx";
+import { SafetyGuidance } from "./components/SafetyGuidance.jsx";
 import { SiteHeader } from "./components/SiteHeader.jsx";
 import { getMissionDisplayStep, getStepFocusSelector } from "./homeFlow.js";
 
@@ -139,6 +140,8 @@ export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary, onNav
         </div>
       </main>
 
+      <SafetyGuidance />
+
       <div className="mobile-step-control" aria-label="移动端步骤控制">
         <button type="button" className="mobile-step-control__back" disabled={mobileStep === 1} onClick={() => requestStep(mobileStep - 1)} aria-label="上一步">
           <ArrowLeft size={21} weight="bold" />
@@ -153,7 +156,7 @@ export function HomePage({ value, onChange, onOpenTutorial, onOpenLibrary, onNav
         )}
       </div>
 
-      <footer id="safety-note" className="home-footer">
+      <footer className="home-footer">
         <p>本页用于日常动作教育与位置记录，不提供疾病诊断，不替代医生或物理治疗师的个体评估。</p>
         <p>
           当前 3D 角色：Man Player，作者 RiverofCreative（

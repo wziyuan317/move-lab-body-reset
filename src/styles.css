@@ -157,6 +157,27 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 4px solid 
 .home-footer { display: flex; justify-content: space-between; gap: 20px; padding: 16px clamp(18px, 4vw, 64px); color: #aebfe1; background: #071632; border-top: 2px solid #294678; font-size: 9px; line-height: 1.5; }
 .home-footer p { margin: 0; }
 .home-footer a { display: inline-flex; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; padding: 0 4px; }
+.safety-guidance { width: min(1480px, calc(100% - 36px)); margin: 8px auto 18px; padding: clamp(18px, 2.5vw, 32px); color: var(--navy); background: #f7faff; border: 3px solid #c5d4eb; border-radius: 24px; box-shadow: 6px 6px 0 #02102a; scroll-margin-top: 24px; }
+.safety-guidance > header { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 18px; }
+.safety-guidance > header small { color: var(--blue); font-size: 11px; font-weight: 950; letter-spacing: .12em; }
+.safety-guidance > header h2 { max-width: 720px; margin: 5px 0 0; font-size: clamp(24px, 3vw, 36px); line-height: 1.15; }
+.safety-guidance > header p { max-width: 420px; margin: 0; color: #52637e; font-size: 15px; line-height: 1.55; }
+.safety-guidance__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.safety-guidance__grid article { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 11px; padding: 17px; background: #fff; border: 2px solid #bdcbe0; border-radius: 16px; }
+.safety-guidance__grid article.is-ready { border-color: #74c69d; }
+.safety-guidance__grid article.is-stop { border-color: #ff9b91; }
+.safety-guidance__grid article.is-assess { border-color: #e1bd35; }
+.safety-guidance__grid article.is-ready > svg { color: #218d59; }
+.safety-guidance__grid article.is-stop > svg { color: #d94841; }
+.safety-guidance__grid article.is-assess > svg { color: #a97d00; }
+.safety-guidance__grid h3 { margin: 0 0 8px; font-size: 18px; }
+.safety-guidance__grid ul { margin: 0; padding-left: 20px; color: #405578; font-size: 15px; line-height: 1.65; }
+.safety-guidance__grid li + li { margin-top: 5px; }
+.safety-guidance__boundary { margin-top: 14px; padding: 15px 17px; color: #405578; background: #eaf2ff; border-radius: 14px; }
+.safety-guidance__boundary strong { color: var(--navy); font-size: 15px; }
+.safety-guidance__boundary p { margin: 6px 0 0; font-size: 14px; line-height: 1.6; }
+.safety-guidance__boundary > div { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 8px; }
+.safety-guidance__boundary a { display: inline-flex; min-height: 44px; align-items: center; color: var(--blue); font-size: 13px; font-weight: 800; }
 .brand--button { width: 100%; padding: 0; text-align: left; background: transparent; border: 0; cursor: pointer; }
 .back-home-button { display: inline-flex; min-height: 34px; align-items: center; gap: 6px; margin-bottom: 9px; padding: 0 10px; color: var(--blue); font-size: 10px; font-weight: 900; background: #fff; border: 2px solid var(--blue); border-radius: 999px; cursor: pointer; }
 
@@ -550,6 +571,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 4px solid 
   .mission-column, .character-stage { height: 620px; }
   .result-column { grid-column: 1 / -1; height: auto; max-height: none; }
   .location-selector, .result-column .recommendation-panel { max-width: 720px; margin-right: auto; margin-left: auto; }
+  .safety-guidance__grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 700px) {
@@ -559,6 +581,9 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 4px solid 
   .home-brand strong { font-size: 16px; }
   .home-nav__status { font-size: 0; }
   .home-main { padding: 10px 10px 16px; }
+  .safety-guidance { width: calc(100% - 20px); margin-bottom: 10px; padding: 16px; border-radius: 18px; }
+  .safety-guidance > header { display: grid; gap: 10px; }
+  .safety-guidance__grid article { padding: 14px; }
   .location-workspace { display: block; }
   .mission-column, .character-stage, .result-column { display: none; width: 100%; height: auto; }
   .location-workspace[data-mobile-step="1"] .character-stage,
