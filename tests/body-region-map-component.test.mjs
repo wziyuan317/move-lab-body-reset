@@ -239,6 +239,22 @@ test("右侧单工作台集中位置感受安全与建议", async () => {
   assert.match(css, /\.result-column\.is-empty \{ display:\s*none; \}/);
 });
 
+test("所有定位目标共享完整文字入口且右栏不再重复人体图", async () => {
+  const targetListSource = await readFile(new URL("../src/components/TargetSelectionList.jsx", import.meta.url), "utf8");
+  const explorerSource = await readFile(new URL("../src/components/BodyExplorer.jsx", import.meta.url), "utf8");
+  const professionalSource = await readFile(new URL("../src/components/ProfessionalAnatomyPanel.jsx", import.meta.url), "utf8");
+  const homeSource = await readFile(new URL("../src/HomePage.jsx", import.meta.url), "utf8");
+
+  assert.match(targetListSource, /targets\.map/);
+  assert.match(targetListSource, /aria-pressed=\{selected\}/);
+  assert.match(targetListSource, /data-hit-size="44"/);
+  assert.match(targetListSource, /onToggleTarget\(target\.id\)/);
+  assert.match(explorerSource, /TargetSelectionList/);
+  assert.match(professionalSource, /TargetSelectionList/);
+  assert.doesNotMatch(explorerSource, /BodyRegionMap|jointMapRegions/);
+  assert.doesNotMatch(homeSource.match(/<LocationTaskPanel[\s\S]*?\/>/)?.[0] ?? "", /viewSide|onChangeViewSide/);
+});
+
 test("底部区域卡只使用图标库，不再渲染微型肌肉图", async () => {
   const source = await readFile(new URL("../src/components/RegionRail.jsx", import.meta.url), "utf8");
 

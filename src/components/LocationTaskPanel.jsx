@@ -23,11 +23,8 @@ export function LocationTaskPanel({
       <BodyLocationSelector
         regionId={value.regionId}
         selectedIds={value.targetIds}
-        selectedSides={value.targetSides}
-        viewSide={value.viewSide}
         step={explorerStep === 3 && !locationExpanded ? 3 : 2}
         onToggleTarget={onToggleTarget}
-        onChangeViewSide={(viewSide) => onUpdate({ viewSide })}
         onEditLocation={onEditLocation}
       />
 

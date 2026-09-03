@@ -9,6 +9,7 @@ import {
 import { getNextAnatomyZoom, getProfessionalFocus, resolveProfessionalPress } from "../professionalFocus.js";
 import { JointRegionMap } from "./JointRegionMap.jsx";
 import { SideAnatomyFigure } from "./SideAnatomyFigure.jsx";
+import { TargetSelectionList } from "./TargetSelectionList.jsx";
 
 const viewLabels = { front: "正面", side: "侧面", back: "背面" };
 
@@ -157,27 +158,12 @@ export default function ProfessionalAnatomyPanel({
             </div>
           </div>
         )}
-        {muscleTargets.length > 0 && (
-          <div className="professional-anatomy__target-controls" aria-label="当前区域肌群选择">
-            <strong>可能相关肌群</strong>
-            {muscleTargets.map((target) => {
-              const selected = selectedIds.includes(target.id);
-              return (
-                <button
-                  key={target.id}
-                  type="button"
-                  data-hit-size="44"
-                  aria-pressed={selected}
-                  className={selected ? "is-active" : ""}
-                  style={{ "--target-color": target.color }}
-                  onClick={() => onToggleTarget(target.id)}
-                >
-                  <i />{target.label}
-                </button>
-              );
-            })}
-          </div>
-        )}
+        <TargetSelectionList
+          targets={targets}
+          selectedIds={selectedIds}
+          onToggleTarget={onToggleTarget}
+          title="本区域全部位置"
+        />
         {regionId === "knee" && (
           <div className="professional-anatomy__joint-map">
             <h3>膝部具体不适位置</h3>

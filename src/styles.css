@@ -509,6 +509,15 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 4px solid 
 .professional-anatomy__selected-tags span { padding: 4px 7px; font-size: 11px; font-weight: 850; background: color-mix(in srgb, var(--target-color) 28%, #fff); border: 2px solid var(--target-color); border-radius: 999px; }
 .professional-anatomy__selected-tags .is-empty { color: #61708a; background: #fff; border-color: #bdc9db; }
 .professional-anatomy__granularity-note { margin: 7px 0 0; color: #52637e; font-size: 10px; line-height: 1.45; }
+.target-selection-list { display: grid; gap: 7px; }
+.target-selection-list > strong { font-size: 14px; }
+.target-selection-list > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+.target-selection-list button { display: grid; min-width: 0; min-height: 44px; grid-template-columns: 12px minmax(0, 1fr) auto; align-items: center; gap: 7px; padding: 7px 9px; color: var(--navy); font-size: 13px; font-weight: 850; text-align: left; background: #fff; border: 2px solid #bdc9db; border-radius: 9px; cursor: pointer; }
+.target-selection-list button i { width: 12px; height: 12px; background: var(--target-color, #79a8ed); border: 1px solid var(--navy); border-radius: 50%; }
+.target-selection-list button small { color: #61708a; font-size: 11px; font-weight: 800; }
+.target-selection-list button.is-active { background: color-mix(in srgb, var(--target-color) 28%, #fff); border-color: var(--target-color); box-shadow: 2px 2px 0 var(--target-color); }
+.target-selection-list button.is-active small { color: var(--navy); }
+.target-selection-list__empty { margin: 0; color: #52637e; font-size: 13px; line-height: 1.5; }
 .professional-anatomy__target-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
 .professional-anatomy__target-controls > strong { grid-column: 1 / -1; font-size: 12px; }
 .professional-anatomy__target-controls button { display: flex; min-width: 0; min-height: 44px; align-items: center; gap: 7px; padding: 5px 8px; color: var(--navy); font-size: 11px; font-weight: 850; text-align: left; background: #fff; border: 2px solid #bdc9db; border-radius: 9px; cursor: pointer; }

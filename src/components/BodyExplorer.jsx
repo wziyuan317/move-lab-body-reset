@@ -7,13 +7,11 @@ import {
 } from "@phosphor-icons/react";
 import { bodyRegions, getExplorerResetChange, getModelRegionSelectionChange, getRegionTargets } from "../bodyMap.js";
 import { ANATOMY_DEFAULTS } from "../professionalFocus.js";
-import { BodyRegionMap } from "./BodyRegionMap.jsx";
 import { BodyScene } from "./BodyScene.jsx";
-import { JointRegionMap } from "./JointRegionMap.jsx";
 import { ModelErrorBoundary } from "./ModelErrorBoundary.jsx";
+import { TargetSelectionList } from "./TargetSelectionList.jsx";
 
 const ProfessionalAnatomyPanel = lazy(() => import("./ProfessionalAnatomyPanel.jsx"));
-const jointMapRegions = new Set(["knee", "shoulder", "ankle"]);
 
 function ProfessionalLoadingStage() {
   return <div className="professional-anatomy-loading" role="status">正在加载专业解剖图…</div>;
@@ -115,7 +113,7 @@ export function BodyExplorer({ regionId, selectedIds, selectedSides, viewSide, o
   );
 }
 
-export function BodyLocationSelector({ regionId, selectedIds, selectedSides, viewSide, step, onToggleTarget, onChangeViewSide, onEditLocation }) {
+export function BodyLocationSelector({ regionId, selectedIds, step, onToggleTarget, onEditLocation }) {
   const region = bodyRegions.find((item) => item.id === regionId);
   if (!region) {
     return (
@@ -128,18 +126,6 @@ export function BodyLocationSelector({ regionId, selectedIds, selectedSides, vie
   }
 
   const targets = getRegionTargets(regionId);
-  const locationMap = jointMapRegions.has(regionId) ? (
-    <JointRegionMap regionId={regionId} selectedIds={selectedIds} onToggleTarget={onToggleTarget} />
-  ) : (
-    <BodyRegionMap
-      regionId={regionId}
-      selectedIds={selectedIds}
-      selectedSides={selectedSides}
-      viewSide={viewSide}
-      onToggleTarget={onToggleTarget}
-      onChangeViewSide={onChangeViewSide}
-    />
-  );
   if (step === 3) {
     const selectedTargets = targets.filter((target) => selectedIds.includes(target.id));
     return (
@@ -155,8 +141,8 @@ export function BodyLocationSelector({ regionId, selectedIds, selectedSides, vie
         </div>
         <button type="button" className="location-selector__edit" onClick={onEditLocation}>修改具体位置</button>
         <div className="location-selector__mobile-details">
-          <p>{region.prompt}。可在位置图中继续增删标记。</p>
-          {locationMap}
+          <p>{region.prompt}。可在名称列表中继续增删标记。</p>
+          <TargetSelectionList targets={targets} selectedIds={selectedIds} onToggleTarget={onToggleTarget} />
         </div>
       </section>
     );
@@ -168,9 +154,9 @@ export function BodyLocationSelector({ regionId, selectedIds, selectedSides, vie
         <div><span>当前选择</span><h2>{region.label}不适</h2></div>
         <small>可多选</small>
       </header>
-      <p>{region.prompt}。在位置图或名称列表中继续标记。</p>
+      <p>{region.prompt}。从完整名称列表中继续标记；也可切换中央专业解剖图查看。</p>
 
-      {locationMap}
+      <TargetSelectionList targets={targets} selectedIds={selectedIds} onToggleTarget={onToggleTarget} />
     </section>
   );
 }
