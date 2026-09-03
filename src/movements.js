@@ -1,8 +1,42 @@
-export function filterMovements(items, { query = "", category = "全部" } = {}) {
+import stretchingMovementSource from "./generated/stretchingMovements.json" with { type: "json" };
+
+const FRAME_LABELS = {
+  start: "起始",
+  process: "过程",
+  end: "到位",
+};
+
+export function filterMovements(
+  items,
+  {
+    query = "",
+    category = "全部",
+    collection = "all",
+    regionId = "all",
+    muscleId = "all",
+    difficulty = "all",
+    movementType = "all",
+  } = {},
+) {
   const normalizedQuery = query.trim().toLocaleLowerCase("zh-CN");
 
   return items.filter((item) => {
     if (category !== "全部" && item.category !== category) {
+      return false;
+    }
+    if (collection !== "all" && item.collection !== collection) {
+      return false;
+    }
+    if (regionId !== "all" && !(item.regionIds ?? []).includes(regionId)) {
+      return false;
+    }
+    if (muscleId !== "all" && !(item.muscleIds ?? []).includes(muscleId)) {
+      return false;
+    }
+    if (difficulty !== "all" && item.difficulty !== difficulty) {
+      return false;
+    }
+    if (movementType !== "all" && item.actionType !== movementType) {
       return false;
     }
 
@@ -12,9 +46,15 @@ export function filterMovements(items, { query = "", category = "全部" } = {})
 
     const searchable = [
       item.title,
+      item.shortTitle,
       item.category,
+      item.chapter,
+      item.actionType,
+      item.difficulty,
+      ...(item.bodyAreas ?? []),
       ...(item.muscles ?? []),
       ...(item.keywords ?? []),
+      ...(item.keyPoints ?? []),
     ]
       .join(" ")
       .toLocaleLowerCase("zh-CN");
@@ -29,16 +69,37 @@ export function resolveAssetPath(assetPath, baseUrl = import.meta.env?.BASE_URL 
   return `${normalizedBaseUrl}${normalizedAssetPath}`;
 }
 
+export function getMovementFrames(movement) {
+  if (Array.isArray(movement.frames)) {
+    return movement.frames;
+  }
+
+  if (movement.frames && typeof movement.frames === "object") {
+    return ["start", "process", "end"]
+      .filter((id) => movement.frames[id])
+      .map((id) => ({ id, label: FRAME_LABELS[id], src: movement.frames[id] }));
+  }
+
+  return movement.image
+    ? [{ id: "end", label: "动作", src: movement.image }]
+    : [];
+}
+
 export function selectMovementFrame(movement, phase) {
-  return resolveAssetPath(movement.frames?.[phase] ?? movement.image);
+  const frames = getMovementFrames(movement);
+  const selected = frames.find((frame) => frame.id === phase) ?? frames.at(-1);
+  return selected ? resolveAssetPath(selected.src) : "";
 }
 
 export function selectMovementThumbnail(movement) {
+  if (movement.thumbnail) {
+    return resolveAssetPath(movement.thumbnail);
+  }
   const filename = movement.image.split("/").at(-1);
   return resolveAssetPath(`/assets/thumbnails/${filename}`);
 }
 
-export const movements = [
+const officeMovementSource = [
   {
     id: "neck-sidebend",
     title: "颈侧斜方肌放松",
@@ -403,3 +464,18 @@ export const movements = [
     stop: "若屈曲会加重腰腿放射痛、麻木或无力，不要继续。",
   },
 ];
+
+export const officeMovements = officeMovementSource.map((movement) => ({
+  ...movement,
+  collection: "office",
+  collectionLabel: "办公室改善",
+  actionType: movement.actionType ?? "办公室动作",
+  difficulty: movement.difficulty ?? "办公室友好",
+  bodyAreas: movement.bodyAreas ?? [movement.category],
+  regionIds: movement.regionIds ?? [],
+  muscleIds: movement.muscleIds ?? [],
+}));
+
+export const stretchingMovements = stretchingMovementSource;
+
+export const movements = [...officeMovements, ...stretchingMovements];

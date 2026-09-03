@@ -1,4 +1,5 @@
 import { movements } from "./movements.js";
+import { getStretchingIdsForRegion, getStretchingIdsForTarget } from "./stretchingAdapters.js";
 
 const movementIds = new Set(movements.map((movement) => movement.id));
 const cautionSymptomIds = new Set(["weakness", "swelling", "tingling"]);
@@ -18,7 +19,7 @@ export const redFlags = [
   { id: "fever-pain", label: "发热同时伴随疼痛" },
 ];
 
-export const bodyRegions = [
+const baseBodyRegions = [
   {
     id: "neck",
     label: "颈部",
@@ -85,7 +86,7 @@ export const bodyRegions = [
   },
 ];
 
-export const anatomyTargets = [
+const baseAnatomyTargets = [
   { id: "upper-trapezius", regionId: "neck", label: "上斜方肌", kind: "muscle", color: "#ff5c4d", meshNames: ["Descending Part Of Trapezius Muscle"], movementIds: ["neck-sidebend", "scapular-squeeze"] },
   { id: "levator-scapulae", regionId: "neck", label: "肩胛提肌", kind: "muscle", color: "#ff9f1c", meshNames: ["Levator Scapulae"], movementIds: ["levator-stretch", "scapular-squeeze"] },
   { id: "posterior-neck", regionId: "neck", label: "颈后肌群", kind: "muscle", color: "#ffd43b", meshNames: ["Splenius Capitis Muscle", "Splenius Colli Muscle"], movementIds: ["neck-sidebend", "levator-stretch"] },
@@ -140,6 +141,16 @@ export const anatomyTargets = [
   { id: "calf-posterior", regionId: "ankle", label: "小腿后侧", kind: "joint", color: "#b7e4c7", meshNames: [], movementIds: ["supported-calf-raise", "supported-hinge"] },
   { id: "ankle-joint-unsure", regionId: "ankle", label: "不确定具体位置", kind: "joint", color: "#868e96", meshNames: [], movementIds: ["supported-calf-raise", "supported-hinge"] },
 ];
+
+export const bodyRegions = baseBodyRegions.map((region) => ({
+  ...region,
+  movementIds: [...new Set([...region.movementIds, ...getStretchingIdsForRegion(region.id)])],
+}));
+
+export const anatomyTargets = baseAnatomyTargets.map((target) => ({
+  ...target,
+  movementIds: [...new Set([...target.movementIds, ...getStretchingIdsForTarget(target.id)])],
+}));
 
 export const regionCameraPresets = Object.fromEntries(
   bodyRegions.map((region) => [

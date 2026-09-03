@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import {
   applyExplorerStateChange,
   getExplorerStep,
   parseExplorerState,
   serializeExplorerState,
 } from "./bodyMap.js";
-import { HomePage } from "./HomePage.jsx";
-import { TutorialLibrary } from "./TutorialLibrary.jsx";
-import { OfficeRoutinePage } from "./components/OfficeRoutinePage.jsx";
+import { buildLibraryPath, readLibraryLocation } from "./libraryRouting.js";
+
+const HomePage = lazy(() => import("./HomePage.jsx").then((module) => ({ default: module.HomePage })));
+const TutorialLibrary = lazy(() => import("./TutorialLibrary.jsx").then((module) => ({ default: module.TutorialLibrary })));
+const OfficeRoutinePage = lazy(() => import("./components/OfficeRoutinePage.jsx").then((module) => ({ default: module.OfficeRoutinePage })));
 
 const defaultExplorerState = {
   regionId: undefined,
@@ -23,9 +25,23 @@ function synchronizeExplorerStep(state) {
   return { ...state, step: getExplorerStep(state) };
 }
 
+function AppLoading() {
+  return <div className="app-loading" role="status">MOVE LAB 正在准备动作内容…</div>;
+}
+
+function loadPage(page) {
+  return <Suspense fallback={<AppLoading />}>{page}</Suspense>;
+}
+
 function readUrlState() {
   if (typeof window === "undefined") return { view: "home", ...defaultExplorerState };
-  return synchronizeExplorerStep({ ...defaultExplorerState, ...parseExplorerState(window.location.search) });
+  const explorerLocation = parseExplorerState(window.location.search);
+  const libraryLocation = readLibraryLocation(window.location.pathname, window.location.search);
+  return synchronizeExplorerStep({
+    ...defaultExplorerState,
+    ...explorerLocation,
+    ...libraryLocation,
+  });
 }
 
 export function App() {
@@ -45,10 +61,10 @@ export function App() {
     return () => window.removeEventListener("popstate", restore);
   }, []);
 
-  const writeUrl = (next, mode = "push") => {
+  const writeUrl = (next, mode = "push", pathname = import.meta.env.BASE_URL ?? "/") => {
     const synchronized = synchronizeExplorerStep(next);
     const search = serializeExplorerState(synchronized);
-    window.history[`${mode}State`]({}, "", `${window.location.pathname}${search}`);
+    window.history[`${mode}State`]({}, "", `${pathname}${search}`);
     setUrlState(synchronized);
   };
 
@@ -56,6 +72,16 @@ export function App() {
     const next = { ...explorerState, view: "library", movementId };
     if (!movementId) delete next.movementId;
     delete next.programId;
+    if (movementId) {
+      const synchronized = synchronizeExplorerStep(next);
+      window.history.pushState(
+        {},
+        "",
+        buildLibraryPath(movementId, import.meta.env.BASE_URL ?? "/"),
+      );
+      setUrlState(synchronized);
+      return;
+    }
     writeUrl(next);
   };
 
@@ -90,28 +116,29 @@ export function App() {
   };
 
   if (urlState.view === "library") {
-    return (
+    return loadPage(
       <TutorialLibrary
         initialMovementId={urlState.movementId}
         onNavigateHome={navigateHome}
         onNavigate={navigateView}
         onOpenSafety={openSafety}
-      />
+        onSelectMovement={navigateToLibrary}
+      />,
     );
   }
 
   if (urlState.view === "office") {
-    return (
+    return loadPage(
       <OfficeRoutinePage
         programId={urlState.programId}
         onSelectProgram={navigateOffice}
         onNavigate={navigateView}
         onOpenSafety={openSafety}
-      />
+      />,
     );
   }
 
-  return (
+  return loadPage(
     <HomePage
       value={explorerState}
       onChange={(next) => {
@@ -123,6 +150,6 @@ export function App() {
       onOpenLibrary={() => navigateToLibrary()}
       onNavigate={navigateView}
       onOpenSafety={openSafety}
-    />
+    />,
   );
 }

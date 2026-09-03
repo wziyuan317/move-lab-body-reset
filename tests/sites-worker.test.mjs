@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
-import { access } from "node:fs/promises";
+import { access, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import test from "node:test";
 import worker from "../worker/index.js";
+import { prepareGitHubBuild } from "../scripts/prepare-github-build.mjs";
 
 test("serves existing static assets without a fallback", async () => {
   const calls = [];
@@ -65,4 +68,26 @@ test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/client/index.html", import.meta.url));
   await access(new URL("../dist/server/index.js", import.meta.url));
   await access(new URL("../dist/.openai/hosting.json", import.meta.url));
+});
+
+test("GitHub Pages 构建为中文动作教程深链生成静态入口", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "move-lab-github-build-"));
+  const outputRoot = path.join(root, "github");
+  try {
+    await mkdir(outputRoot, { recursive: true });
+    await writeFile(path.join(outputRoot, "index.html"), "<main>MOVE LAB</main>", "utf8");
+
+    await prepareGitHubBuild(outputRoot);
+
+    assert.equal(
+      await readFile(path.join(outputRoot, "动作教程/index.html"), "utf8"),
+      "<main>MOVE LAB</main>",
+    );
+    assert.equal(
+      await readFile(path.join(outputRoot, "404.html"), "utf8"),
+      "<main>MOVE LAB</main>",
+    );
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
 });
